@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1734096829904",
+    "ts": 1734096833887,
+    "task": "hello zaki",
+    "tokensIn": 6568,
+    "tokensOut": 85,
+    "cacheWrites": 0,
+    "cacheReads": 0,
+    "totalCost": 0.02569221
+  },
+  {
+    "id": "1734096849165",
+    "ts": 1734096896678,
+    "task": "i ned to install wsl in vs code",
+    "tokensIn": 13481,
+    "tokensOut": 556,
+    "cacheWrites": 0,
+    "cacheReads": 0,
+    "totalCost": 0.01338432
+  },
+  {
+    "id": "1734196075032",
+    "ts": 1734196075034,
+    "task": "hello zaki, i need you to undertand the whole service deeply and write documentation for it",
+    "tokensIn": 0,
+    "tokensOut": 0,
+    "totalCost": 0
+  },
+  {
+    "id": "1735408982191",
+    "ts": 1735408982192,
+    "task": "i need you to understand all project structre , so read all the files and understand it , then write a gudeline to refactor this code to be more structured and performence",
+    "tokensIn": 0,
+    "tokensOut": 0,
+    "totalCost": 0
+  },
+  {
+    "id": "1735996685369",
+    "ts": 1735996685369,
+    "task": "i need to add Dev_Mode =dev or production , to be reflected in testting local to use NEXT_PUBLIC_BACKEND_APP_API_URL=http://localhost:3001   while in production to use NEXT_PUBLIC_BACKEND_APP_API_URL=https://dev.white-lab.io",
+    "tokensIn": 0,
+    "tokensOut": 0,
+    "totalCost": 0
+  },
+  {
+    "id": "1737030522863",
+    "ts": 1737032249084,
+    "task": "this is a buraq front end and backend project , i need you to read and understand all two project and tell me what you understood \\",
+    "tokensIn": 1284092,
+    "tokensOut": 17306,
+    "cacheWrites": 0,
+    "cacheReads": 0,
+    "totalCost": 0.7184520900000001
+  },
+  {
+    "id": "1738177693022",
+    "ts": 1738177693023,
+    "task": "start review and anylisis these two repos that for a botbuilder system and livechat  front and backend writeen in nodejs and nextjs with mongoose and redis , i need you to understand all thesr files and write documentation for it",
+    "tokensIn": 0,
+    "tokensOut": 0,
+    "totalCost": 0
+  },
+  {
+    "id": "1738251104315",
+    "ts": 1738251114813,
+    "task": "https://github.com/Elsayed-Mubarak/buraq-admin.git    push this repo in buraq admin",
+    "tokensIn": 14104,
+    "tokensOut": 229,
+    "cacheWrites": 0,
+    "cacheReads": 0,
+    "totalCost": 0.03180348
+  }
+]
