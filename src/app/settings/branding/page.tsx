@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
 import Layout from "@/components/layout/Layout";
-import SettingsSidebar from "@/app/settings/SettingsSidebar";
-import { Suspense, useState } from "react";
-
+import SettingsSidebar from "../SettingsSidebar";
+import { useState } from "react";
+// Need to solve this useying commonLayout || sharedStatearouund app
 const settingsNavigation = [
   { name: "Branding", href: "branding" },
   { name: "General", href: "general" },
@@ -19,17 +19,23 @@ const settingsNavigation = [
   { name: "Free Trial", href: "free-trial" },
 ];
 
-export default function SettingsPage() {
-  const [activeSection, setActiveSection] = useState("");
-
+export default function BrandingSettings() {
+    const [activeSection, setActiveSection] = useState("");
+  
   return (
     <Layout>
       <div className="flex h-full">
         <SettingsSidebar
           activeSection={activeSection}
           setActiveSection={setActiveSection}
-            settingsNavigation={settingsNavigation}
-            />
+          settingsNavigation={settingsNavigation}
+        />
+        <div className="border-b border-gray-200 px-4 py-5 sm:px-6">
+          <h2 className="text-lg font-bold text-gray-900 mb-6">Branding</h2>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Manage Branding
+          </button>
+        </div>
       </div>
     </Layout>
   );

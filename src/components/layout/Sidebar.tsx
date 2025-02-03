@@ -1,47 +1,70 @@
-import Link from 'next/link';
-import { 
-  ChartBarIcon,
-  UserGroupIcon,
-  Cog6ToothIcon,
-  ChatBubbleLeftRightIcon,
-  DocumentTextIcon,
-  ChartPieIcon
-} from '@heroicons/react/24/outline';
+import Link from "next/link";
+import Image from "next/image";
+
+
+import { GrUserSettings } from "react-icons/gr";
+import { BiBarChartSquare } from "react-icons/bi";
+import { HiOutlineTemplate } from "react-icons/hi";
+import { FaRegQuestionCircle } from "react-icons/fa";
+import { IoMdSettings } from "react-icons/io";
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: ChartPieIcon },
-  { name: 'Accounts', href: '/accounts', icon: UserGroupIcon },
-  { name: 'Templates', href: '/templates', icon: DocumentTextIcon },
-  { name: 'Analytics', href: '/analytics', icon: ChartBarIcon },
-  { name: 'Chat', href: '/chat', icon: ChatBubbleLeftRightIcon },
-  { name: 'Settings', href: '/settings', icon: Cog6ToothIcon },
+  { name: "Accounts", href: "/accounts", icon: GrUserSettings },
+  { name: "Analytics", href: "/analytics", icon: BiBarChartSquare },
+  { name: "GridSystem", href: "/grid", icon: HiOutlineTemplate }, // Update href as needed
+];
+
+const bottomNavigation = [
+  { name: "Questions", href: "/questions", icon: FaRegQuestionCircle },
+  { name: "Settings", href: "/settings", icon: IoMdSettings },
 ];
 
 export default function Sidebar() {
   return (
-    <div className="flex flex-col w-16 bg-white border-r border-gray-200 h-screen fixed left-0 top-0">
+    <div className="flex flex-col w-12 border-r border-gray-200 h-screen fixed left-0 top-0 bg-[#EEEEEE]">
       <div className="flex-1 flex flex-col pt-4 pb-4 overflow-y-auto">
-        <div className="flex-shrink-0 flex items-center justify-center mb-4">
-          <img
-            className="h-8 w-auto"
-            src="/logo.svg"
-            alt="Buraq"
-          />
+        {/* Logo with margin-bottom */}
+        <div className="flex-shrink-0 flex items-center justify-center mb-8">
+          <img className="h-8 w-auto" src="/logo.png" alt="Buraq" />
         </div>
+
+        {/* Main Navigation Items */}
         <nav className="flex-1 space-y-2 px-2">
           {navigation.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="group flex items-center justify-center p-2 rounded-lg text-gray-500 hover:bg-gray-50 hover:text-blue-600"
+              className="group flex items-center justify-center p-2 rounded-lg text-black hover:bg-gray-50 hover:text-blue-600 transition-colors duration-200"
             >
-              <item.icon
-                className="h-6 w-6"
-                aria-hidden="true"
-              />
+              <item.icon className="h-6 w-6" aria-hidden="true" />
               <span className="sr-only">{item.name}</span>
             </Link>
           ))}
+        </nav>
+
+        {/* Bottom Navigation Items (Settings and Questions) */}
+        <nav className="mt-auto space-y-2 px-2">
+          {bottomNavigation.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="group flex items-center justify-center p-2 rounded-lg text-black hover:bg-gray-50 hover:text-blue-600 transition-colors duration-200"
+            >
+              <item.icon className="h-6 w-6" aria-hidden="true" />
+              <span className="sr-only">{item.name}</span>
+            </Link>
+          ))}
+
+          {/* Admin Photo */}
+          <div className="group flex items-center justify-center p-2 rounded-full hover:bg-gray-50 transition-colors duration-200">
+            <Image
+              src="/admin-photo.jpg"
+              width={24}
+              height={24}
+              alt="Admin Photo"
+              className="rounded-full object-cover h-6 w-6"
+            />
+          </div>
         </nav>
       </div>
     </div>

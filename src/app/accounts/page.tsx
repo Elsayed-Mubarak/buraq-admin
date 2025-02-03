@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import Layout from '@/components/layout/Layout';
 import Table from '@/components/common/Table';
 import { accountService, Account } from '@/services/accountService';
+import Header from '@/components/layout/Header';
 
 const CreateAccountModal = dynamic(
   () => import('@/components/accounts/CreateAccountModal'),
@@ -138,6 +139,7 @@ function AccountsContent() {
 export default function AccountsPage() {
   return (
     <Layout>
+      <Header admin='ADMIN PORTAL'/>
       <AccountsContent />
     </Layout>
   );
