@@ -1,4 +1,4 @@
-// Dummy Data (you'll likely fetch this from an API)
+// Dummy Data 
 export const plans = [
   {
     name: "Free",

@@ -2,12 +2,13 @@
 import { useState } from "react";
 import { Plan } from "../types/Types";
 import clsx from "clsx";
-import { plans } from "../data/Plans";
+import { plans as initialPlans } from "../data/Plans"; // Import initial plans and rename
 import { PlanDetailsModal } from "../PlanDetailsModal/PlanDetailsModal";
 import { CreatePlanModal } from "../CreatePlanModal/CreatePlanModal";
 
 // Table component for plans
 export function PlanTable() {
+  const [plans, setPlans] = useState<Plan[]>([...initialPlans]); // Manage plans as state
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // State for Create Plan Modal
@@ -19,6 +20,22 @@ export function PlanTable() {
 
   const handleCreateClick = () => {
     setIsCreateModalOpen(true); // Open Create Plan Modal
+  };
+
+  //const handleCreatePlan = (newPlanData: Omit<Plan, "status">) => {
+  //  const newPlan = { ...newPlanData, status: "Inactive" } as Plan; // Ensure status is set and type is Plan
+  //  setPlans([...plans, newPlan]); // Update plans state with the new plan
+  //  setIsCreateModalOpen(false); // Close the create modal
+  //  console.log(plans);
+  //  console.log(newPlan);
+  //};
+  const handleCreatePlan = (newPlanData: Omit<Plan, "status">) => {
+    const newPlan = { ...newPlanData, status: "Inactive" } as Plan;
+    setPlans((currentPlans) => [...currentPlans, newPlan]); // Use functional update
+    setIsCreateModalOpen(false); // Close the create modal
+    setIsCreateModalOpen(false);
+    console.log(plans);
+    console.log(newPlan);
   };
 
   return (
@@ -132,6 +149,7 @@ export function PlanTable() {
         <CreatePlanModal
           isOpen={isCreateModalOpen}
           onClose={() => setIsCreateModalOpen(false)}
+          onCreatePlan={handleCreatePlan}
         />
       </div>
     </div>

@@ -18,4 +18,5 @@ export interface PlanDetailsModalProps {
 export interface CreatePlanModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onCreatePlan: (newPlan: Omit<Plan, "status">) => void;
 }

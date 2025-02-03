@@ -1,10 +1,14 @@
-'use clinet'
+"use client";
 import { PlanDetailsModalProps } from "../types/Types";
 import { Dialog, Transition } from "@headlessui/react";
-import { useState, Fragment } from "react";
+import { Fragment } from "react";
 
 // Modal component for plan details (Edit Modal)
-export function PlanDetailsModal({ isOpen, onClose, plan }: PlanDetailsModalProps) {
+export function PlanDetailsModal({
+  isOpen,
+  onClose,
+  plan,
+}: PlanDetailsModalProps) {
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>

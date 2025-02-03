@@ -22,11 +22,11 @@ export default function Colors() {
     accentDark: "#040ecc",
     textPrimary: "#092445",
     successPrimary: "#13be66",
-    successSecondary: "#13be6629",
+    successSecondary: "#13be66",
     failurePrimary: "#ff0000",
-    failureSecondary: "#ff000029",
+    failureSecondary: "#ff0000",
     warningPrimary: "#f1b000",
-    warningSecondary: "#f1b00029",
+    warningSecondary: "#f1b000",
   });
 
   const handleColorPickerChange = (
@@ -41,14 +41,21 @@ export default function Colors() {
     colorName: keyof ColorsState
   ) => {
     let hexCode = e.target.value;
+
     if (hexCode.startsWith("#")) {
-      hexCode = hexCode; // Keep '#' if already present
-    } else if (hexCode.length > 0) {
-      hexCode = "#" + hexCode; // Add '#' if missing and not empty
+      const hexValue = hexCode.substring(1); 
+      if (hexValue.length > 6) {
+        hexCode = "#" + hexValue.substring(0, 6); 
+      }
+    } else {
+      if (hexCode.length > 6) {
+        hexCode = "#" + hexCode.substring(0, 6); // Truncate to 6 digits and add '#'
+      } else if (hexCode.length > 0) {
+        hexCode = "#" + hexCode; 
+      }
     }
     setColors({ ...colors, [colorName]: hexCode });
   };
-
   // Transform the colors state into the required format
   const transformColorsForBackend = () => {
     return {
