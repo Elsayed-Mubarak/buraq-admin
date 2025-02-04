@@ -2,16 +2,18 @@
 import { useState } from "react";
 import { Plan } from "../types/Types";
 import clsx from "clsx";
-import { plans as initialPlans } from "../data/Plans"; // Import initial plans and rename
+import { plans as initialPlans } from "../data/Plans";
 import { PlanDetailsModal } from "../PlanDetailsModal/PlanDetailsModal";
 import { CreatePlanModal } from "../CreatePlanModal/CreatePlanModal";
+import SettingsSidebar from "@/app/settings/SettingsSidebar";
+import { settingsNavigation } from "@/app/settings/commonSettings/Common";
+import Layout from "@/components/layout/Layout";
 
-// Table component for plans
 export function PlanTable() {
-  const [plans, setPlans] = useState<Plan[]>([...initialPlans]); // Manage plans as state
+  const [plans, setPlans] = useState<Plan[]>([...initialPlans]);
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // State for Create Plan Modal
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const handleEditClick = (plan: Plan) => {
     setSelectedPlan(plan);
@@ -19,138 +21,135 @@ export function PlanTable() {
   };
 
   const handleCreateClick = () => {
-    setIsCreateModalOpen(true); // Open Create Plan Modal
+    setIsCreateModalOpen(true);
   };
 
-  //const handleCreatePlan = (newPlanData: Omit<Plan, "status">) => {
-  //  const newPlan = { ...newPlanData, status: "Inactive" } as Plan; // Ensure status is set and type is Plan
-  //  setPlans([...plans, newPlan]); // Update plans state with the new plan
-  //  setIsCreateModalOpen(false); // Close the create modal
-  //  console.log(plans);
-  //  console.log(newPlan);
-  //};
   const handleCreatePlan = (newPlanData: Omit<Plan, "status">) => {
     const newPlan = { ...newPlanData, status: "Inactive" } as Plan;
-    setPlans((currentPlans) => [...currentPlans, newPlan]); // Use functional update
-    setIsCreateModalOpen(false); // Close the create modal
+    setPlans((currentPlans) => [...currentPlans, newPlan]);
     setIsCreateModalOpen(false);
-    console.log(plans);
-    console.log(newPlan);
   };
 
   return (
-    <div>
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="sm:flex sm:items-center">
-          <div className="sm:flex-auto">
-            <h1 className="text-xl font-semibold text-gray-900">Plans</h1>
-            <p className="mt-2 text-sm text-gray-700">
-              A list of all the plans including their name, price, and status.
-            </p>
-          </div>
-          <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-              onClick={handleCreateClick} // Open Create Modal on click
-            >
-              Create Plan
-            </button>
-          </div>
-        </div>
-        <div className="mt-8 flex flex-col">
-          <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-              <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-300">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                      >
-                        Plan Name
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
-                        Price Monthly
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
-                        Price Yearly
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
-                        Status
-                      </th>
-                      <th
-                        scope="col"
-                        className="relative py-3.5 pl-3 pr-4 sm:pr-6"
-                      >
-                        <span className="sr-only">Edit</span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 bg-white">
-                    {plans.map((plan) => (
-                      <tr key={plan.name}>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                          {plan.name}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {plan.monthlyPrice}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {plan.yearlyPrice}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm">
-                          <span
-                            className={clsx(
-                              "px-2 inline-flex text-xs leading-5 font-semibold rounded-full",
-                              plan.status === "Active"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-gray-100 text-gray-800"
-                            )}
-                          >
-                            {plan.status}
-                          </span>
-                        </td>
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                          <button
-                            onClick={() => handleEditClick(plan)}
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            Edit<span className="sr-only">, {plan.name}</span>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+    <div className="m-4">
+      <div className="flex h-full">
+        <Layout>
+        <SettingsSidebar settingsNavigation={settingsNavigation} />
+        </Layout>
+        <div className="ml-4 flex-1">
+          <div className="px-4 sm:px-6 lg:px-8">
+            <div className="sm:flex sm:items-center">
+              <div className="sm:flex-auto">
+                <h1 className="text-xl font-semibold text-gray-900">Plans</h1>
+                <p className="mt-2 text-sm text-gray-700">
+                  A list of all the plans including their name, price, and
+                  status.
+                </p>
+              </div>
+              <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                <button
+                  type="button"
+                  className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+                  onClick={handleCreateClick}
+                >
+                  Create Plan
+                </button>
               </div>
             </div>
+            <div className="mt-8 flex flex-col">
+              <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                  <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                    <table className="min-w-full divide-y divide-gray-300">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th
+                            scope="col"
+                            className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                          >
+                            Plan Name
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                          >
+                            Price Monthly
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                          >
+                            Price Yearly
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                          >
+                            Status
+                          </th>
+                          <th
+                            scope="col"
+                            className="relative py-3.5 pl-3 pr-4 sm:pr-6"
+                          >
+                            <span className="sr-only">Edit</span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-200 bg-white">
+                        {plans.map((plan) => (
+                          <tr key={plan.name}>
+                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                              {plan.name}
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                              {plan.monthlyPrice}
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                              {plan.yearlyPrice}
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm">
+                              <span
+                                className={clsx(
+                                  "px-2 inline-flex text-xs leading-5 font-semibold rounded-full",
+                                  plan.status === "Active"
+                                    ? "bg-green-100 text-green-800"
+                                    : "bg-gray-100 text-gray-800"
+                                )}
+                              >
+                                {plan.status}
+                              </span>
+                            </td>
+                            <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                              <button
+                                onClick={() => handleEditClick(plan)}
+                                className="text-indigo-600 hover:text-indigo-900"
+                              >
+                                Edit
+                                <span className="sr-only">, {plan.name}</span>
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <PlanDetailsModal
+              isOpen={isEditModalOpen}
+              onClose={() => setIsEditModalOpen(false)}
+              plan={selectedPlan}
+            />
+
+            <CreatePlanModal
+              isOpen={isCreateModalOpen}
+              onClose={() => setIsCreateModalOpen(false)}
+              onCreatePlan={handleCreatePlan}
+            />
           </div>
         </div>
-
-        {/* Edit Modal for plan details */}
-        <PlanDetailsModal
-          isOpen={isEditModalOpen}
-          onClose={() => setIsEditModalOpen(false)}
-          plan={selectedPlan}
-        />
-
-        {/* Create Plan Modal */}
-        <CreatePlanModal
-          isOpen={isCreateModalOpen}
-          onClose={() => setIsCreateModalOpen(false)}
-          onCreatePlan={handleCreatePlan}
-        />
       </div>
     </div>
   );

@@ -2,6 +2,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+import SettingsSidebar from "../SettingsSidebar";
+import { settingsNavigation } from "../commonSettings/Common";
+import Layout from "@/components/layout/Layout";
 
 interface InputFieldProps {
   label: string;
@@ -86,32 +89,42 @@ function Pricing() {
   const plansHref = `${pathname}/plans`;
 
   return (
-    <div className=" rounded-lg p-6 max-w-2xl">
-      <h2 className="text-2xl font-bold text-gray-900">Pricing</h2>
-      <p className="text-gray-500 mb-4">
-        Configuration of pricing plans for your instance.
-      </p>
+    <div className="m-4">
+      <div className="flex h-full">
+        <Layout>
 
-      <div className="border-b border-gray-200">
-        <nav className="-mb-px flex space-x-8" aria-label="Tabs">
-          <Link href={pathname} legacyBehavior>
-            <a
-              className="border-indigo-500 text-indigo-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
-              aria-current="page"
-            >
-              Configuration
-            </a>
-          </Link>
-          <Link href={plansHref} legacyBehavior>
-            <a className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-              Plans
-            </a>
-          </Link>
-        </nav>
-      </div>
+        <SettingsSidebar settingsNavigation={settingsNavigation} />
+        </Layout>
+        <div className="ml-4 flex-1">
+          <div className="rounded-lg p-6 shadow-sm max-w-2xl border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900">Pricing</h2>
+            <p className="text-gray-500 mb-4">
+              Configuration of pricing plans for your instance.
+            </p>
 
-      <div className="mt-6">
-        <ConfigurationContent />
+            <div className="border-b border-gray-200">
+              <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+                <Link href={pathname} legacyBehavior>
+                  <a
+                    className="border-indigo-500 text-indigo-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                    aria-current="page"
+                  >
+                    Configuration
+                  </a>
+                </Link>
+                <Link href={plansHref} legacyBehavior>
+                  <a className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Plans
+                  </a>
+                </Link>
+              </nav>
+            </div>
+
+            <div className="mt-6">
+              <ConfigurationContent />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

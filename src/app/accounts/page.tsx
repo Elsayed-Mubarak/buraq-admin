@@ -35,7 +35,7 @@ function AccountsContent() {
       setLoading(true);
       setError(null);
       console.log('Fetching accounts...');
-      const data = await accountService.getAccounts();
+      const data = await accountService.getAccounts(); // first error 
       console.log('Fetched accounts:', data);
       setAccounts(data);
     } catch (err: any) {
