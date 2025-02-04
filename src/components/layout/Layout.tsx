@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Sidebar from './Sidebar';
+import React from "react";
+import Sidebar from "@/components/layout/Sidebar";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,13 +9,9 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen">
       <Sidebar />
-      <main className="pl-16 min-h-screen">
-        <div className="py-6">
-          {children}
-        </div>
-      </main>
+      <main className="pl-10 min-h-screen">{children}</main>
     </div>
   );
 }
