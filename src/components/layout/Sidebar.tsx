@@ -11,7 +11,7 @@ import { IoMdSettings } from "react-icons/io";
 const navigation = [
   { name: "Accounts", href: "/accounts", icon: GrUserSettings },
   { name: "Analytics", href: "/analytics", icon: BiBarChartSquare },
-  { name: "GridSystem", href: "/grid", icon: HiOutlineTemplate }, // Update href as needed
+  { name: "Template Manget", href: "/templates", icon: HiOutlineTemplate }, // Update href as needed
 ];
 
 const bottomNavigation = [
