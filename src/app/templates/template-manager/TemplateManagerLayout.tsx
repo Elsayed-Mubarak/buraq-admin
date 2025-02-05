@@ -3,12 +3,12 @@
 import React, { useState, useMemo, useRef } from "react";
 import Layout from "@/components/layout/Layout";
 
-import TemplateManagerHeader from "./template-manager/TemplateManagerHeader";
-import TemplateSearch from "./template-manager/TemplateSearch";
-import TemplateCount from "./template-manager/TemplateCount";
-import TemplateTable from "./template-manager/TemplateTable";
-import TemplateCreateModal from "./template-manager/TemplateCreateModal";
-import TemplateEditModal from "./template-manager/TemplateEditModal";
+import TemplateManagerHeader from "./TemplateManagerHeader";
+import TemplateSearch from "./TemplateSearch";
+import TemplateCount from "./TemplateCount";
+import TemplateTable from "./TemplateTable";
+import TemplateCreateModal from "./TemplateCreateModal";
+import TemplateEditModal from "./TemplateEditModal";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -121,34 +121,34 @@ export default function TemplateManagerLayout({
     e.preventDefault();
     const { image, ...restFormData } = formData;
     const templateData = { ...restFormData, image };
+
     if (selectedTemplateId) {
-      setTemplates(
-        templates.map((t) =>
-          t.id === selectedTemplateId
-            ? ({
-                ...restFormData,
-                id: selectedTemplateId,
-                imageUrl: formData.imageUrl || t.imageUrl,
-              } as TemplateFormData)
-            : t
-        )
+      // EDIT CASE
+      const updatedTemplates = templates.map((t) =>
+        t.id === selectedTemplateId
+          ? {
+              ...t, // Keep existing properties
+              ...restFormData, // Override with form data
+              imageUrl: formData.imageUrl || t.imageUrl,
+            }
+          : t
       );
-      // can be removed in the sprint
+      setTemplates(updatedTemplates);
+
       handleSimulateBackend({
         ...templateData,
         id: selectedTemplateId,
         action: "edit",
       });
     } else {
+      // CREATE CASE
       const newId = uuidv4();
-      setTemplates([
-        ...templates,
-        {
-          ...restFormData,
-          id: newId,
-          imageUrl: null,
-        } as TemplateFormData,
-      ]);
+      const newTemplate = {
+        ...restFormData,
+        id: newId,
+        imageUrl: null,
+      };
+      setTemplates([...templates, newTemplate]);
       handleSimulateBackend({ ...templateData, id: newId, action: "create" });
     }
 
@@ -224,10 +224,12 @@ export default function TemplateManagerLayout({
     );
   };
 
-  const enhancedFilteredData = filteredData.map((item) => ({
-    ...item,
-    actions: renderActions(item.id),
-  }));
+  const enhancedFilteredData = useMemo(() => {
+    return filteredData.map((item) => ({
+      ...item,
+      actions: renderActions(item.id),
+    }));
+  }, [filteredData]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
@@ -247,7 +249,7 @@ export default function TemplateManagerLayout({
       <div className="px-4 sm:px-6 lg:px-8 pt-8">
         {/* Use the new Header Component */}
         <TemplateManagerHeader
-          activeTab={activeTab||'web'}
+          activeTab={activeTab}
           onCreateTemplate={() => setIsCreateModalOpen(true)}
         />
 

@@ -3,7 +3,6 @@ import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CreatePlanModalProps } from "../types/Types";
 
-// Modal component for creating new plan
 export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
   return (
     <Transition.Root show={isOpen} as={Fragment}>

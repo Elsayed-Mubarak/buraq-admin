@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import SettingsSidebar from "../SettingsSidebar";
 import { settingsNavigation } from "../commonSettings/Common";
 import Layout from "@/components/layout/Layout";
+import Link from "next/link";
 
 function HelpCenterConfig() {
   const [config, setConfig] = useState({
@@ -48,9 +49,10 @@ function HelpCenterConfig() {
                 >
                   Config
                 </button>
-                <button className="border-transparent text-gray-500 hover:text-gray-700 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                <Link href={'help-center/articles'}
+                  className="border-transparent text-gray-500 hover:text-gray-700 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
                   Articles
-                </button>
+                </Link>
               </nav>
             </div>
 

@@ -68,7 +68,7 @@ export default function Table({ columns, data, onRowClick }: TableProps) {
               <th
                 key={column.key}
                 scope="col"
-                className="py-3 pl-4 pr-3 text-left text-sm font-medium text-gray-900"
+                className="py-3 pl-4 pr-3 text-left text-sm font-bold text-gray-900"
               >
                 {column.header}
               </th>
@@ -97,7 +97,7 @@ export default function Table({ columns, data, onRowClick }: TableProps) {
                 {columns.map((column) => (
                   <td
                     key={column.key}
-                    className={`whitespace-nowrap py-3 pl-4 pr-3 text-sm ${
+                    className={`whitespace-nowrap py-3 pl-4 pr-3 font-semibold text-sm ${
                       column.key === 'status' || column.key === '_id'
                         ? 'text-gray-900'
                         : 'text-gray-600'

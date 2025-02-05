@@ -1,9 +1,20 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import SettingsSidebar from "../SettingsSidebar";
 import { settingsNavigation } from "../commonSettings/Common";
 import Layout from "@/components/layout/Layout";
+
+// not understand this => for validate file and can send to backend
+function arrayBufferToBase64(buffer: ArrayBuffer) {
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
 
 export default function GeneralSettings() {
   const [generalData, setGeneralData] = useState({
@@ -12,6 +23,13 @@ export default function GeneralSettings() {
     logoWithoutWordmark: null as File | null,
     favicon: null as File | null,
   });
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const fullLogoInputRef = useRef<HTMLInputElement>(null);
+  const logoWithoutWordmarkInputRef = useRef<HTMLInputElement>(null);
+  const faviconInputRef = useRef<HTMLInputElement>(null);
 
   // Handle file selection
   const handleFileChange = (
@@ -32,6 +50,87 @@ export default function GeneralSettings() {
       ...generalData,
       [field]: null,
     });
+
+    // Clear the input value for the corresponding file input
+    switch (field) {
+      case "fullLogo":
+        if (fullLogoInputRef.current) {
+          fullLogoInputRef.current.value = "";
+        }
+        break;
+      case "logoWithoutWordmark":
+        if (logoWithoutWordmarkInputRef.current) {
+          logoWithoutWordmarkInputRef.current.value = "";
+        }
+        break;
+      case "favicon":
+        if (faviconInputRef.current) {
+          faviconInputRef.current.value = "";
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  // Save Date
+  const handleSaveDate = async () => {
+    setLoading(true);
+    setErrorMessage("");
+
+    try {
+      const formData = new FormData();
+      formData.append("productName", generalData.productName);
+
+      // Convert files to base64
+      if (generalData.fullLogo) {
+        const buffer = await generalData.fullLogo.arrayBuffer();
+        const base64 = arrayBufferToBase64(buffer);
+        formData.append("fullLogo", base64);
+        formData.append("fullLogoName", generalData.fullLogo.name);
+      }
+      if (generalData.logoWithoutWordmark) {
+        const buffer = await generalData.logoWithoutWordmark.arrayBuffer();
+        const base64 = arrayBufferToBase64(buffer);
+        formData.append("logoWithoutWordmark", base64);
+        formData.append(
+          "logoWithoutWordmarkName",
+          generalData.logoWithoutWordmark.name
+        );
+      }
+      if (generalData.favicon) {
+        const buffer = await generalData.favicon.arrayBuffer();
+        const base64 = arrayBufferToBase64(buffer);
+        formData.append("favicon", base64);
+        formData.append("faviconName", generalData.favicon.name);
+      }
+
+      const res = await fetch("/api", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.ok) {
+        console.log("General settings saved successfully!");
+      } else {
+        const errorData = await res.json(); //  specific error info from the backend
+        console.error(
+          "Failed to save general settings:",
+          res.status,
+          errorData
+        );
+        setErrorMessage(
+          `Failed to save.  Status: ${res.status}.  ${
+            errorData?.message || "Unknown error."
+          }`
+        );
+      }
+    } catch (error: any) {
+      console.error("Error saving general settings:", error);
+      setErrorMessage(`An unexpected error occurred: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -43,6 +142,17 @@ export default function GeneralSettings() {
         <div className="ml-4 flex-1">
           <div className="border-gray-200 rounded-lg shadow-sm max-w-xl px-4 py-5 sm:px-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">General</h2>
+
+            {errorMessage && (
+              <div
+                className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                role="alert"
+              >
+                <strong className="font-bold">Error!</strong>
+                <span className="block sm:inline">{errorMessage}</span>
+              </div>
+            )}
+
             <div className="space-y-6">
               {/* Product Name */}
               <div className="flex flex-col max-w-lg">
@@ -112,7 +222,7 @@ export default function GeneralSettings() {
                   ) : (
                     <input
                       type="file"
-                      accept="image/svg+xml" // Use MIME type for SVG files
+                      accept="image/svg+xml" 
                       onChange={(e) =>
                         handleFileChange(
                           "fullLogo",
@@ -120,6 +230,7 @@ export default function GeneralSettings() {
                         )
                       }
                       className="mt-1 max-w-lg"
+                      ref={fullLogoInputRef} // Add ref
                     />
                   )}
                 </div>
@@ -174,7 +285,7 @@ export default function GeneralSettings() {
                   ) : (
                     <input
                       type="file"
-                      accept="image/svg+xml" // Use MIME type for SVG files
+                      accept="image/svg+xml" 
                       onChange={(e) =>
                         handleFileChange(
                           "logoWithoutWordmark",
@@ -182,6 +293,7 @@ export default function GeneralSettings() {
                         )
                       }
                       className="mt-1 max-w-lg"
+                      ref={logoWithoutWordmarkInputRef} 
                     />
                   )}
                 </div>
@@ -226,11 +338,12 @@ export default function GeneralSettings() {
                   ) : (
                     <input
                       type="file"
-                      accept="image/svg+xml" // Use MIME type for SVG files
+                      accept="image/svg+xml"
                       onChange={(e) =>
                         handleFileChange("favicon", e.target.files?.[0] || null)
                       }
                       className="mt-1 max-w-lg"
+                      ref={faviconInputRef}
                     />
                   )}
                 </div>
@@ -239,8 +352,12 @@ export default function GeneralSettings() {
 
               {/* Save Button */}
               <div className="flex justify-start">
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                  Save
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={handleSaveDate}
+                  disabled={loading}
+                >
+                  {loading ? "Saving..." : "Save"}
                 </button>
               </div>
             </div>

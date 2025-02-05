@@ -38,12 +38,32 @@ export default function EventsSettings() {
     },
   });
 
+  //  save backend
+  const handleSaveDate = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    //try {
+    //  const res = await fetch("myapihere", {
+    //    method: "POST",
+    //    headers: {
+    //      "Content-Type": "application/json",
+    //    },
+    //    body: JSON.stringify(eventsData),
+    //  });
+    //  if (res.ok) {
+    //    console.log("Events settings saved successfully!");
+    //  } else {
+    //    console.error("Failed to save events settings:", res.status);
+    //  }
+    //} catch (e) {
+    //  console.error("Error saving events settings:", e);
+    //}
+  };
   return (
     <div className="m-4">
       <div className="flex h-full">
         <Layout>
           <SettingsSidebar settingsNavigation={settingsNavigation} />
-          </Layout>
+        </Layout>
         <div className="ml-4 flex-1">
           <div className="border-gray-200 rounded-lg shadow-sm max-w-xl px-4 py-5 sm:px-6">
             <h2 className="text-lg font-bold text-gray-900 mb-6">Events</h2>
@@ -154,7 +174,7 @@ export default function EventsSettings() {
               </div>
               {/* Save button for events section */}
               <div className="flex justify-start mt-6">
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button onClick={handleSaveDate } className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                   Save
                 </button>
               </div>

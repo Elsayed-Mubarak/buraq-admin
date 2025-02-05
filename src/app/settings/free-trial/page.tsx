@@ -44,7 +44,6 @@ const FreeTrial: React.FC<FreeTrialProps> = () => {
       });
 
       if (response.ok) {
-        alert("Free trial settings saved successfully!");
         console.log("Free trial settings saved:", freeTrialSettings);
       } else {
         console.error(
