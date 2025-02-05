@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import dynamic from 'next/dynamic';
 import Layout from '@/components/layout/Layout';
 import Table from '@/components/common/Table';
 import { accountService, Account } from '@/services/accountService';
 import Header from '@/components/layout/Header';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]/route';
 
 const CreateAccountModal = dynamic(
   () => import('@/components/accounts/CreateAccountModal'),
@@ -22,7 +24,8 @@ const columns = [
   { key: 'createdAt', header: 'Created (UTC)' },
 ];
 
-function AccountsContent() {
+async function  AccountsContent() {
+
   const router = useRouter();
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
