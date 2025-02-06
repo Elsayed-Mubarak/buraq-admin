@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import Reac from "react";
 import Modal from "@/components/common/Modal";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import CategoryDropdown from "./CategoryDropdown";
+import Image from "next/image";
 
 interface TemplateCreateModalProps {
   isOpen: boolean;
@@ -42,10 +43,11 @@ const TemplateCreateModal: React.FC<TemplateCreateModalProps> = ({
             <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
               <div className="text-center">
                 {formData.imageUrl ? (
-                  <img
+                  <Image
                     src={formData.imageUrl}
                     alt="Preview"
                     className="mx-auto h-24 w-24 object-cover rounded-full"
+                    loading="lazy"
                   />
                 ) : (
                   <PhotoIcon

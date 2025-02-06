@@ -193,7 +193,7 @@ export default function TemplateManagerLayout({
   const handleEdit = (id: string) => {
     const templateToEdit = templates.find((t) => t.id === id);
     if (templateToEdit) {
-      const { id: omittedId, ...formValues } = templateToEdit;
+      const { id, ...formValues } = templateToEdit;
       setFormData(formValues);
       setSelectedTemplateId(id);
       setIsEditModalOpen(true);

@@ -4,8 +4,6 @@ import Layout from "@/components/layout/Layout";
 import SettingsSidebar from "@/app/settings/SettingsSidebar";
 import { settingsNavigation } from "./commonSettings/Common";
 
-
-
 export default function SettingsPage() {
 
   return (

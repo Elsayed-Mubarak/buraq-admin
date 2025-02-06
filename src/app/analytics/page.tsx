@@ -12,6 +12,11 @@ import { activatedAccountsData } from "./DummyAnlyticsDate/AnlyticsDate";
 import { conversationsData } from "./DummyAnlyticsDate/AnlyticsDate";
 import { contactsData } from "./DummyAnlyticsDate/AnlyticsDate";
 import { outboundSendsData } from "./DummyAnlyticsDate/AnlyticsDate";
+import {
+  TableData,
+} from "./types/AnlyticsTypes";
+
+
 
 const AnalyticsPage = () => {
   const [startDate, setStartDate] = useState(new Date("02/02/2024"));
@@ -168,7 +173,8 @@ const AnalyticsPage = () => {
 
 interface TableProps {
   title: string;
-  data: any[];
+  //data: any[];
+  data: TableData[];
   dataKey1: string;
   dataKey2: string;
   description: string;
@@ -186,7 +192,7 @@ const TableWrapper: React.FC<TableProps> = ({
   header2,
 }) => {
   return (
-    <div className="flex-1 min-w-[300px] bg-white border border-gray-300 rounded-md shadow-sm p-4">
+    <div className="flex-1 overflow-auto min-w-[300px] bg-white border border-gray-300 rounded-md shadow-sm p-4">
       <h2 className="font-semibold mb-2">
         {title} <span className="text-gray-500 cursor-pointer">ⓘ</span>
       </h2>

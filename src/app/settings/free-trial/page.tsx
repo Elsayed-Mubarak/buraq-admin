@@ -4,7 +4,9 @@ import SettingsSidebar from "../SettingsSidebar";
 import { settingsNavigation } from "../commonSettings/Common";
 import Layout from "@/components/layout/Layout";
 
-interface FreeTrialProps {}
+interface FreeTrialProps {
+  [key: string]: unknown;
+}
 
 const FreeTrial: React.FC<FreeTrialProps> = () => {
   const [enableFreeTrial, setEnableFreeTrial] = useState<boolean>(true);

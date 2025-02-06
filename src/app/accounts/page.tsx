@@ -155,8 +155,8 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
 import Layout from "@/components/layout/Layout";
 import Table from "@/components/common/Table";
-import { accountService } from "@/services/accountService"; // Import accountService for real API only.
-import Header from "@/components/layout/Header";
+//import { accountService } from "@/services/accountService"; // Import accountService for real API only.
+//import Header from "@/components/layout/Header";
 import adminPortalData, {
   AdminPortalData,
 } from "@/components/DummyData/dummyUsers";
@@ -204,7 +204,8 @@ function AccountsContent() {
   // send id
   const handleRowClick = (row: AdminPortalData) => {
     // go to spacif id
-    router.push(`/accounts/${row.accountID}`);
+      //router.push(`/accounts?id=${row.accountID}`);
+      router.push(`/accounts/${row.accountID}`);
   };
 
   const handleCreateSuccess = () => {

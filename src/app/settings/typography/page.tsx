@@ -4,10 +4,10 @@ import SettingsSidebar from "../SettingsSidebar";
 import { settingsNavigation } from "../commonSettings/Common";
 import Layout from "@/components/layout/Layout";
 
-interface TypographyProps {
-  // Define props if needed
-}
 
+interface TypographyProps {
+  [key: string]: unknown;
+}
 interface TypographySettings {
   heading1: { fontStyle: string; size: number };
   heading2: { fontStyle: string; size: number };

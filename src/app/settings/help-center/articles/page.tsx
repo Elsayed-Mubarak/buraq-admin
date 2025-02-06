@@ -36,6 +36,11 @@ function Articles() {
                 <button
                   className="border-blue-500 text-blue-500 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm"
                   aria-current="page"
+                  onChange={() => {
+                    setArticlesData((prev) => ({
+                      ...prev
+                    }))
+                  }}
                 >
                   Articles
                 </button>

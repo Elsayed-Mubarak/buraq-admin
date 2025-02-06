@@ -25,7 +25,7 @@ export default function Sidebar() {
       <div className="flex-1 flex flex-col pt-4 pb-4 overflow-y-auto">
         {/* Logo with margin-bottom */}
         <div className="flex-shrink-0 flex items-center justify-center mb-8">
-          <img className="h-8 w-auto" src="/logo.png" alt="Buraq" />
+          <Image width={30} height={30} src="/logo.png" alt="Buraq" />
         </div>
 
         {/* Main Navigation Items */}
@@ -56,13 +56,13 @@ export default function Sidebar() {
           ))}
 
           {/* Admin Photo */}
-          <div className="group flex items-center justify-center p-2 rounded-full hover:bg-gray-50 transition-colors duration-200">
+          <div className="group flex items-center justify-center p-2 rounded-full ">
             <Image
               src="/admin-photo.jpg"
-              width={24}
-              height={24}
+              width={30}
+              height={30}
               alt="Admin Photo"
-              className="rounded-full object-cover h-6 w-6"
+              className="rounded-full object-cover h-8 w-8"
             />
           </div>
         </nav>

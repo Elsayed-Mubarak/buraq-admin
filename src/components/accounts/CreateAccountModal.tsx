@@ -184,8 +184,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import adminPortalData from '../DummyData/dummyUsers';
-import { accountService } from '@/services/accountService';
+//import adminPortalData from '../DummyData/dummyUsers';
+//import { accountService } from '@/services/accountService';
 
 interface CreateAccountModalProps {
   onClose: () => void;

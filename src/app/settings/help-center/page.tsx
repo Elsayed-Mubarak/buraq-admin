@@ -33,8 +33,7 @@ function HelpCenterConfig() {
     <div className="m-4">
       <div className="flex h-full">
         <Layout>
-
-        <SettingsSidebar settingsNavigation={settingsNavigation} />
+          <SettingsSidebar settingsNavigation={settingsNavigation} />
         </Layout>
         <div className="ml-4 flex-1">
           <div className=" rounded-lg p-6 shadow-sm max-w-2xl border-gray-200">
@@ -49,8 +48,10 @@ function HelpCenterConfig() {
                 >
                   Config
                 </button>
-                <Link href={'help-center/articles'}
-                  className="border-transparent text-gray-500 hover:text-gray-700 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                <Link
+                  href={"help-center/articles"}
+                  className="border-transparent text-gray-500 hover:text-gray-700 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm"
+                >
                   Articles
                 </Link>
               </nav>
@@ -192,7 +193,7 @@ function HelpCenterConfig() {
                     htmlFor="whats-new"
                     className="ml-2 block text-sm text-gray-900"
                   >
-                    What's new
+                    What&apos;s new
                   </label>
                 </div>
               </div>
