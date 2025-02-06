@@ -9,7 +9,7 @@ interface ModalProps {
   height?: string; // Optional height prop
   buttonTitle: string; // Button title (required)
   isCloseButton?: boolean; // Optional close button
-  onClick: () => void; // Click handler for the primary button
+  onClick: (e: React.FormEvent) => void;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -92,9 +92,10 @@ const Modal: React.FC<ModalProps> = ({
 
           <button
             type="submit"
+            onClick={onClick} // Pass the onClick handler from props here.
             className=" rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
           >
-            Create Template
+            {buttonTitle}
           </button>
         </div>
       </div>
