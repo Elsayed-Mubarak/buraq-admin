@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import Modal from "@/components/common/Modal";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import CategoryDropdown from "./CategoryDropdown";

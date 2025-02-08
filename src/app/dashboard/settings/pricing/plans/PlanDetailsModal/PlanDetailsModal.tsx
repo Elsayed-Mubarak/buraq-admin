@@ -1,31 +1,53 @@
 "use client";
-import { PlanDetailsModalProps } from "../types/Types";
+import {
+  PlanDetailsModalProps,
+  PlanState,
+  initialNewPlanState,
+} from "../types/Types";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
+import TransitionChild from "./TransitionRoot/TransitionChild";
 
-// Modal component for plan details (Edit Modal)
 export function PlanDetailsModal({
   isOpen,
   onClose,
   plan,
+  onSave,
 }: PlanDetailsModalProps) {
+  // states
+  const [editedPlan, setEditedPlan] = useState<PlanState>(initialNewPlanState);
+
+  // Initialize state when plan changes
+  useEffect(() => {
+    if (plan) {
+      setEditedPlan(plan);
+    }
+  }, [plan]);
+
+  // Handle checkbox changes
+  //const handleCheckBox = (field: keyof PlanState) => {
+  //  setEditedPlan((prevPlan) => ({
+  //    ...prevPlan,
+  //    [field]: !prevPlan[field],
+  //  }));
+  //};
+
+  // Handle save
+  //const handleSave = () => {
+  //  onSave(editedPlan);
+  //  onClose();
+  //};
+
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-        </Transition.Child>
-
-        <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <TransitionChild />
+        <div className="fixed inset-0 z-10 overflow-y-hidden">
+          {" "}
+          {/* Changed overflow-y-auto to overflow-y-hidden */}
+          <div className="flex min-h-full justify-center p-4 text-center sm:p-0">
+            {" "}
+            {/* Removed items-end and sm:items-center */}
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -35,7 +57,9 @@ export function PlanDetailsModal({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6 overflow-y-auto max-h-[90vh]">
+                {" "}
+                {/* Added overflow-y-auto and max-h-[90vh] to Dialog.Panel */}
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                     <Dialog.Title

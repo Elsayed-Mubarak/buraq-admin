@@ -2,11 +2,16 @@ import { getToken } from "next-auth/jwt";
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
+
+
+
 export default withAuth(
   async function middleware(request) {
+
+  
     const  pathname  = request.nextUrl.pathname;
     const isAuth = await getToken({req : request})
-    const protectedRoute = ["/settings", "/accounts"]
+    const protectedRoute = ["/dashboard"]
     const isProtectedRote = protectedRoute.some((route)=> pathname.startsWith(route))
     const isAuthRoute = '/'
 
@@ -31,4 +36,3 @@ export default withAuth(
 export const config = {
   matcher: [ "/dashboard/:path*"], // Apply to settings routes
 };
-

@@ -1,9 +1,62 @@
 "use client";
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { CreatePlanModalProps } from "../types/Types";
+import { CreatePlanModalProps, PlanState,initialNewPlanState } from "../types/Types";
 
-export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
+// Modal component for creating new plan
+export function CreatePlanModal({
+  isOpen,
+  onClose,
+  onCreatePlan,
+}: CreatePlanModalProps) {
+
+  // State 
+  const [newPlan, setNewPlan] = useState<PlanState>(initialNewPlanState);
+
+  const handleCreatePlan = async () => {
+    const newAddedPlan: PlanState = {
+      ...newPlan,
+      name: newPlan.planName,
+      monthlyPrice: newPlan.monthlyPrice,
+      yearlyPrice: newPlan.yearlyPrice,
+      bots: newPlan.botLimitChecked ? parseInt(newPlan.botLimit, 10) || 0 : 0,
+      conversations: newPlan.conversationsChecked ? newPlan.conversations : 0,
+      users: newPlan.usersChecked ? parseInt(newPlan.maxUsers, 10) || 0 : 0,
+      toSendPrice: newPlan.toSendPrice || 0,
+      toReceivePrice: newPlan.toReceivePrice || 0,
+      status: newPlan.status,
+      maxOutboundMessages: newPlan.maxOutboundMessages,
+      maxOutboundContacts: newPlan.maxOutboundContacts,
+      aiStudioKnowledgeBases: newPlan.aiStudioKnowledgeBases,
+      dataSources: newPlan.dataSources,
+      // i should add other fields
+    };
+
+    onCreatePlan(newAddedPlan);
+    onClose();
+  };
+
+
+  // i avoided typescript error so is 
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, type } = e.target;
+    if (type === "checkbox") {
+      const { checked } = e.target as HTMLInputElement;
+      setNewPlan((prevPlan) => ({
+        ...prevPlan,
+        [name]: checked,
+      }));
+    } else {
+      const { value } = e.target;
+      setNewPlan((prevPlan) => ({
+        ...prevPlan,
+        [name]: value,
+      }));
+    }
+  };
+
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -19,8 +72,12 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div className="fixed inset-0 z-10 overflow-y-hidden">
+          {" "}
+          {/* Changed overflow-y-auto to overflow-y-hidden */}
+          <div className="flex min-h-full justify-center p-4 text-center sm:p-0">
+            {" "}
+            {/* Removed items-end and sm:items-center */}
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -30,7 +87,9 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6 overflow-y-auto max-h-[90vh]">
+                {" "}
+                {/* Added overflow-y-auto and max-h-[90vh] to Dialog.Panel */}
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                     <Dialog.Title
@@ -49,8 +108,10 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             Plan Name
                           </label>
                           <input
+                            value={newPlan.planName}
+                            onChange={handleInputChange}
+                            name="planName"
                             type="text"
-                            name="plan-name"
                             id="plan-name"
                             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                             placeholder="Enter plan name"
@@ -63,8 +124,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="botLimitChecked"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.botLimitChecked}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Bot Limit
@@ -72,17 +136,23 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                               </label>
                               <input
                                 type="number"
-                                name="bot-limit"
+                                name="botLimit"
                                 id="bot-limit"
                                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-right"
                                 placeholder="Max Bots Limit"
+                                value={newPlan.botLimit}
+                                onChange={handleInputChange}
+                                disabled={!newPlan.botLimitChecked}
                               />
                             </div>
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="conversationsChecked"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.conversationsChecked}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Conversations
@@ -94,13 +164,19 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                                 id="conversations"
                                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-right"
                                 placeholder="Conversation Balance"
+                                value={newPlan.conversations}
+                                onChange={handleInputChange}
+                                disabled={!newPlan.conversationsChecked}
                               />
                             </div>
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="extraChatChecked"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.extraChatChecked}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Extra Chat
@@ -110,8 +186,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="usersChecked"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.usersChecked}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Users
@@ -119,10 +198,13 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                               </label>
                               <input
                                 type="number"
-                                name="max-users"
+                                name="maxUsers"
                                 id="max-users"
                                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-right"
                                 placeholder="Max Users"
+                                value={newPlan.maxUsers}
+                                onChange={handleInputChange}
+                                disabled={!newPlan.usersChecked}
                               />
                             </div>
                           </div>
@@ -141,8 +223,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                               <input
                                 type="number"
                                 id="to-send-price-create"
+                                name="toSendPrice"
                                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-right"
                                 placeholder="0.0001"
+                                value={newPlan.toSendPrice}
+                                onChange={handleInputChange}
                               />
                             </div>
                             <div>
@@ -156,8 +241,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                               <input
                                 type="number"
                                 id="to-receive-price-create"
+                                name="toReceivePrice"
                                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-right"
                                 placeholder="0.0001"
+                                value={newPlan.toReceivePrice}
+                                onChange={handleInputChange}
                               />
                             </div>
                           </div>
@@ -169,8 +257,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="airtable"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.airtable}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Airtable
@@ -180,8 +271,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="calendly"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.calendly}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Calendly
@@ -191,8 +285,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="googleDialogflow"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.googleDialogflow}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Google Dialogflow
@@ -202,8 +299,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="dynamicData"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.dynamicData}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Dynamic Data
@@ -213,8 +313,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="freshdesk"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.freshdesk}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Freshdesk
@@ -224,8 +327,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="googleAnalytics"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.googleAnalytics}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Google Analytics
@@ -235,8 +341,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="googleCalendar"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.googleCalendar}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Google Calendar
@@ -246,8 +355,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="googleSheets"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.googleSheets}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Google Sheets
@@ -257,8 +369,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="hubSpot"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.hubSpot}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   HubSpot
@@ -268,8 +383,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="humanHandover"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.humanHandover}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Human Handover
@@ -279,8 +397,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="slack"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.slack}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Slack
@@ -290,8 +411,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="httpRequest"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.httpRequest}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   HTTP request (Streaming)
@@ -301,8 +425,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="webhook"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.webhook}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Webhook
@@ -312,8 +439,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="whatsappCatalog"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.whatsappCatalog}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Whatsapp catalog
@@ -323,8 +453,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="zapier"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.zapier}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Zapier
@@ -334,8 +467,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="zohoCRM"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.zohoCRM}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Zoho CRM
@@ -345,8 +481,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="codeblock"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.codeblock}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Codeblock
@@ -362,8 +501,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="customCSS"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.customCSS}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Custom CSS
@@ -373,8 +515,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="fireJavascripts"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.fireJavascripts}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Fire Javascripts
@@ -384,8 +529,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="removeBranding"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.removeBranding}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Remove Branding
@@ -398,8 +546,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                               </label>
                               <div className="mt-1 flex items-center">
                                 <input
+                                  name="retainButtonList"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.retainButtonList}
+                                  onChange={handleInputChange}
                                 />
                                 <select className="ml-2 block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                   <option>Clickable</option>
@@ -415,8 +566,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="anonymizeFacebookVisitor"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.anonymizeFacebookVisitor}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Anonymize Facebook Visitor
@@ -426,8 +580,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="auditLogs"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.auditLogs}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Audit logs
@@ -437,8 +594,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="dataInjection"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.dataInjection}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Data Injection
@@ -448,8 +608,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="disableDomainRestriction"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.disableDomainRestriction}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Disable Domain Restriction
@@ -459,8 +622,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="enrichIPInformation"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.enrichIPInformation}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Enrich IP Information
@@ -470,8 +636,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="events"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.events}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Events
@@ -494,8 +663,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                                   <input
                                     type="number"
                                     id="max-outbound-messages-create"
+                                    name="maxOutboundMessages"
                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-right"
                                     placeholder="0"
+                                    value={newPlan.maxOutboundMessages}
+                                    onChange={handleInputChange}
                                   />
                                 </div>
                                 <div>
@@ -508,8 +680,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                                   <input
                                     type="number"
                                     id="max-outbound-contacts-create"
+                                    name="maxOutboundContacts"
                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-right"
                                     placeholder="0"
+                                    value={newPlan.maxOutboundContacts}
+                                    onChange={handleInputChange}
                                   />
                                 </div>
                               </div>
@@ -523,8 +698,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="customIntegrationOutbound"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.customIntegrationOutbound}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   outbound
@@ -540,8 +718,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="emailChannel"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.emailChannel}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Email
@@ -551,8 +732,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="facebookChannel"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.facebookChannel}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Facebook
@@ -562,8 +746,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="instagramChannel"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.instagramChannel}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Instagram
@@ -573,8 +760,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="smsChannel"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.smsChannel}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   SMS
@@ -584,8 +774,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="webChannel"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.webChannel}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Web
@@ -595,8 +788,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="whatsAppChannel"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.whatsAppChannel}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   WhatsApp
@@ -612,8 +808,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="customAnswerAI"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.customAnswerAI}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Custom Answer
@@ -623,8 +822,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="functionCallAI"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.functionCallAI}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Function Call
@@ -634,8 +836,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="generateAnswerAI"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.generateAnswerAI}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Generate Answer
@@ -645,8 +850,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="rewriteAnswerAI"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.rewriteAnswerAI}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Rewrite Answer
@@ -663,7 +871,10 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                               </label>
                               <select
                                 id="ai-model-create"
+                                name="aiModel"
                                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                value={newPlan.aiModel}
+                                onChange={handleInputChange}
                               >
                                 <option>gpt-4o</option>
                               </select>
@@ -678,8 +889,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                               <input
                                 type="number"
                                 id="ai-studio-knowledge-create"
+                                name="aiStudioKnowledgeBases"
                                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-right"
                                 placeholder="0"
+                                value={newPlan.aiStudioKnowledgeBases}
+                                onChange={handleInputChange}
                               />
                             </div>
                             <div className="col-span-2">
@@ -691,7 +905,10 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                               </label>
                               <select
                                 id="ai-models-create"
+                                name="aiModels"
                                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                value={newPlan.aiModels}
+                                onChange={handleInputChange}
                               >
                                 <option>gpt-3.5-turbo-1106</option>
                               </select>
@@ -706,16 +923,22 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                               <input
                                 type="number"
                                 id="data-sources-create"
+                                name="dataSources"
                                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-right"
                                 placeholder="0"
+                                value={newPlan.dataSources}
+                                onChange={handleInputChange}
                               />
                             </div>
 
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="reTrainAIModel"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.reTrainAIModel}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   ReTrain AI Model
@@ -725,8 +948,11 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                             <div>
                               <label className="inline-flex items-center">
                                 <input
+                                  name="sourceCitation"
                                   type="checkbox"
                                   className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                  checked={newPlan.sourceCitation}
+                                  onChange={handleInputChange}
                                 />
                                 <span className="ml-2 text-sm text-gray-900">
                                   Source Citation
@@ -743,9 +969,7 @@ export function CreatePlanModal({ isOpen, onClose }: CreatePlanModalProps) {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
-                    onClick={() => {
-                      onClose
-                    }} // Replace with actual create logic
+                    onClick={handleCreatePlan}
                   >
                     Create Plan
                   </button>

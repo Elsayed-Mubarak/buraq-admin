@@ -8,12 +8,17 @@ import { CreatePlanModal } from "../CreatePlanModal/CreatePlanModal";
 import SettingsSidebar from "@/app/settings/SettingsSidebar";
 import { settingsNavigation } from "@/app/settings/commonSettings/Common";
 import Layout from "@/components/layout/Layout";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function PlanTable() {
   const [plans, setPlans] = useState<Plan[]>([...initialPlans]);
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const pathname = usePathname();
+  const plansHref = `${pathname}`; 
+  const configurationHref = "/settings/pricing";
 
   const handleEditClick = (plan: Plan) => {
     setSelectedPlan(plan);
@@ -34,13 +39,15 @@ export function PlanTable() {
     <div className="m-4">
       <div className="flex h-full">
         <Layout>
-        <SettingsSidebar settingsNavigation={settingsNavigation} />
+          <SettingsSidebar settingsNavigation={settingsNavigation} />
         </Layout>
         <div className="ml-4 flex-1">
           <div className="px-4 sm:px-6 lg:px-8">
             <div className="sm:flex sm:items-center">
               <div className="sm:flex-auto">
-                <h1 className="text-xl font-semibold text-gray-900">Plans</h1>
+              
+                <h2 className="text-2xl mt-8 font-bold text-gray-900">Plans</h2>
+
                 <p className="mt-2 text-sm text-gray-700">
                   A list of all the plans including their name, price, and
                   status.
@@ -56,6 +63,39 @@ export function PlanTable() {
                 </button>
               </div>
             </div>
+
+            {/* Navigation Tabs */}
+            <div className="border-b border-gray-200">
+              <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+                <Link href={configurationHref} legacyBehavior>
+                  <a
+                    className={`${
+                      pathname === configurationHref
+                        ? "border-indigo-500 text-indigo-600"
+                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+                    aria-current={
+                      pathname === configurationHref ? "page" : undefined
+                    }
+                  >
+                    Configuration
+                  </a>
+                </Link>
+                <Link href={plansHref} legacyBehavior>
+                  <a
+                    className={`${
+                      pathname === plansHref
+                        ? "border-indigo-500 text-indigo-600"
+                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+                    aria-current={pathname === plansHref ? "page" : undefined}
+                  >
+                    Plans
+                  </a>
+                </Link>
+              </nav>
+            </div>
+
             <div className="mt-8 flex flex-col">
               <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">

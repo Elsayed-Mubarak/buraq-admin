@@ -1,108 +1,115 @@
 "use client";
 
+//import { useState} from "react";
 import { Tab } from "@headlessui/react";
 import Layout from "@/components/layout/Layout";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import React from "react";
-
+import adminPortalData from "@/components/DummyData/dummyUsers";
+import { usePathname } from "next/navigation";
+import Branding from "../branding/Branding";
+import Features from "../features/Features";
+import Bots from "../bots/Bots";
+import Users from "../users/Users";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+
 export default function AccountDetails() {
-  // Hardcoded dummy data for UI rendering
+  const params = usePathname();
+  //const [selectedTab, setSelectedTab] = useState(0);
+  //const lastSlashIndex = params.lastIndexOf("/");
+  const accountId = params.substring(10, params.length); // /accounts/328
+  console.log("accountId" + accountId);
+  const userInfo = adminPortalData.filter((user) => {
+    return user.accountID.toString() === accountId;
+  });
+
+
+  //Dummy
   const accountData = {
-    id: 328,
-    name: "Example Account",
-    status: "Active",
-    websiteUrl: "https://www.example.com",
-    codeSnippet: '<script src="https://example.com/widget.js" defer></script>',
-    users: 5,
+    id: userInfo[0].accountID,
+    name: userInfo[0].accountName,
+    status: userInfo[0].status,
+    websiteUrl: "",
+    codeSnippet: '<script src="" defer></script>',
+    users: 1,
     subscription: {
-      renewalDate: "2024-12-31",
-      conversations: "500/1000",
-      plan: "Pro",
-      outboundSends: 100,
+      renewalDate: "28-Jan-04",
+      conversations: "0/1,000",
+      plan: "Free",
+      outboundSends: 0,
     },
     channels: {
-      web: true,
+      web: false,
       whatsApp: false,
-      facebook: true,
+      facebook: false,
       sms: false,
     },
     owner: {
-      name: "John Doe",
-      phone: "+15551234567",
-      email: "john.doe@example.com",
+      name: userInfo[0]?.owner || "N/A",
+      phone: "+966593637494",
+      email: userInfo[0]?.email || "N/A",
     },
     activity: {
-      created: "2023-10-26T12:00:00Z",
-      lastDeployed: "2024-01-20T14:30:00Z",
+      created: userInfo[0]?.createdUTC || "N/A",
+      lastDeployed: "28-Jan-25 02:31 PM",
     },
   };
 
+  // next phase i will split this to section [branding features .....]
   return (
     <Layout>
       <div className="flex justify-between items-center mb-6 px-4 pt-4">
-        <div className="flex items-center" style={{ marginLeft: "50px" }}>
+        <div className="flex items-center" style={{marginLeft:"50px"}}>
+          {" "}
           <Link
             href="/accounts"
             className="inline-flex items-center text-gray-600 hover:text-gray-900 mr-4"
-            aria-label="Back to Accounts"
           >
             <ArrowLeftIcon className="h-5 w-5 mr-2" />
             Back
           </Link>
         </div>
         <div className="flex-grow flex justify-center">
+          {" "}
+          {/*Added flex-grow and justify-center */}
           <h1 className="text-2xl font-semibold text-gray-900">
-            {accountData.name} ({accountData.id})
+            {userInfo[0].accountName} ({userInfo[0].accountID})
           </h1>
         </div>
+
         <div className="space-x-4">
-          <button
-            className="inline-flex items-center px-4 py-2 border border-blue-600 text-sm font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50"
-            aria-label="Impersonate Account"
-            onClick={() => {}} // Empty onClick
-          >
+          <button className="inline-flex items-center px-4 py-2 border border-blue-600 text-sm font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50">
             Impersonate
           </button>
-          <button
-            className="inline-flex items-center px-4 py-2 border border-red-600 text-sm font-medium rounded-md text-red-600 bg-white hover:bg-red-50"
-            aria-label="Delete Account"
-            onClick={() => {}} // Empty onClick
-          >
+          <button className="inline-flex items-center px-4 py-2 border border-red-600 text-sm font-medium rounded-md text-red-600 bg-white hover:bg-red-50">
             Delete Account
           </button>
         </div>
       </div>
       <div className="px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto mt-8">
-
-
-
-        <Tab.Group>
-   
+        <Tab.Group >
           <Tab.List className="flex space-x-1 rounded-xl bg-white p-1">
-            {["Account", "Branding", "Features", "Bots", "Users"].map(
-              (tab) => (
-                <Tab
-                  key={tab}
-                  className={({ selected }) =>
-                    classNames(
-                      "w-full py-2.5 text-sm rounded-md font-medium leading-5 border border-gray-200 bg-white",
-                      "ring-white ring-opacity-60 ring-offset-2 focus:outline-none",
-                      selected
-                        ? "text-blue-600 border-b-2 border-blue-600"
-                        : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
-                    )
-                  }
-                >
-                  {tab}
-                </Tab>
-              )
-            )}
+            {["Account", "Branding", "Features", "Bots", "Users"].map((tab) => (
+              <Tab
+                key={tab}
+                className={({ selected }) =>
+                  classNames(
+                    "w-full py-2.5 text-sm rounded-md font-medium leading-5 border border-gray-200 bg-white",
+                    "ring-white ring-opacity-60 ring-offset-2 focus:outline-none",
+                    selected
+                      ? "text-blue-600 border-b-2 border-blue-600"
+                      : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                  )
+                }
+              >
+                {tab}
+              </Tab>
+            ))}
           </Tab.List>
           <Tab.Panels className="mt-6">
             <Tab.Panel>
@@ -193,7 +200,7 @@ export default function AccountDetails() {
                       <dt className="text-sm text-gray-500">
                         Outbound sends:{" "}
                         <span className="font-bold text-gray-900">
-                          {accountData.subscription.outboundSends}
+                          {/*{accountData}*/}0
                         </span>
                       </dt>
                     </div>
@@ -309,7 +316,18 @@ export default function AccountDetails() {
             </Tab.Panel>
 
             {/* Other tab panels will be implemented similarly */}
-          
+            <Tab.Panel>
+              <Branding />
+            </Tab.Panel>
+            <Tab.Panel>
+              <Features />
+            </Tab.Panel>
+            <Tab.Panel>
+              <Bots />
+            </Tab.Panel>
+            <Tab.Panel>
+              <Users />
+            </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
       </div>

@@ -1,4 +1,5 @@
-export interface TableData {
+
+export type TableData = {
   Month?: string;
   Plans?: string;
   Accounts?: number;
@@ -6,4 +7,5 @@ export interface TableData {
   Requests?: number;
   Contacts?: number;
   Campaigns?: number;
-}
+};
+

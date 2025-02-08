@@ -13,6 +13,12 @@ import { conversationsData } from "./DummyAnlyticsDate/AnlyticsDate";
 import { contactsData } from "./DummyAnlyticsDate/AnlyticsDate";
 import { outboundSendsData } from "./DummyAnlyticsDate/AnlyticsDate";
 import axios, { AxiosError } from "axios";
+import {
+  TableData,
+} from "./types/AnlyticsTypes";
+
+
+
 const AnalyticsPage = () => {
   const [startDate, setStartDate] = useState(new Date("02/02/2024"));
   const [endDate, setEndDate] = useState(new Date("01/31/2025"));
@@ -191,7 +197,8 @@ const AnalyticsPage = () => {
 
 interface TableProps {
   title: string;
-  data: any[];
+  //data: any[];
+  data: TableData[];
   dataKey1: string;
   dataKey2: string;
   description: string;
@@ -209,12 +216,12 @@ const TableWrapper: React.FC<TableProps> = ({
   header2,
 }) => {
   return (
-    <div className="flex-1 min-w-[300px] bg-white border border-gray-300 rounded-md shadow-sm p-4">
+    <div className="flex-1 h-[500px] overflow-auto min-w-[300px] bg-white border border-gray-300 rounded-md shadow-sm p-4">
       <h2 className="font-semibold mb-2">
         {title} <span className="text-gray-500 cursor-pointer">ⓘ</span>
       </h2>
       <p className="text-sm text-gray-600">{description}</p>
-      <table className="w-full mt-2 border-collapse">
+      <table className="w-full  mt-2 border-collapse">
         <thead>
           <tr className="bg-gray-100">
             <th className="text-left py-2 px-3 border border-gray-300">
@@ -225,7 +232,7 @@ const TableWrapper: React.FC<TableProps> = ({
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="overflow-y-auto">
           {data.map((item: any, index: number) => (
             <tr key={index}>
               <td className="py-2 px-3 border border-gray-300">
