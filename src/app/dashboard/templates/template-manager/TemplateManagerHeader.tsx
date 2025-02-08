@@ -31,7 +31,7 @@ const TemplateManagerHeader: React.FC<TemplateManagerHeaderProps> = ({
           <div key={tab} className="inline-block">
             {" "}
             <Link
-              href={`/templates/${tab.toLowerCase()}`}
+              href={`/dashboard/templates/${tab.toLowerCase()}`}
               className={`px-3 py-2 text-sm font-medium ${
                 activeTab.toLowerCase() === tab.toLowerCase()
                   ? "text-blue-600 underline underline-offset-4" 
