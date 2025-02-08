@@ -5,9 +5,9 @@ import { settingsNavigation } from "../commonSettings/Common";
 import Layout from "@/components/layout/Layout";
 
 
-interface TypographyProps {
-  [key: string]: unknown;
-}
+//interface TypographyProps {
+//  [key: string]: unknown;
+//}
 interface TypographySettings {
   heading1: { fontStyle: string; size: number };
   heading2: { fontStyle: string; size: number };
@@ -19,7 +19,7 @@ interface TypographySettings {
   body4: { fontStyle: string; size: number };
 }
 
-const Typography: React.FC<TypographyProps> = () => {
+const Typography: React.FC = () => {
   const [typographySettings, setTypographySettings] =
     useState<TypographySettings>({
       heading1: { fontStyle: "Barlow", size: 24 },

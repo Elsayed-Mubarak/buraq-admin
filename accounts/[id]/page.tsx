@@ -1,6 +1,5 @@
 "use client";
 
-//import { useState} from "react";
 import { Tab } from "@headlessui/react";
 import Layout from "@/components/layout/Layout";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
@@ -20,10 +19,7 @@ function classNames(...classes: string[]) {
 
 export default function AccountDetails() {
   const params = usePathname();
-  //const [selectedTab, setSelectedTab] = useState(0);
-  //const lastSlashIndex = params.lastIndexOf("/");
   const accountId = params.substring(10, params.length); // /accounts/328
-  console.log("accountId" + accountId);
   const userInfo = adminPortalData.filter((user) => {
     return user.accountID.toString() === accountId;
   });

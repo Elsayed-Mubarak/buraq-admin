@@ -7,15 +7,13 @@ import Layout from "@/components/layout/Layout";
 import {
   aimodalsDate,
   totalAccountsData,
-} from "./DummyAnlyticsDate/AnlyticsDate";
-import { activatedAccountsData } from "./DummyAnlyticsDate/AnlyticsDate";
-import { conversationsData } from "./DummyAnlyticsDate/AnlyticsDate";
-import { contactsData } from "./DummyAnlyticsDate/AnlyticsDate";
-import { outboundSendsData } from "./DummyAnlyticsDate/AnlyticsDate";
+} from "../../data/DummyAnlyticsDate/AnlyticsDate";
+import { activatedAccountsData } from "../../data/DummyAnlyticsDate/AnlyticsDate";
+import { conversationsData } from "../../data/DummyAnlyticsDate/AnlyticsDate";
+import { contactsData } from "../../data/DummyAnlyticsDate/AnlyticsDate";
+import { outboundSendsData } from "../../data/DummyAnlyticsDate/AnlyticsDate";
 import axios, { AxiosError } from "axios";
-import {
-  TableData,
-} from "./types/AnlyticsTypes";
+import { TableData } from "@/app/types/analytics-types/AnlyticsTypes";
 
 
 

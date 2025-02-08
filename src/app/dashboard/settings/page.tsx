@@ -1,8 +1,9 @@
 "use client";
 
 import Layout from "@/components/layout/Layout";
-import SettingsSidebar from "@/app/dashboard/settings/SettingsSidebar";
 import { settingsNavigation } from "./commonSettings/Common";
+import SettingsSidebar from "@/components/settings/SettingsSidebar";
+import { redirect } from "next/navigation";
 
 
 

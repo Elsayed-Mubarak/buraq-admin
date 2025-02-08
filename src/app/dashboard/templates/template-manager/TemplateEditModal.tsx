@@ -2,14 +2,18 @@ import React from "react";
 import Modal from "@/components/common/Modal";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import CategoryDropdown from "./CategoryDropdown";
+import { FormData } from "./templateTypes/TemplateTypes";
+import Image from "next/image";
+
+
 
 interface TemplateEditModalProps {
   isOpen: boolean;
   onClose: () => void;
-  formData: any; 
-  setFormData: (data: any) => void;
+  formData: Omit<FormData, "id">; // we need to solve this
+  setFormData: React.Dispatch<React.SetStateAction<Omit<FormData, "id">>>;
   handleSubmit: (e: React.FormEvent) => void;
-  fileInputRef: React.RefObject<HTMLInputElement | null>; 
+  fileInputRef: React.RefObject<HTMLInputElement | null>;
   categories: string[];
   setCategories: React.Dispatch<React.SetStateAction<string[]>>;
   handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -42,7 +46,7 @@ const TemplateEditModal: React.FC<TemplateEditModalProps> = ({
             <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
               <div className="text-center">
                 {formData.imageUrl ? (
-                  <img
+                  <Image
                     src={formData.imageUrl}
                     alt="Preview"
                     className="mx-auto h-24 w-24 object-cover rounded-full"
@@ -110,7 +114,7 @@ const TemplateEditModal: React.FC<TemplateEditModalProps> = ({
 
           {/* Category */}
           <CategoryDropdown
-            formData={formData}
+            formData={{ ...formData, id: "temp-id" }}
             setFormData={setFormData}
             categories={categories}
             setCategories={setCategories}

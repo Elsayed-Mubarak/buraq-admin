@@ -44,8 +44,10 @@ export default function CreateAccountModal({ onClose, onSuccess }: CreateAccount
 
       onSuccess();
       onClose();
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to create account');
+    } catch (err: unknown) {
+      setError(
+        (err as Error).message || "Failed to create account"
+      );
     } finally {
       setLoading(false);
     }

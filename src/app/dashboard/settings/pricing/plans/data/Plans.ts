@@ -1,5 +1,7 @@
+import { Plan } from "../types/Types";
+
 // Dummy Data 
-export const plans = [
+export const plans:Plan[] = [
   {
     name: "Free",
     monthlyPrice: "$0",
@@ -66,7 +68,7 @@ export const plans = [
     status: "Active",
     users: "Unlimited",
     bots: "Unlimited",
-    conversations: "Unlimited",
+    conversations: 0,
     features: ["All features", "Custom solutions"],
   },
 ];

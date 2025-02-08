@@ -10,8 +10,19 @@ export interface CreatePlanModalProps {
 export interface PlanDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  plan: PlanState | null;
-  onSave: (updatedPlan: PlanState) => void; 
+  plan: Plan | null;
+  onSave?: (updatedPlan: PlanState) => void; 
+}
+
+export interface Plan {
+  name: string;
+  monthlyPrice: string;
+  yearlyPrice: string;
+  status: "Active" | "Inactive";
+  users?: number | string;
+  bots?: number | string;
+  conversations?: number;
+  features?: string[];
 }
 
 export const initialNewPlanState: PlanState = {

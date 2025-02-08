@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import SettingsSidebar from "../SettingsSidebar";
 import { settingsNavigation } from "../commonSettings/Common";
 import Layout from "@/components/layout/Layout";
 
@@ -48,9 +47,7 @@ export default function Defaults() {
       <div className="flex h-full">
         {" "}
         {/* Keep h-full here as well */}
-        <Layout>
-          <SettingsSidebar settingsNavigation={settingsNavigation} />
-        </Layout>
+       
         {/* Defaults Content */}
         <div className="ml-4 flex-1">
           {" "}

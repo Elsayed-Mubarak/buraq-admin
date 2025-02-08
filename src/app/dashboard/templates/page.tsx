@@ -9,18 +9,18 @@ import TemplateCount from "./template-manager/TemplateCount";
 import TemplateTable from "./template-manager/TemplateTable";
 import TemplateCreateModal from "./template-manager/TemplateCreateModal";
 import TemplateEditModal from "./template-manager/TemplateEditModal";
-
+import { FormData } from "./template-manager/templateTypes/TemplateTypes";
 import { v4 as uuidv4 } from "uuid";
 
-interface TemplateFormData {
-  id: string;
-  title: string;
-  botName: string;
-  category: string;
-  description: string;
-  image?: File | null;
-  imageUrl?: string | null;
-}
+//export interface TemplateFormData {
+//  id: string;
+//  title: string;
+//  botName: string;
+//  category: string;
+//  description: string;
+//  image?: File | null;
+//  imageUrl?: string | null;
+//}
 
 interface TemplateManagerLayoutProps {
   activeTab: string;
@@ -53,7 +53,7 @@ export default function TemplateManagerLayout({
 }: TemplateManagerLayoutProps) {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
-  const [formData, setFormData] = useState<Omit<TemplateFormData, "id">>({
+  const [formData, setFormData] = useState<Omit<FormData, "id">>({
     title: "",
     botName: "",
     category: "",
@@ -65,7 +65,7 @@ export default function TemplateManagerLayout({
     null
   );
   // Dummy Tempaltes to display i will be removed
-  const [templates, setTemplates] = useState<TemplateFormData[]>([
+  const [templates, setTemplates] = useState<FormData[]>([
     {
       id: uuidv4(), // we should replace it using josn file
       title: "Pizza Restaurant Chatbot",
@@ -129,7 +129,7 @@ export default function TemplateManagerLayout({
                 ...restFormData,
                 id: selectedTemplateId,
                 imageUrl: formData.imageUrl || t.imageUrl,
-              } as TemplateFormData)
+              } as FormData)
             : t
         )
       );
@@ -147,7 +147,7 @@ export default function TemplateManagerLayout({
           ...restFormData,
           id: newId,
           imageUrl: null,
-        } as TemplateFormData,
+        } as FormData,
       ]);
       handleSimulateBackend({ ...templateData, id: newId, action: "create" });
     }
@@ -169,7 +169,7 @@ export default function TemplateManagerLayout({
     setSelectedTemplateId(null);
   };
 
-  const handleSimulateBackend = (templateData: any) => {
+  const handleSimulateBackend = (templateData: unknown) => {
     console.log("Simulating Backend Send - Template Data:", templateData);
     // api send to backend here
   };
@@ -251,16 +251,12 @@ export default function TemplateManagerLayout({
           onCreateTemplate={() => setIsCreateModalOpen(true)}
         />
 
-        {/* Use the new Search Component */}
         <TemplateSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-        {/* Use the new Template Count Component */}
         <TemplateCount count={templateCount} />
 
-        {/* Use the new Table Component */}
         <TemplateTable columns={columns} data={enhancedFilteredData} />
 
-        {/* Use the new Create Modal Component */}
         <TemplateCreateModal
           isOpen={isCreateModalOpen}
           onClose={() => setIsCreateModalOpen(false)}

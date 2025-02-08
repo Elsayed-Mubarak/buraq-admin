@@ -2,9 +2,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import SettingsSidebar from "../SettingsSidebar";
 import { settingsNavigation } from "../commonSettings/Common";
 import Layout from "@/components/layout/Layout";
+import SettingsSidebar from "@/components/settings/SettingsSidebar";
 
 interface InputFieldProps {
   label: string;
