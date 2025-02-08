@@ -1,6 +1,6 @@
 import TemplateManagerLayout from "../page";
 import React from "react";
 
-export default function FacebookPage() {
+export default function Page() {
   return (<TemplateManagerLayout activeTab="Facebook" />);
 }
