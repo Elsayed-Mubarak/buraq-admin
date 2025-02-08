@@ -1,26 +1,26 @@
 "use client";
 import {
   PlanDetailsModalProps,
-  PlanState,
-  initialNewPlanState,
+  //PlanState,
+  //initialNewPlanState,
 } from "../types/Types";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 import TransitionChild from "./TransitionRoot/TransitionChild";
 
 export function PlanDetailsModal({
   isOpen,
   onClose,
   plan,
-  onSave,
+  //onSave,
 }: PlanDetailsModalProps) {
   // states
-  const [editedPlan, setEditedPlan] = useState<PlanState>(initialNewPlanState);
+  //const [editedPlan, setEditedPlan] = useState<PlanState>(initialNewPlanState);
 
   // Initialize state when plan changes
   useEffect(() => {
     if (plan) {
-      setEditedPlan(plan);
+      //setEditedPlan(plan);
     }
   }, [plan]);
 

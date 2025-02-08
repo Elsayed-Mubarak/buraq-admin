@@ -120,14 +120,19 @@ export default function GeneralSettings() {
           errorData
         );
         setErrorMessage(
-          `Failed to save.  Status: ${res.status}.  ${
+          `Failed to save. Status: ${res.status}.  ${
             errorData?.message || "Unknown error."
           }`
         );
       }
-    } catch (error: any) {
-      console.error("Error saving general settings:", error);
-      setErrorMessage(`An unexpected error occurred: ${error.message}`);
+    } catch (error: unknown) {
+      //console.error("Error saving general settings:", error);
+      setErrorMessage(
+        `An unexpected error occurred: ${(error as Error).message}`
+      );
+      //setErrorMessage(
+      //  `An unexpected error occurred while save data: `
+      //);
     } finally {
       setLoading(false);
     }

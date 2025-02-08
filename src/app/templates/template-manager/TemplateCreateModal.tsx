@@ -1,16 +1,18 @@
-import Reac from "react";
 import Modal from "@/components/common/Modal";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import CategoryDropdown from "./CategoryDropdown";
 import Image from "next/image";
+import { FormData } from "./templateTypes/TemplateTypes";
+
 
 interface TemplateCreateModalProps {
   isOpen: boolean;
   onClose: () => void;
-  formData: any; 
-  setFormData: (data: any) => void;
+  formData: Omit<FormData, "id">;
+  setFormData: React.Dispatch<React.SetStateAction<Omit<FormData, "id">>>;
+  //setFormData: (data: FormData) => void;
   handleSubmit: (e: React.FormEvent) => void;
-  fileInputRef: React.RefObject<HTMLInputElement | null>; 
+  fileInputRef: React.RefObject<HTMLInputElement | null>;
   categories: string[];
   setCategories: React.Dispatch<React.SetStateAction<string[]>>;
   handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -45,6 +47,8 @@ const TemplateCreateModal: React.FC<TemplateCreateModalProps> = ({
                 {formData.imageUrl ? (
                   <Image
                     src={formData.imageUrl}
+                    width={24 }
+                    height={24}
                     alt="Preview"
                     className="mx-auto h-24 w-24 object-cover rounded-full"
                     loading="lazy"
@@ -112,7 +116,7 @@ const TemplateCreateModal: React.FC<TemplateCreateModalProps> = ({
 
           {/* Category */}
           <CategoryDropdown
-            formData={formData}
+            formData={{ ...formData, id: "temp-id" }} // defult id should remove but i will think in next phase
             setFormData={setFormData}
             categories={categories}
             setCategories={setCategories}

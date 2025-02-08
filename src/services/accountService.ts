@@ -130,25 +130,26 @@
 //  whatsAppConfig: any[];
 //}
 
+
 // Export dummy functions that do nothing
-export const accountService = {
-    async getAccounts(): Promise<any[]> {
-        return Promise.resolve([]); 
-    },
+//export const accountService = {
+//    async getAccounts(): Promise<any[]> {
+//        return Promise.resolve([]); 
+//    },
 
-    async createAccount(accountData: any): Promise<any> {
-        return Promise.resolve({}); 
-    },
+//    async createAccount(accountData: any): Promise<any> {
+//        return Promise.resolve({}); 
+//    },
 
-    async getAccountById(id: string): Promise<any> {
-        return Promise.resolve({}); 
-    },
+//    async getAccountById(id: string): Promise<any> {
+//        return Promise.resolve({}); 
+//    },
 
-    async updateAccount(id: string, accountData: any): Promise<any> {
-        return Promise.resolve({}); 
-    },
+//    async updateAccount(id: string, accountData: any): Promise<any> {
+//        return Promise.resolve({}); 
+//    },
 
-    async deleteAccount(id: string): Promise<void> {
-        return Promise.resolve();
-    }
-};
+//    async deleteAccount(id: string): Promise<void> {
+//        return Promise.resolve();
+//    }
+//};

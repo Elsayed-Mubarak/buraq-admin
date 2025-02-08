@@ -1,15 +1,18 @@
 import React from "react";
-import Table from "@/components/common/Table";
+import { Column, FormData } from "./templateTypes/TemplateTypes";
+import TableManger from "@/components/common/TemplateManager";
 
 interface TemplateTableProps {
-  columns: any[]; 
-  data: any[]; 
+  columns: Column[];
+  data: FormData[]; 
 }
+
+
 
 const TemplateTable: React.FC<TemplateTableProps> = ({ columns, data }) => {
   return (
     <div className="mt-6 bg-white shadow rounded-lg">
-      <Table columns={columns} data={data} />
+      <TableManger columns={columns} data={data} />
     </div>
   );
 };

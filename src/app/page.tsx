@@ -1,5 +1,5 @@
 "use client";
-
+import { BsPersonSquare } from "react-icons/bs";
 import Layout from "@/components/layout/Layout";
 
 import {
@@ -11,6 +11,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+
+
 const data = [
   {
     month: "Jan 2024",
@@ -85,7 +87,13 @@ export default function Home() {
             >
               <dt>
                 <div className="absolute rounded-md bg-blue-500 p-3">
-                  <div className="h-6 w-6 text-white" aria-hidden="true" />
+                  <div className="h-6 w-6 text-white" aria-hidden="true">
+                    {stat.name === "Total accounts" || "Live accounts" ? (
+                      <BsPersonSquare />
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 </div>
                 <p className="ml-16 truncate text-sm font-medium text-gray-500">
                   {stat.name}

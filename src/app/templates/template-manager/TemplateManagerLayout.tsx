@@ -1,26 +1,15 @@
 "use client";
 
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useCallback } from "react";
 import Layout from "@/components/layout/Layout";
-
 import TemplateManagerHeader from "./TemplateManagerHeader";
 import TemplateSearch from "./TemplateSearch";
 import TemplateCount from "./TemplateCount";
 import TemplateTable from "./TemplateTable";
 import TemplateCreateModal from "./TemplateCreateModal";
 import TemplateEditModal from "./TemplateEditModal";
-
 import { v4 as uuidv4 } from "uuid";
-
-interface TemplateFormData {
-  id: string;
-  title: string;
-  botName: string;
-  category: string;
-  description: string;
-  image?: File | null;
-  imageUrl?: string | null;
-}
+import { FormData, TemplateData } from "./templateTypes/TemplateTypes";
 
 interface TemplateManagerLayoutProps {
   activeTab: string;
@@ -53,7 +42,7 @@ export default function TemplateManagerLayout({
 }: TemplateManagerLayoutProps) {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
-  const [formData, setFormData] = useState<Omit<TemplateFormData, "id">>({
+  const [formData, setFormData] = useState<Omit<FormData, "id">>({
     title: "",
     botName: "",
     category: "",
@@ -64,10 +53,9 @@ export default function TemplateManagerLayout({
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
     null
   );
-  // Dummy Tempaltes to display i will be removed
-  const [templates, setTemplates] = useState<TemplateFormData[]>([
+  const [templates, setTemplates] = useState<FormData[]>([
     {
-      id: uuidv4(), // we should replace it using josn file
+      id: uuidv4(),
       title: "Pizza Restaurant Chatbot",
       botName: "WEB - Pizza Restaurant Chatbot",
       category: "Hospitality",
@@ -127,8 +115,8 @@ export default function TemplateManagerLayout({
       const updatedTemplates = templates.map((t) =>
         t.id === selectedTemplateId
           ? {
-              ...t, // Keep existing properties
-              ...restFormData, // Override with form data
+              ...t,
+              ...restFormData,
               imageUrl: formData.imageUrl || t.imageUrl,
             }
           : t
@@ -169,9 +157,9 @@ export default function TemplateManagerLayout({
     setSelectedTemplateId(null);
   };
 
-  const handleSimulateBackend = (templateData: any) => {
+  const handleSimulateBackend = (templateData: Partial<TemplateData>) => {
     console.log("Simulating Backend Send - Template Data:", templateData);
-    // api send to backend here
+    // API send to backend here
   };
 
   const filteredData = useMemo(() => {
@@ -190,46 +178,52 @@ export default function TemplateManagerLayout({
 
   const templateCount = filteredData.length;
 
-  const handleEdit = (id: string) => {
-    const templateToEdit = templates.find((t) => t.id === id);
-    if (templateToEdit) {
-      const { id: omittedId, ...formValues } = templateToEdit;
-      setFormData(formValues);
-      setSelectedTemplateId(id);
-      setIsEditModalOpen(true);
-    }
-  };
+  const handleEdit = useCallback(
+    (id: string) => {
+      const templateToEdit = templates.find((t) => t.id === id);
+      if (templateToEdit) {
+        const { id, ...formValues } = templateToEdit;
+        setFormData(formValues);
+        setSelectedTemplateId(id);
+        setIsEditModalOpen(true);
+      }
+    },
+    [templates]
+  );
 
-  const handleRemove = (id: string) => {
-    setTemplates(templates.filter((t) => t.id !== id));
+  const handleRemove = useCallback((id: string) => {
+    setTemplates((prevTemplates) => prevTemplates.filter((t) => t.id !== id));
     handleSimulateBackend({ id, action: "delete" });
-  };
+  }, []);
 
-  const renderActions = (id: string) => {
-    return (
-      <div className="flex space-x-2">
-        <button
-          className="text-blue-600 hover:text-blue-800"
-          onClick={() => handleEdit(id)}
-        >
-          Edit
-        </button>
-        <button
-          className="text-red-600 hover:text-red-800"
-          onClick={() => handleRemove(id)}
-        >
-          Remove
-        </button>
-      </div>
-    );
-  };
+  const renderActions = useCallback(
+    (id: string) => {
+      return (
+        <div className="flex space-x-2">
+          <button
+            className="text-blue-600 hover:text-blue-800"
+            onClick={() => handleEdit(id)}
+          >
+            Edit
+          </button>
+          <button
+            className="text-red-600 hover:text-red-800"
+            onClick={() => handleRemove(id)}
+          >
+            Remove
+          </button>
+        </div>
+      );
+    },
+    [handleEdit, handleRemove]
+  );
 
   const enhancedFilteredData = useMemo(() => {
     return filteredData.map((item) => ({
       ...item,
       actions: renderActions(item.id),
     }));
-  }, [filteredData]);
+  }, [filteredData, renderActions]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
@@ -247,22 +241,13 @@ export default function TemplateManagerLayout({
   return (
     <Layout>
       <div className="px-4 sm:px-6 lg:px-8 pt-8">
-        {/* Use the new Header Component */}
         <TemplateManagerHeader
           activeTab={activeTab}
           onCreateTemplate={() => setIsCreateModalOpen(true)}
         />
-
-        {/* Use the new Search Component */}
         <TemplateSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-
-        {/* Use the new Template Count Component */}
         <TemplateCount count={templateCount} />
-
-        {/* Use the new Table Component */}
         <TemplateTable columns={columns} data={enhancedFilteredData} />
-
-        {/* Use the new Create Modal Component */}
         <TemplateCreateModal
           isOpen={isCreateModalOpen}
           onClose={() => setIsCreateModalOpen(false)}
@@ -274,8 +259,6 @@ export default function TemplateManagerLayout({
           setCategories={setCategories}
           handleImageChange={handleImageChange}
         />
-
-        {/* Use the new Edit Modal Component */}
         <TemplateEditModal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}

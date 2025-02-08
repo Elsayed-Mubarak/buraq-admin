@@ -4,10 +4,11 @@ import {
   PencilIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
+import { FormData } from "./templateTypes/TemplateTypes";
 
 interface CategoryDropdownProps {
-  formData: any;
-  setFormData: (data: any) => void;
+  formData: FormData;
+  setFormData: (data: FormData) => void;
   categories: string[];
   setCategories: React.Dispatch<React.SetStateAction<string[]>>;
 }

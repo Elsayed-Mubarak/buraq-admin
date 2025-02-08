@@ -181,6 +181,7 @@ export function PlanTable() {
               isOpen={isEditModalOpen}
               onClose={() => setIsEditModalOpen(false)}
               plan={selectedPlan}
+              //onSave={}
             />
 
             <CreatePlanModal

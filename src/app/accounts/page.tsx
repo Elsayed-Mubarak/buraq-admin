@@ -154,7 +154,7 @@ import { useRouter } from "next/navigation";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
 import Layout from "@/components/layout/Layout";
-import Table from "@/components/common/Table";
+import Table, { Column } from "@/components/common/Table";
 //import { accountService } from "@/services/accountService"; // Import accountService for real API only.
 //import Header from "@/components/layout/Header";
 import adminPortalData, {
@@ -166,7 +166,7 @@ const CreateAccountModal = dynamic(
   { ssr: false }
 );
 
-const columns = [
+const columns:Column[] = [
   { key: "accountID", header: "Account ID" },
   { key: "accountName", header: "Account Name" },
   { key: "owner", header: "Owner" },
@@ -189,7 +189,7 @@ function AccountsContent() {
 
       // Loading local dummy data instead
       setAccounts(adminPortalData);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error fetching data: ", error);
       setError("Failed to load accounts.");
     } finally {
@@ -203,8 +203,6 @@ function AccountsContent() {
 
   // send id
   const handleRowClick = (row: AdminPortalData) => {
-    // go to spacif id
-      //router.push(`/accounts?id=${row.accountID}`);
       router.push(`/accounts/${row.accountID}`);
   };
 

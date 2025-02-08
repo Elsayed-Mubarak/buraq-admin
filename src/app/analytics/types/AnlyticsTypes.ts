@@ -1,5 +1,6 @@
 
 export type TableData = {
+  [key: string]: string | number | undefined; 
   Month?: string;
   Plans?: string;
   Accounts?: number;
@@ -9,42 +10,42 @@ export type TableData = {
   Campaigns?: number;
 };
 
-//export interface TotalAccountsData {
-//  Plans: string;
-//  Accounts: number;
-//}
+export interface TableProps {
+  title: string;
+  data: TableData[];
+  dataKey1: keyof TableData; // Use keyof for type safety
+  dataKey2: keyof TableData; // Use keyof for type safety
+  description: string;
+  header1: string;
+  header2: string;
+}
 
-//export interface MonthlyAccountsData {
-//  Month: string;
-//  Accounts: number;
-//}
+export interface TotalAccountsData {
+  Plans: string;
+  Accounts: number;
+}
 
-//export interface ConversationsData {
-//  Month: string;
-//  Chats: number;
-//}
+export interface MonthlyAccountsData {
+  Month: string;
+  Accounts: number;
+}
 
-//export interface AIModalsData {
-//  Month: string;
-//  Requests: number;
-//}
+export interface ConversationsData {
+  Month: string;
+  Chats: number;
+}
 
-//export interface ContactsData {
-//  Month: string;
-//  Contacts: number;
-//}
+export interface AIModalsData {
+  Month: string;
+  Requests: number;
+}
 
-//export interface OutboundSendsData {
-//  Month: string;
-//  Campaigns: number;
-//}
-//export interface TableProps {
-//  title: string;
-//  data: TableData[] | null | undefined; // Allow for null/undefined data
-//  dataKey1: string;
-//  dataKey2: string;
-//  description: string;
-//  header1: string;
-//  header2: string;
-//  showChannel?: boolean;
-//}
+export interface ContactsData {
+  Month: string;
+  Contacts: number;
+}
+
+export interface OutboundSendsData {
+  Month: string;
+  Campaigns: number;
+}

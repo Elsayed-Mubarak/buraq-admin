@@ -1,4 +1,3 @@
-// AdminPortalData.ts
 
 interface AdminPortalData {
   accountID: number;
@@ -6,10 +5,10 @@ interface AdminPortalData {
   owner: string;
   status: string;
   createdUTC: string;
-  email?: string; // Optional email
-  phone?: string; // Optional phone number
-  websiteUrl?: string; // Optional website URL
-  codeSnippet?: string; // Optional code snippet
+  email?: string; 
+  phone?: string; 
+  websiteUrl?: string; 
+  codeSnippet?: string; 
 }
 
 const adminPortalData: AdminPortalData[] = [
@@ -19,10 +18,10 @@ const adminPortalData: AdminPortalData[] = [
     owner: "LAMA Abdullah",
     status: "Active",
     createdUTC: "28-Jan-25 02:30 PM",
-    email: "lama.abdullah@example.com", // Added email
-    phone: "+966593637494", // Added phone number
-    websiteUrl: "https://example.com/sile", // Added website URL
-    codeSnippet: '<script src="https://example.com/widget.js" defer></script>', // Added code snippet
+    email: "lama.abdullah@example.com", 
+    phone: "+966593637494", 
+    websiteUrl: "https://example.com/sile", 
+    codeSnippet: '<script src="https://example.com/widget.js" defer></script>',
   },
   {
     accountID: 330,
@@ -30,7 +29,7 @@ const adminPortalData: AdminPortalData[] = [
     owner: "مجمع محمد الجدعاني - حي الأجاويد",
     status: "Active",
     createdUTC: "28-Jan-25 11:24 AM",
-    email: "jeddah@example.com", // Added email
+    email: "jeddah@example.com", 
   },
   {
     accountID: 329,
@@ -38,7 +37,7 @@ const adminPortalData: AdminPortalData[] = [
     owner: "Naif Alharthi",
     status: "Active",
     createdUTC: "28-Jan-25 10:56 AM",
-    email: "naif@example.com", // Added email
+    email: "naif@example.com", 
   },
   {
     accountID: 328,
@@ -46,7 +45,7 @@ const adminPortalData: AdminPortalData[] = [
     owner: "صالح عادل",
     status: "Active",
     createdUTC: "28-Jan-25 02:48 AM",
-    email: "saleh@example.com", // Added email
+    email: "saleh@example.com", 
   },
   {
     accountID: 327,
@@ -54,7 +53,7 @@ const adminPortalData: AdminPortalData[] = [
     owner: "خالد الرشيدي",
     status: "Active",
     createdUTC: "28-Jan-25 12:56 AM",
-    email: "khaled@example.com", // Added email
+    email: "khaled@example.com", 
   },
   {
     accountID: 325,
@@ -62,7 +61,7 @@ const adminPortalData: AdminPortalData[] = [
     owner: "حطموك يا قلبي",
     status: "Active",
     createdUTC: "27-Jan-25 05:03 AM",
-    email: "madrasa@example.com", // Added email
+    email: "madrasa@example.com", 
   },
   {
     accountID: 324,
@@ -70,7 +69,7 @@ const adminPortalData: AdminPortalData[] = [
     owner: "Al-Drees Branch",
     status: "Active",
     createdUTC: "26-Jan-25 05:48 AM",
-    email: "sales@example.com", // Added email
+    email: "sales@example.com", 
   },
   {
     accountID: 323,
@@ -78,15 +77,15 @@ const adminPortalData: AdminPortalData[] = [
     owner: "نواف تمبكتي",
     status: "Active",
     createdUTC: "25-Jan-25 06:56 PM",
-    email: "nawaf@example.com", // Added email
+    email: "nawaf@example.com", 
   },
   {
     accountID: 322,
     accountName: "Bedon",
     owner: "Rakan Alshammri",
-    status: "Active",
+    status: "unActive",
     createdUTC: "24-Jan-25 10:36 PM",
-    email: "rakan@example.com", // Added email
+    email: "rakan@example.com", 
   },
   {
     accountID: 321,
@@ -94,7 +93,7 @@ const adminPortalData: AdminPortalData[] = [
     owner: "Mohamed Ahmed",
     status: "Active",
     createdUTC: "23-Jan-25 10:25 AM",
-    email: "mohamed@example.com", // Added email
+    email: "mohamed@example.com", 
   },
   {
     accountID: 320,
@@ -102,7 +101,7 @@ const adminPortalData: AdminPortalData[] = [
     owner: "Hero Company",
     status: "Active",
     createdUTC: "23-Jan-25 08:37 AM",
-    email: "hero@example.com", // Added email
+    email: "hero@example.com", 
   },
   {
     accountID: 319,
@@ -110,7 +109,7 @@ const adminPortalData: AdminPortalData[] = [
     owner: "رمزي المالكي",
     status: "Active",
     createdUTC: "23-Jan-25 03:02 AM",
-    email: "ramzi@example.com", // Added email
+    email: "ramzi@example.com", 
   },
   {
     accountID: 318,
@@ -118,23 +117,23 @@ const adminPortalData: AdminPortalData[] = [
     owner: "باسم عبده نعمان محمد",
     status: "Active",
     createdUTC: "22-Jan-25 10:42 PM",
-    email: "basim@example.com", // Added email
+    email: "basim@example.com", 
   },
   {
     accountID: 317,
     accountName: "steps daycare",
     owner: "ahad hs",
-    status: "Active",
+    status: "unActive",
     createdUTC: "22-Jan-25 09:09 AM",
-    email: "ahad@example.com", // Added email
+    email: "ahad@example.com", 
   },
   {
     accountID: 316,
     accountName: "تراحم الرياض",
     owner: "تراحم الرياض",
-    status: "un Active",
+    status: "unActive",
     createdUTC: "22-Jan-25 08:30 AM",
-    email: "trahm@example.com", // Added email
+    email: "trahm@example.com", 
   },
   {
     accountID: 315,
@@ -142,23 +141,23 @@ const adminPortalData: AdminPortalData[] = [
     owner: "IBN SINA COLLEGE HOSPITAL",
     status: "Active",
     createdUTC: "22-Jan-25 08:24 AM",
-    email: "sina@example.com", // Added email
+    email: "sina@example.com", 
   },
   {
     accountID: 314,
     accountName: "مؤسسة العربة الملونة للتجارة",
     owner: "صدام القاضي",
-    status: "Active",
+    status: "unActive",
     createdUTC: "22-Jan-25 12:50 AM",
-    email: "sadam@example.com", // Added email
+    email: "sadam@example.com", 
   },
   {
     accountID: 313,
     accountName: "خاص",
     owner: "إبراهيم الهازمي",
-    status: "Active",
+    status: "unActive",
     createdUTC: "21-Jan-25 07:31 PM",
-    email: "ibrahim@example.com", // Added email
+    email: "ibrahim@example.com", 
   },
 ];
 

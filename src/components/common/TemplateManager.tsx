@@ -1,57 +1,59 @@
+// Table.tsx (Updated)
 "use client";
 
 import React from "react";
-import { AdminPortalData } from "../DummyData/dummyUsers";
 
-export interface Column {
-  key: keyof AdminPortalData;
+export interface Column<T> {
+  key: keyof T | string; 
   header: string;
+  render?: (item: T) => React.ReactNode; 
 }
 
-interface TableProps {
-  columns: Column[];
-  data: AdminPortalData[];
-  onRowClick?: (row: AdminPortalData) => void;
+export interface TableProps<T> {
+  columns: Column<T>[];
+  data: T[];
+  onRowClick?: (row: T) => void;
 }
 
-export default function Table({ columns, data, onRowClick }: TableProps) {
+export default function TableManger<T extends Record<string,any>>({
+  columns,
+  data,
+  onRowClick,
+}: TableProps<T>) {
   const getCellValue = (
-    row: AdminPortalData,
-    key: keyof AdminPortalData
-  ): string => {
+    row: T,
+    key: keyof T | string
+  ): string | React.ReactNode => {
     try {
-      const value = row[key];
+      if (typeof key === "string" && key.includes(".")) {
+        const keys = key.split(".");
+        let value = row; // removed any
+        for (const k of keys) {
+          value = value[k];
+          if (value === undefined || value === null) return ""; 
+        }
+        return value?.toString() || "";
+      }
+
+      const value = row[key as keyof T]; 
       return value?.toString() || "";
     } catch (error) {
-      console.error(`Error getting cell value for key ${key}:`, error);
+      console.error(`Error getting cell value for key ${String(key)}:`, error);
       return "";
     }
   };
 
-  const formatDate = (dateString: string) => {
-    try {
-      if (!dateString) return "";
-      const date = new Date(dateString);
-      return date.toLocaleString("en-US", {
-        day: "2-digit",
-        month: "short",
-        year: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      });
-    } catch (error) {
-      console.error("Error formatting date:", error);
-      return dateString;
+  const renderCell = (row: T, column: Column<T>) => {
+    if (column.render) {
+      return column.render(row); 
     }
-  };
 
-  const renderCell = (row: AdminPortalData, column: Column) => {
     const value = getCellValue(row, column.key);
-    if (column.key === "createdUTC") {
-      return formatDate(value);
+
+    if (column.key === "createdUTC" && typeof value === "string") {
+      return value;
     }
-    if (column.key === "status") {
+    if (column.key === "status" && typeof value === "string") {
       return (
         <span
           className={`capitalize ${
@@ -72,7 +74,7 @@ export default function Table({ columns, data, onRowClick }: TableProps) {
           <tr className="border-b border-gray-200">
             {columns.map((column) => (
               <th
-                key={column.key}
+                key={String(column.key)} 
                 scope="col"
                 className="py-3 pl-4 pr-3 text-left text-sm font-bold text-gray-900"
               >
@@ -94,7 +96,7 @@ export default function Table({ columns, data, onRowClick }: TableProps) {
           ) : (
             data.map((row, rowIdx) => (
               <tr
-                key={row.accountID || rowIdx}
+                key={row.id || rowIdx} 
                 onClick={() => onRowClick?.(row)}
                 className={`${
                   onRowClick ? "cursor-pointer hover:bg-gray-50" : ""
@@ -102,12 +104,8 @@ export default function Table({ columns, data, onRowClick }: TableProps) {
               >
                 {columns.map((column) => (
                   <td
-                    key={column.key}
-                    className={`whitespace-nowrap py-3 pl-4 pr-3 font-semibold text-sm ${
-                      column.key === "status" || column.key === "accountID"
-                        ? "text-gray-900"
-                        : "text-gray-600"
-                    }`}
+                    key={String(column.key)} 
+                    className={`whitespace-nowrap py-3 pl-4 pr-3 font-semibold text-sm text-gray-600`}
                   >
                     {renderCell(row, column)}
                   </td>
