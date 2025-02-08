@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState, useRef } from "react";
-import SettingsSidebar from "../SettingsSidebar";
+import SettingsSidebar from "@/components/settings/SettingsSidebar";
 import { settingsNavigation } from "../commonSettings/Common";
 import Layout from "@/components/layout/Layout";
 

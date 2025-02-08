@@ -9,7 +9,7 @@ import TemplateCount from "./template-manager/TemplateCount";
 import TemplateTable from "./template-manager/TemplateTable";
 import TemplateCreateModal from "./template-manager/TemplateCreateModal";
 import TemplateEditModal from "./template-manager/TemplateEditModal";
-import { FormData } from "./template-manager/templateTypes/TemplateTypes";
+import { FormData } from "@/app/types/TemplateTypes";
 import { v4 as uuidv4 } from "uuid";
 
 //export interface TemplateFormData {

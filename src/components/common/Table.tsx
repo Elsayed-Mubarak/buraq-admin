@@ -8,7 +8,7 @@ export interface Column {
   header: string;
 }
 
-interface TableProps {
+export interface TableProps {
   columns: Column[];
   data: AdminPortalData[];
   onRowClick?: (row: AdminPortalData) => void;

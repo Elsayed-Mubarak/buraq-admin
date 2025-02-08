@@ -10,12 +10,12 @@ const Page = () => {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  redirect("/dashboard"); // Redirect if session exists
   // Check session on component mount
   useEffect(() => {
     const checkSession = async () => {
       const session = await getSession();
       if (session) {
-        redirect("/dashboard"); // Redirect if session exists
       }
     };
     checkSession();

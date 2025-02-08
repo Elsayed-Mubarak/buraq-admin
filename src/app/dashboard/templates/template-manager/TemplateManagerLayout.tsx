@@ -9,7 +9,8 @@ import TemplateTable from "./TemplateTable";
 import TemplateCreateModal from "./TemplateCreateModal";
 import TemplateEditModal from "./TemplateEditModal";
 import { v4 as uuidv4 } from "uuid";
-import { FormData, TemplateData } from "./templateTypes/TemplateTypes";
+import { TemplateData } from "@/app/types/TemplateTypes";
+import { FormData } from "@/app/types/TemplateTypes";
 
 interface TemplateManagerLayoutProps {
   activeTab: string;

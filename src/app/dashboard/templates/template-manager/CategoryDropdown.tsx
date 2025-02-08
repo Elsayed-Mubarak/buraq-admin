@@ -4,7 +4,7 @@ import {
   PencilIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { FormData } from "./templateTypes/TemplateTypes";
+import { FormData } from "@/app/types/TemplateTypes";
 
 interface CategoryDropdownProps {
   formData: FormData;

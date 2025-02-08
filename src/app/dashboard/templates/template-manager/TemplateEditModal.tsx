@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "@/components/common/Modal";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import CategoryDropdown from "./CategoryDropdown";
-import { FormData } from "./templateTypes/TemplateTypes";
+import { FormData } from "@/app/types/TemplateTypes";
 import Image from "next/image";
 
 

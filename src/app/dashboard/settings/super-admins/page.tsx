@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import AddSuperAdminModal from "./AddSuperAdminModal";
-import SettingsSidebar from "../SettingsSidebar";
+import SettingsSidebar from "@/components/settings/SettingsSidebar";
 import { settingsNavigation } from "../commonSettings/Common";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import Layout from "@/components/layout/Layout";

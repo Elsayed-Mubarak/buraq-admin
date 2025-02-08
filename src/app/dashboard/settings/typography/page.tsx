@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import SettingsSidebar from "../SettingsSidebar";
+import SettingsSidebar from "@/components/settings/SettingsSidebar";
 import { settingsNavigation } from "../commonSettings/Common";
 import Layout from "@/components/layout/Layout";
 
