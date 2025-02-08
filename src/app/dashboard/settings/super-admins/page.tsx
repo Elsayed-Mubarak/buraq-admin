@@ -2,10 +2,8 @@
 import { useState, useEffect } from "react";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import AddSuperAdminModal from "./AddSuperAdminModal";
-import SettingsSidebar from "../SettingsSidebar";
 import { settingsNavigation } from "../commonSettings/Common";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import Layout from "@/components/layout/Layout";
 
 export default function SuperAdminsSettings() {
   const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
@@ -43,9 +41,7 @@ export default function SuperAdminsSettings() {
   return (
     <div className="m-4">
       <div className="flex h-full">
-        <Layout>
-          <SettingsSidebar settingsNavigation={settingsNavigation} />
-        </Layout>
+    
         <div className="ml-4 flex-1">
           <div className="border-gray-200 px-4 py-5 sm:px-6 rounded-md shadow-sm">
             <div className="flex justify-between items-center mb-6">

@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, ChangeEvent } from "react";
-import SettingsSidebar from "../SettingsSidebar";
 import { settingsNavigation } from "../commonSettings/Common";
 import Layout from "@/components/layout/Layout";
 
@@ -64,9 +63,7 @@ const FreeTrial: React.FC = () => {
   return (
     <div className="m-4">
       <div className="flex h-full">
-        <Layout>
-          <SettingsSidebar settingsNavigation={settingsNavigation} />
-        </Layout>
+
         <div className="ml-4 flex-1">
           <div className=" rounded-md p-6 border-gray-200 shadow-sm max-w-xl">
             <section className="mb-5">

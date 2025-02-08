@@ -1,6 +1,5 @@
 "use clinet";
 import React from "react";
-import SettingsSidebar from "../SettingsSidebar";
 import { settingsNavigation } from "../commonSettings/Common";
 import Layout from "@/components/layout/Layout";
 
@@ -27,10 +26,7 @@ function Illustration() {
   return (
     <div className="m-4">
       <div className="flex h-full">
-        <Layout>
 
-        <SettingsSidebar settingsNavigation={settingsNavigation} />
-        </Layout>
         <div className="ml-4 flex-1">
           <div className="border-gray-200 px-4 py-5 sm:px-6 rounded-md shadow-sm max-w-2xl">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">

@@ -1,13 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import SettingsSidebar from "../SettingsSidebar";
-import { settingsNavigation } from "../commonSettings/Common";
-import Layout from "@/components/layout/Layout";
 
 
-//interface TypographyProps {
-//  [key: string]: unknown;
-//}
+
 interface TypographySettings {
   heading1: { fontStyle: string; size: number };
   heading2: { fontStyle: string; size: number };
@@ -60,9 +55,7 @@ const Typography: React.FC = () => {
   return (
     <div className="m-4">
       <div className="flex h-full">
-        <Layout>
-          <SettingsSidebar settingsNavigation={settingsNavigation} />
-        </Layout>
+  
         <div className="ml-4 flex-1">
           <div className="border-gray-200 px-4 py-5 sm:px-6 rounded-md shadow-sm max-w-3xl">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">

@@ -3,8 +3,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { settingsNavigation } from "../commonSettings/Common";
-import Layout from "@/components/layout/Layout";
-import SettingsSidebar from "@/components/settings/SettingsSidebar";
 
 interface InputFieldProps {
   label: string;
@@ -91,10 +89,7 @@ function Pricing() {
   return (
     <div className="m-4">
       <div className="flex h-full">
-        <Layout>
-
-        <SettingsSidebar settingsNavigation={settingsNavigation} />
-        </Layout>
+   
         <div className="ml-4 flex-1">
           <div className="rounded-lg p-6 shadow-sm max-w-2xl border-gray-200">
             <h2 className="text-2xl font-bold text-gray-900">Pricing</h2>
