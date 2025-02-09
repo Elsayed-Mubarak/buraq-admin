@@ -1,11 +1,7 @@
 import { Dialog } from "@headlessui/react";
 import { useState } from "react";
+import { AddSuperAdminModalProps } from "@/app/types/super-admins/SuperAminds";
 
-interface AddSuperAdminModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onAddAdmin: (email: string, name:string) => void;
-}
 
 const AddSuperAdminModal: React.FC<AddSuperAdminModalProps> = ({
   isOpen,

@@ -1,8 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import SettingsSidebar from "@/components/settings/SettingsSidebar";
-import { settingsNavigation } from "../commonSettings/Common";
-import Layout from "@/components/layout/Layout";
 import Link from "next/link";
 
 function HelpCenterConfig() {
@@ -32,9 +29,7 @@ function HelpCenterConfig() {
   return (
     <div className="m-4">
       <div className="flex h-full">
-        <Layout>
-          <SettingsSidebar settingsNavigation={settingsNavigation} />
-        </Layout>
+
         <div className="ml-4 flex-1">
           <div className=" rounded-lg p-6 shadow-sm max-w-2xl border-gray-200">
             <div className="mb-4">

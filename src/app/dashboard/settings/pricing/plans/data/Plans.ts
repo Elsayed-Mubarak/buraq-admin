@@ -1,4 +1,4 @@
-import { Plan } from "../types/Types";
+import { Plan } from "@/app/types/plans-types/PlansTypes";
 
 // Dummy Data 
 export const plans:Plan[] = [

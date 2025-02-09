@@ -48,7 +48,7 @@ export default function AccountDetails() {
       <div className="flex justify-between items-center mb-6 px-4 pt-4">
         <div className="flex items-center" style={{ marginLeft: "50px" }}>
           <Link
-            href="/accounts"
+            href="/dashboard/accounts"
             className="inline-flex items-center text-gray-600 hover:text-gray-900 mr-4"
             aria-label="Back to Accounts"
           >
@@ -79,30 +79,24 @@ export default function AccountDetails() {
         </div>
       </div>
       <div className="px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto mt-8">
-
-
-
         <Tab.Group>
-   
           <Tab.List className="flex space-x-1 rounded-xl bg-white p-1">
-            {["Account", "Branding", "Features", "Bots", "Users"].map(
-              (tab) => (
-                <Tab
-                  key={tab}
-                  className={({ selected }) =>
-                    classNames(
-                      "w-full py-2.5 text-sm rounded-md font-medium leading-5 border border-gray-200 bg-white",
-                      "ring-white ring-opacity-60 ring-offset-2 focus:outline-none",
-                      selected
-                        ? "text-blue-600 border-b-2 border-blue-600"
-                        : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
-                    )
-                  }
-                >
-                  {tab}
-                </Tab>
-              )
-            )}
+            {["Account", "Branding", "Features", "Bots", "Users"].map((tab) => (
+              <Tab
+                key={tab}
+                className={({ selected }) =>
+                  classNames(
+                    "w-full py-2.5 text-sm rounded-md font-medium leading-5 border border-gray-200 bg-white",
+                    "ring-white ring-opacity-60 ring-offset-2 focus:outline-none",
+                    selected
+                      ? "text-blue-600 border-b-2 border-blue-600"
+                      : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                  )
+                }
+              >
+                {tab}
+              </Tab>
+            ))}
           </Tab.List>
           <Tab.Panels className="mt-6">
             <Tab.Panel>
@@ -309,7 +303,6 @@ export default function AccountDetails() {
             </Tab.Panel>
 
             {/* Other tab panels will be implemented similarly */}
-          
           </Tab.Panels>
         </Tab.Group>
       </div>

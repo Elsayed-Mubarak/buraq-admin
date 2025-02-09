@@ -1,9 +1,6 @@
 "use client";
 import Image from "next/image";
 import { useState, useRef } from "react";
-import SettingsSidebar from "@/components/settings/SettingsSidebar";
-import { settingsNavigation } from "../commonSettings/Common";
-import Layout from "@/components/layout/Layout";
 
 // not understand this => for validate file and can send to backend
 function arrayBufferToBase64(buffer: ArrayBuffer) {
@@ -141,9 +138,7 @@ export default function GeneralSettings() {
   return (
     <div className="m-4">
       <div className="flex h-full">
-        <Layout>
-          <SettingsSidebar settingsNavigation={settingsNavigation} />
-        </Layout>
+
         <div className="ml-4 flex-1">
           <div className="border-gray-200 rounded-lg shadow-sm max-w-xl px-4 py-5 sm:px-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">General</h2>

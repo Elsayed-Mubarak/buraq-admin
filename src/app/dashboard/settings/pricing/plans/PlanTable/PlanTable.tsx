@@ -1,13 +1,10 @@
 "use client";
 import { useState } from "react";
-import { Plan } from "../types/Types";
+import { Plan } from "@/app/types/plans-types/PlansTypes";
 import clsx from "clsx";
 import { plans as initialPlans } from "../data/Plans";
 import { PlanDetailsModal } from "@/components/PlanDetailsModal";
 import { CreatePlanModal } from "../CreatePlanModal/CreatePlanModal";
-import SettingsSidebar from "@/components/settings/SettingsSidebar";
-import { settingsNavigation } from "../../../commonSettings/Common";
-import Layout from "@/components/layout/Layout";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -17,8 +14,8 @@ export function PlanTable() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const pathname = usePathname();
-  const plansHref = `${pathname}`; 
-  const configurationHref = "/settings/pricing";
+  const plansHref = `${pathname}`;
+  const configurationHref = "/dashboard/settings/pricing";
 
   const handleEditClick = (plan: Plan) => {
     setSelectedPlan(plan);
@@ -38,14 +35,10 @@ export function PlanTable() {
   return (
     <div className="m-4">
       <div className="flex h-full">
-        <Layout>
-          <SettingsSidebar settingsNavigation={settingsNavigation} />
-        </Layout>
         <div className="ml-4 flex-1">
           <div className="px-4 sm:px-6 lg:px-8">
             <div className="sm:flex sm:items-center">
               <div className="sm:flex-auto">
-              
                 <h2 className="text-2xl mt-8 font-bold text-gray-900">Plans</h2>
 
                 <p className="mt-2 text-sm text-gray-700">
@@ -100,7 +93,8 @@ export function PlanTable() {
               <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                   <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                    <table className="min-w-full divide-y divide-gray-300">
+                    {/* Key Change: Added w-full to the table */}
+                    <table className="min-w-full divide-y divide-gray-300 w-full">
                       <thead className="bg-gray-50">
                         <tr>
                           <th

@@ -7,7 +7,7 @@ import { redirect, useRouter } from "next/navigation";
 const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  //const [error, setError] = useState("");
   const router = useRouter();
 
   redirect("/dashboard"); // Redirect if session exists
@@ -51,7 +51,7 @@ const Page = () => {
           <span className="text-teal-500">Portal</span>
         </h2>
 
-        {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+        {/*{error && <p className="text-red-500 text-center mt-2">{error}</p>}*/}
 
         <form className="mt-6" onSubmit={handleSubmit}>
           <label className="block text-gray-600 text-sm font-semibold mb-1">

@@ -2,21 +2,7 @@ import Modal from "@/components/common/Modal";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import CategoryDropdown from "./CategoryDropdown";
 import Image from "next/image";
-import { FormData } from "@/app/types/TemplateTypes";
-
-
-interface TemplateCreateModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  formData: Omit<FormData, "id">;
-  setFormData: React.Dispatch<React.SetStateAction<Omit<FormData, "id">>>;
-  //setFormData: (data: FormData) => void;
-  handleSubmit: (e: React.FormEvent) => void;
-  fileInputRef: React.RefObject<HTMLInputElement | null>;
-  categories: string[];
-  setCategories: React.Dispatch<React.SetStateAction<string[]>>;
-  handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+import { TemplateCreateModalProps } from "@/app/types/templateManager-types/TemplateManagerTypes";
 
 const TemplateCreateModal: React.FC<TemplateCreateModalProps> = ({
   isOpen,
@@ -47,7 +33,7 @@ const TemplateCreateModal: React.FC<TemplateCreateModalProps> = ({
                 {formData.imageUrl ? (
                   <Image
                     src={formData.imageUrl}
-                    width={24 }
+                    width={24}
                     height={24}
                     alt="Preview"
                     className="mx-auto h-24 w-24 object-cover rounded-full"

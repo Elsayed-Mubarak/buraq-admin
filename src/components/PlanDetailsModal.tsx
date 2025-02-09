@@ -1,9 +1,8 @@
-// components/PlanDetailsModal.tsx (Revised)
 "use client";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import TransitionChild from "./TransitionRoot/TransitionChild"; // Import TransitionChild
-import { PlanDetailsContent } from "./PlanDetailsContent"; // Import PlanDetailsContent
+import TransitionChild from "./TransitionRoot/TransitionChild"; 
+import { PlanDetailsContent } from "./PlanDetailsContent"; 
 import { PlanDetailsModalProps } from "@/app/types/Types";
 import { ModalButtons } from "./shared/ModalButtons";
 
@@ -12,8 +11,6 @@ export function PlanDetailsModal({
   onClose,
   plan,
 }: PlanDetailsModalProps) {
-
-
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -41,7 +38,7 @@ export function PlanDetailsModal({
                     <PlanDetailsContent plan={plan} />
                   </div>
                 </div>
-               <ModalButtons onCancel={onClose} onSave={onClose}/>
+                <ModalButtons onCancel={onClose} onSave={onClose} />
               </Dialog.Panel>
             </Transition.Child>
           </div>

@@ -1,13 +1,7 @@
 import React from "react";
-import { FormData } from "@/app/types/TemplateTypes";
-import { Column } from "@/components/common/TemplateManager";
 import TableManger from "@/components/common/TemplateManager";
+import { TemplateTableProps } from "@/app/types/templateManager-types/TemplateManagerTypes";
 
-// column for 
-interface TemplateTableProps {
-  columns: Column[];
-  data: FormData[]; 
-}
 
 
 

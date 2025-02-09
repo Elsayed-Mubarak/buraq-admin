@@ -9,22 +9,11 @@ import TemplateCount from "./template-manager/TemplateCount";
 import TemplateTable from "./template-manager/TemplateTable";
 import TemplateCreateModal from "./template-manager/TemplateCreateModal";
 import TemplateEditModal from "./template-manager/TemplateEditModal";
-import { FormData } from "@/app/types/TemplateTypes";
+import { Column, FormData } from "@/app/types/TemplateTypes";
 import { v4 as uuidv4 } from "uuid";
+import { TemplateManagerLayoutProps } from "@/app/types/templateManager-types/TemplateManagerTypes";
 
-//export interface TemplateFormData {
-//  id: string;
-//  title: string;
-//  botName: string;
-//  category: string;
-//  description: string;
-//  image?: File | null;
-//  imageUrl?: string | null;
-//}
 
-interface TemplateManagerLayoutProps {
-  activeTab: string;
-}
 
 const initialCategories = [
   "Healthcare",
@@ -41,7 +30,7 @@ const initialCategories = [
   "Technology",
 ];
 
-const columns = [
+const columns:Column[] = [
   { key: "title", header: "Title" },
   { key: "botName", header: "Bot Name" },
   { key: "category", header: "Category" },

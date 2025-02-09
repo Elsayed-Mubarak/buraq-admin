@@ -1,4 +1,3 @@
-// Table.tsx (Updated)
 "use client";
 
 import React from "react";

@@ -13,8 +13,8 @@ export type TableData = {
 export interface TableProps {
   title: string;
   data: TableData[];
-  dataKey1: keyof TableData; // Use keyof for type safety
-  dataKey2: keyof TableData; // Use keyof for type safety
+  dataKey1: keyof TableData; 
+  dataKey2: keyof TableData; 
   description: string;
   header1: string;
   header2: string;

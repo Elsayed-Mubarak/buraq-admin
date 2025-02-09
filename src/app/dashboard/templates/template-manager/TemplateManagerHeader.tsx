@@ -1,10 +1,6 @@
 import React from "react";
 import Link from "next/link";
-
-interface TemplateManagerHeaderProps {
-  activeTab: string;
-  onCreateTemplate: () => void;
-}
+import { TemplateManagerHeaderProps } from "@/app/types/templateManager-types/TemplateManagerTypes";
 
 const tabs = ["Web", "Facebook", "WhatsApp", "SMS", "Instagram"];
 

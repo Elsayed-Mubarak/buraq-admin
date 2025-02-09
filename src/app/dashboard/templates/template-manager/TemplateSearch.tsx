@@ -1,10 +1,8 @@
 import React from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { TemplateSearchProps } from "@/app/types/templateManager-types/TemplateManagerTypes";
 
-interface TemplateSearchProps {
-  searchTerm: string;
-  setSearchTerm: (term: string) => void;
-}
+
 
 const TemplateSearch: React.FC<TemplateSearchProps> = ({
   searchTerm,

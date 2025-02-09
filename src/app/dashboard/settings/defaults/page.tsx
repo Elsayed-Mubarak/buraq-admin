@@ -1,7 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { settingsNavigation } from "../commonSettings/Common";
-import Layout from "@/components/layout/Layout";
 
 export default function Defaults() {
   // State for Default Language Section
@@ -47,7 +45,6 @@ export default function Defaults() {
       <div className="flex h-full">
         {" "}
         {/* Keep h-full here as well */}
-       
         {/* Defaults Content */}
         <div className="ml-4 flex-1">
           {" "}

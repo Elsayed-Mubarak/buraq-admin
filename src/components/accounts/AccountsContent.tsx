@@ -6,13 +6,15 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
 import Table from "@/components/common/Table";
 import adminPortalData, { AdminPortalData } from "@/components/DummyData/dummyUsers";
+//import { Column } from "@/app/types/TemplateTypes";
+import { Column } from "@/components/common/Table";
 
 const CreateAccountModal = dynamic(
   () => import("@/components/accounts/CreateAccountModal"),
   { ssr: false }
 );
 
-const columns = [
+const columns:Column[] = [
   { key: "accountID", header: "Account ID" },
   { key: "accountName", header: "Account Name" },
   { key: "owner", header: "Owner" },
@@ -38,7 +40,7 @@ export default function AccountsContent() {
 
       // Loading local dummy data instead
       setAccounts(adminPortalData);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error fetching data: ", error);
       setError("Failed to load accounts.");
     } finally {
