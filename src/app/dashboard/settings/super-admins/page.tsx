@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import AddSuperAdminModal from "./AddSuperAdminModal";
-import { settingsNavigation } from "../commonSettings/Common";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
 export default function SuperAdminsSettings() {

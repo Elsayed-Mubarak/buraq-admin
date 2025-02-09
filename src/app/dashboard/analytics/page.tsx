@@ -12,7 +12,7 @@ import { activatedAccountsData } from "../../data/DummyAnlyticsDate/AnlyticsDate
 import { conversationsData } from "../../data/DummyAnlyticsDate/AnlyticsDate";
 import { contactsData } from "../../data/DummyAnlyticsDate/AnlyticsDate";
 import { outboundSendsData } from "../../data/DummyAnlyticsDate/AnlyticsDate";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { TableData } from "@/app/types/analytics-types/AnlyticsTypes";
 import { DatePickerWithRange } from "@/components/common/DatePickerWithRange";
 

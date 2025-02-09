@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { settingsNavigation } from "../../commonSettings/Common";
-import Layout from "@/components/layout/Layout";
+
 import Link from "next/link";
 
 // dummy articles wait to make call with elsayed show this section again

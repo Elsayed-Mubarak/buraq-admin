@@ -1,6 +1,5 @@
 import SettingsSidebar from "@/components/settings/SettingsSidebar"
 import { settingsNavigation } from "./commonSettings/Common"
-import { redirect } from "next/navigation"
 import Layout from "@/components/layout/Layout"
 
 export default function SettingsLayout({

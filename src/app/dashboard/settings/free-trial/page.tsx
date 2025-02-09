@@ -1,13 +1,6 @@
 "use client";
 import React, { useState, ChangeEvent } from "react";
-import { settingsNavigation } from "../commonSettings/Common";
-import Layout from "@/components/layout/Layout";
 
-//interface FreeTrialProps {
-//  params: {
-//    id: string;
-//  };
-//}
 
 const FreeTrial: React.FC = () => {
   const [enableFreeTrial, setEnableFreeTrial] = useState<boolean>(true);

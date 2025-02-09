@@ -1,7 +1,6 @@
 'use client'
 
 import Layout from "@/components/layout/Layout";
-import { settingsNavigation } from "../commonSettings/Common";
 
 export default function BrandingSettings() {
   

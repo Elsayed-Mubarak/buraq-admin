@@ -13,11 +13,11 @@ const CreateAccountModal = dynamic(
 );
 
 const columns = [
-  { key: "accountID", header: "Account ID" },
-  { key: "accountName", header: "Account Name" },
-  { key: "owner", header: "Owner" },
-  { key: "status", header: "Status" },
-  { key: "createdUTC", header: "Created (UTC)" },
+  { key: "accountID" as keyof AdminPortalData, header: "Account ID" },
+  { key: "accountName" as keyof AdminPortalData, header: "Account Name" },
+  { key: "owner" as keyof AdminPortalData, header: "Owner" },
+  { key: "status" as keyof AdminPortalData, header: "Status" },
+  { key: "createdUTC" as keyof AdminPortalData, header: "Created (UTC)" },
 ];
 
 const ITEMS_PER_PAGE = 10; // Number of items to display per page

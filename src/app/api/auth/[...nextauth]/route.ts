@@ -1,10 +1,24 @@
 import axios from "axios";
-import { error } from "console";
-import NextAuth from "next-auth";
+import NextAuth, { AuthOptions, Session, DefaultSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { unauthorized } from "next/navigation";
+import { JWT } from "next-auth/jwt";
 
-export const authOptions = {
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
+// Extend the default Session interface.
+interface MySession extends Session {
+  user: DefaultSession["user"] & {
+    id: string;
+    role: string;
+  };
+}
+
+export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -13,56 +27,71 @@ export const authOptions = {
         password: { label: "PASSWORD", type: "password" },
       },
       async authorize(credentials) {
+        if (!credentials) {
+          return null;
+        }
 
         try {
-          // Send the credentials to your backend API for validation
-          const response = await axios.post(`${process.env.BASE_URL}/api/admin/auth/login`, {
-            email: credentials?.email,
-            password: credentials?.password,
-          }, { withCredentials: true }); // Make sure the backend is configured to handle cookies
+          const response = await axios.post<{ user: User }>(
+            `${process.env.BASE_URL}/api/admin/auth/login`,
+            {
+              email: credentials.email,
+              password: credentials.password,
+            },
+            { withCredentials: true }
+          );
 
-          // If login is successful, return the user data
           if (response.status === 200) {
-            console.log(response.data)
-            const user = response.data.user;
-            return {
-              id: user.id,
-              name: user.name,
-              email: user.email,
-              role: user.role,
-            };
+            return response.data.user;
           } else {
-            return null; // If login failed, return null
+            throw new Error("Invalid credentials");
           }
         } catch (error) {
           console.error("Error during login:", error);
-          return null; // If error occurs, return null
+          if (axios.isAxiosError(error) && error.response) {
+            throw new Error(
+              `Login failed: ${error.response.status} - ${
+                error.response.data?.message || "Unknown error"
+              }`
+            );
+          } else {
+            throw new Error(
+              "Login failed: " +
+                (error instanceof Error ? error.message : "Unknown error")
+            );
+          }
         }
       },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/", // Custom login page
+    signIn: "/",
   },
-
   callbacks: {
-    async session({ session, token }:any) {
-      // Attach user data to the session
-      session.user.id = token.sub;
-      session.user.role = token.role;
-      return session;
+    async jwt({ token, user }): Promise<JWT> {
+      if (user) {
+        // Check if 'user' is of your custom 'User' type before accessing 'role'
+        if ("role" in user) { // Type guard using "in" operator
+          token.sub = user.id;
+          token.role = user.role;  // Access is now safe
+          token.name = user.name;
+          token.email = user.email;
+        }
+      }
+      return token;
     },
-    async redirect({ url, baseUrl }:any) {
+    async session({ session, token }): Promise<MySession> {
+      if (token) {
+        (session.user as MySession['user']).id = token.sub as string;
+        (session.user as MySession['user']).role = token.role as string;
+      }
+      return session as MySession;
+    },
+    async redirect({ url, baseUrl }) {
       return url.startsWith(baseUrl) ? url : baseUrl + "/dashboard";
     },
   },
-
-  unauthorized ()
-  {
-    
-  }
-
 };
 
 const handler = NextAuth(authOptions);

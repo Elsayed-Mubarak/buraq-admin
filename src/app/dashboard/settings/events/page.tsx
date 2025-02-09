@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
-import { settingsNavigation } from "../commonSettings/Common";
-import Layout from "@/components/layout/Layout";
+
 
 export default function EventsSettings() {
   const eventDescriptions = {

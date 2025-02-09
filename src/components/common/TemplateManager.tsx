@@ -1,7 +1,5 @@
-// Table.tsx (Updated)
 "use client";
 
-import React from "react";
 
 export interface Column<T> {
   key: keyof T | string; 
@@ -14,7 +12,7 @@ export interface TableProps<T> {
   data: T[];
   onRowClick?: (row: T) => void;
 }
-
+ 
 export default function TableManger<T extends Record<string,any>>({
   columns,
   data,
@@ -27,7 +25,7 @@ export default function TableManger<T extends Record<string,any>>({
     try {
       if (typeof key === "string" && key.includes(".")) {
         const keys = key.split(".");
-        let value = row; // removed any
+        let value = row; 
         for (const k of keys) {
           value = value[k];
           if (value === undefined || value === null) return ""; 

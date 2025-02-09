@@ -1,7 +1,5 @@
 "use clinet";
 import React from "react";
-import { settingsNavigation } from "../commonSettings/Common";
-import Layout from "@/components/layout/Layout";
 
 function Illustration() {
   const htmlScript = `<html>

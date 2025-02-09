@@ -1,8 +1,6 @@
 "use client";
 import Image from "next/image";
 import { useState, useRef } from "react";
-import { settingsNavigation } from "../commonSettings/Common";
-import Layout from "@/components/layout/Layout";
 
 // not understand this => for validate file and can send to backend
 function arrayBufferToBase64(buffer: ArrayBuffer) {
