@@ -9,11 +9,10 @@ import TemplateTable from "./TemplateTable";
 import TemplateCreateModal from "./TemplateCreateModal";
 import TemplateEditModal from "./TemplateEditModal";
 import { v4 as uuidv4 } from "uuid";
-import { FormData, TemplateData } from "./templateTypes/TemplateTypes";
+import { Column, TemplateData } from "@/app/types/TemplateTypes";
+import { FormData } from "@/app/types/TemplateTypes";
+import { TemplateManagerLayoutProps } from "@/app/types/templateManager-types/TemplateManagerTypes";
 
-interface TemplateManagerLayoutProps {
-  activeTab: string;
-}
 
 const initialCategories = [
   "Healthcare",
@@ -30,7 +29,7 @@ const initialCategories = [
   "Technology",
 ];
 
-const columns = [
+const columns:Column[] = [
   { key: "title", header: "Title" },
   { key: "botName", header: "Bot Name" },
   { key: "category", header: "Category" },

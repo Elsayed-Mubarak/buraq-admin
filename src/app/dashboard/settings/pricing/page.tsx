@@ -1,12 +1,10 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import React from "react";
+import { InputFieldProps } from "@/app/types/plans-types/PlansTypes";
 
-interface InputFieldProps {
-  label: string;
-  id: string;
-  placeholder: string;
-}
+
 
 const InputField: React.FC<InputFieldProps> = ({ label, id, placeholder }) => (
   <div>
@@ -82,12 +80,11 @@ function ConfigurationContent() {
 
 function Pricing() {
   const pathname = usePathname();
-  const plansHref = `${pathname}/plans`;
+  const plansHref = `${pathname}/plans`; //dashboard/settings/pricing/plans || dashboard/settings/pricing
 
   return (
     <div className="m-4">
       <div className="flex h-full">
-   
         <div className="ml-4 flex-1">
           <div className="rounded-lg p-6 shadow-sm max-w-2xl border-gray-200">
             <h2 className="text-2xl font-bold text-gray-900">Pricing</h2>

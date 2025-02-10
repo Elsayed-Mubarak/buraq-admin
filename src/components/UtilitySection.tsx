@@ -1,4 +1,3 @@
-// components/UtilitySection.tsx
 "use client";
 import { CheckboxInput } from "./shared/CheckboxInput";
 import { NumberInput } from "./shared/NumberInput";

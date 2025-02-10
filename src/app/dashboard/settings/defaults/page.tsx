@@ -45,7 +45,6 @@ export default function Defaults() {
       <div className="flex h-full">
         {" "}
         {/* Keep h-full here as well */}
-       
         {/* Defaults Content */}
         <div className="ml-4 flex-1">
           {" "}

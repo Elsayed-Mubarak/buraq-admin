@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-
-
 export default function EventsSettings() {
   const eventDescriptions = {
     user: "When the user updates their user details from the customer portal.",

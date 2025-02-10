@@ -18,10 +18,18 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/settings/typography", "src/app/dashboard/accounts/[id]"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/settings/typography",
+    "src/app/dashboard/accounts/[id]"
+  ],
   "exclude": ["node_modules"]
 }

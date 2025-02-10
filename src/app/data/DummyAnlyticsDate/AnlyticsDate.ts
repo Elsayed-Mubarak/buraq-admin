@@ -1,5 +1,5 @@
 // ask elsayed i remove or not in this spring
-import { TableData } from "../types/AnlyticsTypes";
+import { TableData } from "@/app/types/analytics-types/AnlyticsTypes";
 
 
   export const totalAccountsData :TableData[]= [

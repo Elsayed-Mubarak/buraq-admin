@@ -1,9 +1,8 @@
-// components/UsageSection.tsx
 "use client";
 import React from "react";
 import { CheckboxInput } from "./shared/CheckboxInput";
 import { NumberInput } from "./shared/NumberInput";
-import { Plan } from "@/app/types/Types";
+import { Plan } from "@/app/types/plans-types/PlansTypes";
 
 interface UsageSectionProps {
   plan?: Plan | null;

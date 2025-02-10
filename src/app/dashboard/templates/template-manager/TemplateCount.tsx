@@ -1,8 +1,7 @@
+import { TemplateCountProps } from "@/app/types/templateManager-types/TemplateManagerTypes";
 import React from "react";
 
-interface TemplateCountProps {
-  count: number;
-}
+
 
 const TemplateCount: React.FC<TemplateCountProps> = ({ count }) => {
   return (

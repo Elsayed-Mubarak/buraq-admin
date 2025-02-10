@@ -2,22 +2,11 @@ import React from "react";
 import Modal from "@/components/common/Modal";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import CategoryDropdown from "./CategoryDropdown";
-import { FormData } from "./templateTypes/TemplateTypes";
 import Image from "next/image";
+import { TemplateEditModalProps } from "@/app/types/templateManager-types/TemplateManagerTypes";
 
 
 
-interface TemplateEditModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  formData: Omit<FormData, "id">; // we need to solve this
-  setFormData: React.Dispatch<React.SetStateAction<Omit<FormData, "id">>>;
-  handleSubmit: (e: React.FormEvent) => void;
-  fileInputRef: React.RefObject<HTMLInputElement | null>;
-  categories: string[];
-  setCategories: React.Dispatch<React.SetStateAction<string[]>>;
-  handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
 
 const TemplateEditModal: React.FC<TemplateEditModalProps> = ({
   isOpen,

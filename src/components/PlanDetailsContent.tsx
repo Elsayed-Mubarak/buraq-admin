@@ -9,7 +9,8 @@ import { UtilitySection } from "./UtilitySection";
 import { CustomIntegrationSection } from "./CustomIntegrationSection";
 import { AIStudioSection } from "./AIStudioSection";
 import { ChannelsSection } from "./ChannelsSection";
-import { Plan } from "@/app/types/Types";
+//import { Plan } from "@/app/types/Types";
+import { Plan } from "@/app/dashboard/settings/pricing/plans/types/Types";
 import { UsageSection } from "./UsageSection";
 
 interface PlanDetailsContentProps {
@@ -24,17 +25,17 @@ export function PlanDetailsContent({ plan }: PlanDetailsContentProps) {
       <SectionTitle title="SMS Pricing" />
       <SMSPricingSection />
       <SectionTitle title="Action block" />
-     <ActionBlockSection/>
-     <SectionTitle title="Chat widget" />
-     <ChatWidgetSection/>
+      <ActionBlockSection />
+      <SectionTitle title="Chat widget" />
+      <ChatWidgetSection />
       <SectionTitle title="Utility" />
-     <UtilitySection/>
-      <SectionTitle title="Custom integration"/>
-      <CustomIntegrationSection/>
-      <SectionTitle title="Channels"/>
-      <ChannelsSection/>
-      <SectionTitle title="AI Studio"/>
-      <AIStudioSection/>
+      <UtilitySection />
+      <SectionTitle title="Custom integration" />
+      <CustomIntegrationSection />
+      <SectionTitle title="Channels" />
+      <ChannelsSection />
+      <SectionTitle title="AI Studio" />
+      <AIStudioSection />
     </div>
   );
 }

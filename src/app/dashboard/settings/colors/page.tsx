@@ -1,19 +1,7 @@
 "use client";
 
 import React, { useState, ChangeEvent } from "react";
-
-interface ColorsState {
-  accentPrimary: string;
-  accentSecondary: string;
-  accentDark: string;
-  textPrimary: string;
-  successPrimary: string;
-  successSecondary: string;
-  failurePrimary: string;
-  failureSecondary: string;
-  warningPrimary: string;
-  warningSecondary: string;
-}
+import { ColorsState } from "@/app/types/colors-types/ColorsTypes";
 
 export default function Colors() {
   const [colors, setColors] = useState<ColorsState>({

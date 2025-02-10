@@ -1,11 +1,7 @@
 import { Dialog } from "@headlessui/react";
 import { useState } from "react";
+import { AddSuperAdminModalProps } from "@/app/types/super-admins/SuperAminds";
 
-interface AddSuperAdminModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onAddAdmin: (email: string, name:string) => void;
-}
 
 const AddSuperAdminModal: React.FC<AddSuperAdminModalProps> = ({
   isOpen,
@@ -13,14 +9,12 @@ const AddSuperAdminModal: React.FC<AddSuperAdminModalProps> = ({
   onAddAdmin,
 }) => {
   const [newAdminEmail, setNewAdminEmail] = useState("");
-  const [newAdminName, setNewAdminName] = useState("");
 
   const handleAddAdmin = (e: React.FormEvent) => {
     e.preventDefault();
-    onAddAdmin(newAdminEmail,newAdminName);
+    onAddAdmin(newAdminEmail);
     onClose();
     setNewAdminEmail("");
-    setNewAdminName("");
   };
 
   return (
@@ -45,16 +39,6 @@ const AddSuperAdminModal: React.FC<AddSuperAdminModalProps> = ({
                   onChange={(e) => setNewAdminEmail(e.target.value)}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                   placeholder="Enter email address"
-                />
-                <label className="block text-sm font-bold text-gray-700">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  value={newAdminName}
-                  onChange={(e) => setNewAdminName(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                  placeholder="Enter admin name"
                 />
               </div>
 

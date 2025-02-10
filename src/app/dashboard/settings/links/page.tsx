@@ -1,13 +1,7 @@
 "use client";
+import { LinksState } from "@/app/types/Links-types/LinksTypes";
 import React, { useState, ChangeEvent, FormEvent } from "react";
 
-interface LinksState {
-  facebook: string;
-  twitter: string;
-  linkedin: string;
-  instagram: string;
-  youtube: string;
-}
 
 export default function Links() {
   const [links, setLinks] = useState<LinksState>({

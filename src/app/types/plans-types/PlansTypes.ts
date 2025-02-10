@@ -1,17 +1,21 @@
+export interface InputFieldProps {
+  label: string;
+  id: string;
+  placeholder: string;
+}
 
 
 export interface CreatePlanModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCreatePlan: (newPlan:PlanState) => void;
+  onCreatePlan: (newPlan: PlanState) => void;
 }
 
-// Updated props interface
 export interface PlanDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
   plan: Plan | null;
-  onSave?: (updatedPlan: PlanState) => void; 
+  onSave?: (updatedPlan: PlanState) => void;
 }
 
 export interface Plan {
@@ -20,11 +24,12 @@ export interface Plan {
   yearlyPrice: string;
   status: "Active" | "Inactive";
   users?: number | string;
-  bots?: number | string;
+  bots?: number | string; // might be the error
   conversations?: number;
   features?: string[];
 }
 
+// not types just inital data should remove in integraion
 export const initialNewPlanState: PlanState = {
   name: "",
   users: "",
