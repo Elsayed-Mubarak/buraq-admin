@@ -1,44 +1,29 @@
 "use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { useEffect, useState } from "react";
-import { getSession, signIn } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { login } from "@/utils/auth";
 
 const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //const [error, setError] = useState("");
   const router = useRouter();
-
-  // Check session on component mount
-  useEffect(() => {
-    const checkSession = async () => {
-      const session = await getSession();
-      if (session) {
-      }
-    };
-    checkSession();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const toastId = toast.loading("Logging in..."); // Show loading toast
+    const toastId = toast.loading("Logging in...");
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false, // Disable automatic redirect
-      callbackUrl: "/dashboard",
-    });
-
-    if (result?.error) {
-      toast.error("Login failed. Please check your credentials.", {
-        id: toastId,
-      }); // Show error toast
-    } else {
-      toast.success("Login successful!", { id: toastId }); // Show success toast
-      router.push("/dashboard"); // Redirect to dashboard
+    try {
+      const result = await login(email, password);
+      if (result?.ok) {
+        toast.success("Login successful!", { id: toastId });
+        router.push("/dashboard");
+      } else {
+        throw new Error("Login failed");
+      }
+    } catch (error) {
+      toast.error("Login failed. Please check your credentials.", { id: toastId });
     }
   };
 
@@ -49,8 +34,6 @@ const Page = () => {
           <span className="text-gray-800">Admin</span>
           <span className="text-teal-500">Portal</span>
         </h2>
-
-        {/*{error && <p className="text-red-500 text-center mt-2">{error}</p>}*/}
 
         <form className="mt-6" onSubmit={handleSubmit}>
           <label className="block text-gray-600 text-sm font-semibold mb-1">

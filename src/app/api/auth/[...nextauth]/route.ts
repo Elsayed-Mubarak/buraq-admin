@@ -8,14 +8,15 @@ interface User {
   name: string;
   email: string;
   role: string;
+  authToken?: string;
 }
 
-// Extend the default Session interface.
 interface MySession extends Session {
   user: DefaultSession["user"] & {
     id: string;
     role: string;
   };
+  authToken?: string;
 }
 
 export const authOptions: AuthOptions = {
@@ -42,7 +43,9 @@ export const authOptions: AuthOptions = {
           );
 
           if (response.status === 200) {
-            return response.data.user;
+            console.log(".......res..........", response.headers["set-cookie"]);
+            const authToken = response.headers["set-cookie"]?.[0]?.split(';')[0].split('=')[1];
+            return { ...response.data.user, authToken };
           } else {
             throw new Error("Invalid credentials");
           }
@@ -70,14 +73,12 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }): Promise<JWT> {
-      if (user) {
-        // Check if 'user' is of your custom 'User' type before accessing 'role'
-        if ("role" in user) { // Type guard using "in" operator
-          token.sub = user.id;
-          token.role = user.role;  // Access is now safe
-          token.name = user.name;
-          token.email = user.email;
-        }
+      if (user && typeof user === 'object' && 'role' in user) {
+        token.sub = user.id;
+        token.role = user.role;
+        token.name = user.name;
+        token.email = user.email;
+        token.authToken = (user as User).authToken;
       }
       return token;
     },
@@ -85,11 +86,9 @@ export const authOptions: AuthOptions = {
       if (token) {
         (session.user as MySession['user']).id = token.sub as string;
         (session.user as MySession['user']).role = token.role as string;
+        (session as MySession).authToken = token.authToken as string;
       }
       return session as MySession;
-    },
-    async redirect({ url, baseUrl }) {
-      return url.startsWith(baseUrl) ? url : baseUrl + "/dashboard";
     },
   },
 };
