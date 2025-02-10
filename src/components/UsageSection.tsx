@@ -2,7 +2,7 @@
 import React from "react";
 import { CheckboxInput } from "./shared/CheckboxInput";
 import { NumberInput } from "./shared/NumberInput";
-import { Plan } from "@/app/dashboard/settings/pricing/plans/types/Types";
+import { Plan } from "@/app/types/plans-types/PlansTypes";
 
 interface UsageSectionProps {
   plan?: Plan | null;

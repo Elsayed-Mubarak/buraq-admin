@@ -112,7 +112,7 @@ function Articles() {
               >
                 Config
               </Link>
-              <button className="border-blue-500 text-blue-500 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+              <button className="border-gray-500 text-blue-500 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
                 Articles
               </button>
             </nav>
@@ -126,7 +126,7 @@ function Articles() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />{" "}
+            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400" />{" "}
             {/* Changed text-blue-400 to text-gray-400 */}
           </div>
 

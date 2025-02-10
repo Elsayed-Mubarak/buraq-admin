@@ -1,12 +1,6 @@
 "use client";
 import React, { useState, ChangeEvent } from "react";
 
-//interface FreeTrialProps {
-//  params: {
-//    id: string;
-//  };
-//}
-
 const FreeTrial: React.FC = () => {
   const [enableFreeTrial, setEnableFreeTrial] = useState<boolean>(true);
   const [trialDays, setTrialDays] = useState<number>(7);

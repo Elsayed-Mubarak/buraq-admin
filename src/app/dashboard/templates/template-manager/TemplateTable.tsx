@@ -4,7 +4,6 @@ import { TemplateTableProps } from "@/app/types/templateManager-types/TemplateMa
 
 
 
-
 const TemplateTable: React.FC<TemplateTableProps> = ({ columns, data }) => {
   return (
     <div className="mt-6 bg-white shadow rounded-lg">

@@ -6,8 +6,9 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
 import Table from "@/components/common/Table";
 import adminPortalData, { AdminPortalData } from "@/components/DummyData/dummyUsers";
-//import { Column } from "@/app/types/TemplateTypes";
 import { Column } from "@/components/common/Table";
+import { API_BASE_URL } from "@/Constant-env";
+import axios from "axios";
 
 const CreateAccountModal = dynamic(
   () => import("@/components/accounts/CreateAccountModal"),
@@ -33,23 +34,27 @@ export default function AccountsContent() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchAccounts = () => {
+  // Function to fetch data from an API
+  async function fetchData() {
     try {
+      //const response = await axios.get(
+      //  `${API_BASE_URL}/api/dashboard/admin-portal?limit=10&page=1`
+      //);
+      //console.log(response);
       setLoading(true);
       setError(null);
-
-      // Loading local dummy data instead
-      setAccounts(adminPortalData);
-    } catch (error: unknown) {
-      console.error("Error fetching data: ", error);
-      setError("Failed to load accounts.");
-    } finally {
-      setLoading(false);
+      setAccounts(adminPortalData); 
+      //setAccounts(response.data);
+      //return response.data; // return results [] => map
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
     }
-  };
+}
+  
 
   useEffect(() => {
-    fetchAccounts();
+    fetchData();
   }, []);
 
   const handleRowClick = (row: AdminPortalData) => {
@@ -57,7 +62,7 @@ export default function AccountsContent() {
   };
 
   const handleCreateSuccess = () => {
-    fetchAccounts(); // Refresh page to display new account added
+    fetchData(); // Refresh page to display new account added
   };
 
   const filteredAccounts = accounts.filter(
@@ -92,7 +97,7 @@ export default function AccountsContent() {
       <div className="flex flex-col items-center justify-center min-h-screen">
         <div className="text-red-600 mb-4">{error}</div>
         <button
-          onClick={fetchAccounts}
+          onClick={fetchData}
           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
         >
           Retry

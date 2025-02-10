@@ -29,6 +29,7 @@ export interface Plan {
   features?: string[];
 }
 
+// not types just inital data should remove in integraion
 export const initialNewPlanState: PlanState = {
   name: "",
   users: "",

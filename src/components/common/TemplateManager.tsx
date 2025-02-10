@@ -13,7 +13,6 @@ export interface TableProps<T> {
   data: T[];
   onRowClick?: (row: T) => void;
 }
-
 export default function TableManger<T extends Record<string,any>>({
   columns,
   data,

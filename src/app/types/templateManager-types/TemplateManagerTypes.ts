@@ -1,4 +1,6 @@
 import { FormData } from "../TemplateTypes";
+import { Column } from "../TemplateTypes";
+
 export interface CategoryDropdownProps {
   formData: FormData;
   setFormData: (data: FormData) => void;
@@ -42,7 +44,7 @@ export interface TemplateSearchProps {
   searchTerm: string;
   setSearchTerm: (term: string) => void;
 }
-interface TemplateTableProps {
+export interface TemplateTableProps {
   columns: Column[];
   data: FormData[];
 }

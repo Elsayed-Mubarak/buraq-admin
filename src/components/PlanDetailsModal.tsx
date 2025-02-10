@@ -3,7 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import TransitionChild from "./TransitionRoot/TransitionChild"; 
 import { PlanDetailsContent } from "./PlanDetailsContent"; 
-import { PlanDetailsModalProps } from "@/app/types/Types";
+import { PlanDetailsModalProps } from "@/app/types/plans-types/PlansTypes";
 import { ModalButtons } from "./shared/ModalButtons";
 
 export function PlanDetailsModal({

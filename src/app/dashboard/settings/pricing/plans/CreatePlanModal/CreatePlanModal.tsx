@@ -1,7 +1,11 @@
 "use client";
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { CreatePlanModalProps, PlanState, initialNewPlanState } from "../../../../../types/plans-types/PlansTypes"
+import {
+  CreatePlanModalProps,
+  PlanState,
+  initialNewPlanState,
+} from "../../../../../types/plans-types/PlansTypes";
 
 // Modal component for creating new plan
 export function CreatePlanModal({
