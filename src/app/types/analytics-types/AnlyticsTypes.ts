@@ -1,51 +1,53 @@
+// AnalyticsTypes.ts
+// Types for the API response
 
-export type TableData = {
-  [key: string]: string | number | undefined; 
-  Month?: string;
-  Plans?: string;
-  Accounts?: number;
-  Chats?: number;
-  Requests?: number;
-  Contacts?: number;
-  Campaigns?: number;
-};
+export interface Plan {
+  _id: string;
+  planName: string;
+}
+
+export interface AccountCountPerPlan {
+  plan: Plan;
+  accountCount: number;
+}
+
+export interface AccountCountPerMonth {
+  [key: string]: number; // Dynamic keys for months, e.g., "Oct-2024": 0
+}
+
+export interface ConversationInformation {
+  [key: string]: number; // Dynamic keys for months, e.g., "Oct-2024": 0
+}
+
+export interface ClientCountPerMonth {
+  [key: string]: number; // Dynamic keys for months, e.g., "Oct-2024": 0
+}
+
+export interface AnalyticsData {
+  numberOfAccountsPerPlan: AccountCountPerPlan[];
+  numberOfAccountsPerMonth: AccountCountPerMonth;
+  conversationsInformation: ConversationInformation;
+  numberOfClientsPerMonth: ClientCountPerMonth;
+  totalAccountsNumber: number;
+  totalConversationsNumber: number;
+  totalClientsNumber: number;
+}
+
+export interface ApiResponse {
+  data: AnalyticsData;
+}
+
+// Types for table data
+export interface TableData {
+  [key: string]: string | number; // Dynamic keys for table rows
+}
 
 export interface TableProps {
   title: string;
   data: TableData[];
-  dataKey1: keyof TableData; 
-  dataKey2: keyof TableData; 
+  dataKey1: string;
+  dataKey2: string;
   description: string;
   header1: string;
   header2: string;
-}
-
-export interface TotalAccountsData {
-  Plans: string;
-  Accounts: number;
-}
-
-export interface MonthlyAccountsData {
-  Month: string;
-  Accounts: number;
-}
-
-export interface ConversationsData {
-  Month: string;
-  Chats: number;
-}
-
-export interface AIModalsData {
-  Month: string;
-  Requests: number;
-}
-
-export interface ContactsData {
-  Month: string;
-  Contacts: number;
-}
-
-export interface OutboundSendsData {
-  Month: string;
-  Campaigns: number;
 }

@@ -1,19 +1,20 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
 import Table from "@/components/common/Table";
-import adminPortalData, { AdminPortalData } from "@/components/DummyData/dummyUsers";
-import { Column } from "@/components/common/Table";
+import { AccountColumn } from "@/components/common/Table";
 import axios from "axios";
+import { AdminPortalData } from "@/app/types/account-types/AccountTypes";
+import { ApiResponse } from "@/app/types/account-types/AccountTypes";
 const CreateAccountModal = dynamic(
   () => import("@/components/accounts/CreateAccountModal"),
   { ssr: false }
 );
 
-const columns:Column[] = [
+const columns: AccountColumn[] = [
   { key: "accountID", header: "Account ID" },
   { key: "accountName", header: "Account Name" },
   { key: "owner", header: "Owner" },
@@ -21,7 +22,7 @@ const columns:Column[] = [
   { key: "createdUTC", header: "Created (UTC)" },
 ];
 
-const ITEMS_PER_PAGE = 10; // Number of items to display per page
+const ITEMS_PER_PAGE = 10;
 
 export default function AccountsContent() {
   const router = useRouter();
@@ -32,35 +33,43 @@ export default function AccountsContent() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Function to fetch data from an API
-  async function fetchData() {
+  const fetchData = useCallback(async () => {
     try {
-      const response = await axios.get(
-       `http://localhost:3001/api/dashboard/admin-portal?limit=10&page=1`,{ withCredentials: true }
-      );
-      console.log(response);
       setLoading(true);
+      const response = await axios.get(
+        `http://localhost:3001/api/dashboard/admin-portal?limit=10&page=1`,
+        { withCredentials: true }
+      );
+      const apiData: ApiResponse[] = response.data.data.results;
+
+      const mappedData: AdminPortalData[] = apiData.map((item, index) => ({
+        accountID: index.toString(), // item._id
+        accountName: item.settings?.name || "N/A",
+        owner: item.owner,
+        status: item.status,
+        createdUTC: item.createdAt,
+      }));
+
+      setAccounts(mappedData);
       setError(null);
-      setAccounts(adminPortalData); 
-      //setAccounts(response.data);
-      //return response.data; // return results [] => map
     } catch (error) {
-        console.error('Error fetching data:', error);
-        throw error;
+      console.error("Error fetching data:", error);
+      setError("Failed to fetch data. Please try again.");
+    } finally {
+      setLoading(false);
     }
-}
-  
+  }, []); 
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]); 
 
   const handleRowClick = (row: AdminPortalData) => {
     router.push(`/dashboard/accounts/${row.accountID}`);
   };
 
   const handleCreateSuccess = () => {
-    fetchData(); // Refresh page to display new account added
+    fetchData();
   };
 
   const filteredAccounts = accounts.filter(
@@ -70,7 +79,6 @@ export default function AccountsContent() {
       account.accountID.toString().includes(searchTerm)
   );
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredAccounts.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedAccounts = filteredAccounts.slice(
@@ -148,7 +156,6 @@ export default function AccountsContent() {
           />
         </div>
 
-        {/* Pagination Controls */}
         <div className="fixed bottom-4 right-11 mt-4 flex justify-center items-center space-x-2">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
