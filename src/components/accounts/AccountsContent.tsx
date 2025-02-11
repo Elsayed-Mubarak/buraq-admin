@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import Table from "@/components/common/Table";
 import adminPortalData, { AdminPortalData } from "@/components/DummyData/dummyUsers";
 import { Column } from "@/components/common/Table";
+import axios from "axios";
 
 const CreateAccountModal = dynamic(
   () => import("@/components/accounts/CreateAccountModal"),
@@ -35,18 +36,17 @@ export default function AccountsContent() {
   // Function to fetch data from an API
   async function fetchData() {
     try {
-      //const response = await axios.get(
-      //  `${API_BASE_URL}/api/dashboard/admin-portal?limit=10&page=1`
-      //);
-      //console.log(response);
+      const response = await axios.get(
+       `http://localhost:3001/api/dashboard/admin-portal?limit=10&page=1`
+      );
+      console.log(response);
       setLoading(true);
       setError(null);
       setAccounts(adminPortalData); 
-      //setAccounts(response.data);
+      setAccounts(response.data);
       //return response.data; // return results [] => map
     } catch (error) {
         console.error('Error fetching data:', error);
-        throw error;
     }
 }
   
