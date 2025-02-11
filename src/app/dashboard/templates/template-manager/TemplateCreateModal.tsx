@@ -3,6 +3,7 @@ import { PhotoIcon } from "@heroicons/react/24/outline";
 import CategoryDropdown from "./CategoryDropdown";
 import Image from "next/image";
 import { TemplateCreateModalProps } from "@/app/types/templateManager-types/TemplateManagerTypes";
+import { FormData } from "@/app/types/TemplateTypes";
 
 const TemplateCreateModal: React.FC<TemplateCreateModalProps> = ({
   isOpen,
@@ -15,6 +16,27 @@ const TemplateCreateModal: React.FC<TemplateCreateModalProps> = ({
   setCategories,
   handleImageChange,
 }) => {
+  // Create a temporary full FormData object for CategoryDropdown
+  const tempFormData: FormData = {
+    id: 'temp-id',
+    title: String(formData.title || ''),
+    botName: String(formData.botName || ''),
+    category: String(formData.category || ''),
+    description: String(formData.description || ''),
+    image: null,
+    imageUrl: formData.imageUrl ? String(formData.imageUrl) : null
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    field: keyof Omit<FormData, 'id' | 'image' | 'imageUrl'>
+  ) => {
+    setFormData({
+      ...formData,
+      [field]: e.target.value
+    });
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -30,7 +52,7 @@ const TemplateCreateModal: React.FC<TemplateCreateModalProps> = ({
           <div className="mb-4">
             <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
               <div className="text-center">
-                {formData.imageUrl ? (
+                {formData.imageUrl && typeof formData.imageUrl === 'string' ? (
                   <Image
                     src={formData.imageUrl}
                     width={24}
@@ -78,10 +100,8 @@ const TemplateCreateModal: React.FC<TemplateCreateModalProps> = ({
             <input
               type="text"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              value={formData.title}
-              onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
-              }
+              value={String(formData.title || '')}
+              onChange={(e) => handleInputChange(e, 'title')}
             />
           </div>
 
@@ -93,17 +113,19 @@ const TemplateCreateModal: React.FC<TemplateCreateModalProps> = ({
             <input
               type="text"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              value={formData.botName}
-              onChange={(e) =>
-                setFormData({ ...formData, botName: e.target.value })
-              }
+              value={String(formData.botName || '')}
+              onChange={(e) => handleInputChange(e, 'botName')}
             />
           </div>
 
           {/* Category */}
           <CategoryDropdown
-            formData={{ ...formData, id: "temp-id" }} // defult id should remove but i will think in next phase
-            setFormData={setFormData}
+            formData={tempFormData}
+            setFormData={(data: FormData) => {
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              const { id, ...rest } = data;
+              setFormData(rest);
+            }}
             categories={categories}
             setCategories={setCategories}
           />
@@ -116,13 +138,8 @@ const TemplateCreateModal: React.FC<TemplateCreateModalProps> = ({
             <textarea
               rows={3}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  description: e.target.value,
-                })
-              }
+              value={String(formData.description || '')}
+              onChange={(e) => handleInputChange(e, 'description')}
             />
           </div>
         </form>

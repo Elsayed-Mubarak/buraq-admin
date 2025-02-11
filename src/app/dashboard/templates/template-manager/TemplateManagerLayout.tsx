@@ -13,7 +13,6 @@ import { Column, TemplateData } from "@/app/types/TemplateTypes";
 import { FormData } from "@/app/types/TemplateTypes";
 import { TemplateManagerLayoutProps } from "@/app/types/templateManager-types/TemplateManagerTypes";
 
-
 const initialCategories = [
   "Healthcare",
   "Hospitality",
@@ -29,7 +28,7 @@ const initialCategories = [
   "Technology",
 ];
 
-const columns:Column[] = [
+const columns: Column[] = [
   { key: "title", header: "Title" },
   { key: "botName", header: "Bot Name" },
   { key: "category", header: "Category" },
@@ -107,36 +106,48 @@ export default function TemplateManagerLayout({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const { image, ...restFormData } = formData;
-    const templateData = { ...restFormData, image };
 
     if (selectedTemplateId) {
       // EDIT CASE
-      const updatedTemplates = templates.map((t) =>
-        t.id === selectedTemplateId
-          ? {
-              ...t,
-              ...restFormData,
-              imageUrl: formData.imageUrl || t.imageUrl,
-            }
-          : t
-      );
+      const updatedTemplates = templates.map((t): FormData => {
+        if (t.id === selectedTemplateId) {
+          return {
+            ...t,
+            title: String(restFormData.title || ''),
+            botName: String(restFormData.botName || ''),
+            category: String(restFormData.category || ''),
+            description: String(restFormData.description || ''),
+            image: image as File | null,
+            imageUrl: typeof formData.imageUrl === 'string' ? formData.imageUrl : t.imageUrl
+          };
+        }
+        return t;
+      });
       setTemplates(updatedTemplates);
 
       handleSimulateBackend({
-        ...templateData,
+        ...restFormData,
         id: selectedTemplateId,
+        image: image as File | null,
         action: "edit",
       });
     } else {
       // CREATE CASE
       const newId = uuidv4();
-      const newTemplate = {
-        ...restFormData,
+      const newTemplate: FormData = {
         id: newId,
-        imageUrl: null,
+        title: String(restFormData.title || ''),
+        botName: String(restFormData.botName || ''),
+        category: String(restFormData.category || ''),
+        description: String(restFormData.description || ''),
+        image: image as File | null,
+        imageUrl: typeof formData.imageUrl === 'string' ? formData.imageUrl : null,
       };
       setTemplates([...templates, newTemplate]);
-      handleSimulateBackend({ ...templateData, id: newId, action: "create" });
+      handleSimulateBackend({
+        ...newTemplate,
+        action: "create",
+      });
     }
 
     setFormData({

@@ -22,7 +22,7 @@ const Page = () => {
       } else {
         throw new Error("Login failed");
       }
-    } catch (error) {
+    } catch {
       toast.error("Login failed. Please check your credentials.", { id: toastId });
     }
   };

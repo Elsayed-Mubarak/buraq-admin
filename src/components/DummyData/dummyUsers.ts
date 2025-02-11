@@ -5,8 +5,9 @@ export interface Settings {
 }
 
 export interface TeamSize {
-  // Since `teamSize` is an empty object in the response, we can define it as an empty interface
-  // or as a Record<string, unknown> if it might contain dynamic properties in the future.
+  min: number;
+  max: number;
+  current: number;
 }
 
 export interface Result {
@@ -33,7 +34,7 @@ export interface ApiResponse {
   data: Data;
   metadata: Metadata;
 }
-/////////////////////////////////
+
 interface AdminPortalData {
   accountID: number;
   accountName: string;

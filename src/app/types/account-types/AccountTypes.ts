@@ -4,7 +4,11 @@ export type Setting = {
   id: string;
 };
 
-export type TeamSize = {}; 
+export type TeamSize = {
+  min: number;
+  max: number;
+  current: number;
+};
 
 export type ResultItem = {
   _id: string;
@@ -23,6 +27,7 @@ export type ResponseData = {
     totalPages: number;
   };
 };
+
 export type TopLevelResponse = {
   data: ResponseData;
   metadata: {
