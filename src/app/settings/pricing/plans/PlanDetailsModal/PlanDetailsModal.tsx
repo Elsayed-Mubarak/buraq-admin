@@ -1,12 +1,13 @@
 "use client";
-import {
-  PlanDetailsModalProps,
-  //PlanState,
-  //initialNewPlanState,
-} from "../types/Types";
+import { PlanDetailsModalProps } from "@/app/types/plans-types/PlansTypes";
+//import {
+//  PlanDetailsModalProps,
+//  //PlanState,
+//  //initialNewPlanState,
+//} from "../types/Types";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect } from "react";
-import TransitionChild from "./TransitionRoot/TransitionChild";
+import TransitionChild from "@/components/TransitionRoot/TransitionChild";
 
 export function PlanDetailsModal({
   isOpen,

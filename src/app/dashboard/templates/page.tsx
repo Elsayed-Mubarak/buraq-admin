@@ -236,7 +236,7 @@ export default function TemplateManagerLayout({
       <div className="px-4 sm:px-6 lg:px-8 pt-8">
         {/* Use the new Header Component */}
         <TemplateManagerHeader
-          activeTab={activeTab||'web'}
+          activeTab={activeTab || "web"}
           onCreateTemplate={() => setIsCreateModalOpen(true)}
         />
 
@@ -244,7 +244,11 @@ export default function TemplateManagerLayout({
 
         <TemplateCount count={templateCount} />
 
-        <TemplateTable columns={columns} data={enhancedFilteredData} />
+        <TemplateTable
+          columns={columns}
+          data={enhancedFilteredData}
+          activeTab={activeTab}
+        />
 
         <TemplateCreateModal
           isOpen={isCreateModalOpen}

@@ -7,7 +7,12 @@ import { TemplateTableProps } from "@/app/types/templateManager-types/TemplateMa
 //import DraggableTable from "@/components/common/DragableTable/DragableTable";
 
 
-const TemplateTable: React.FC<TemplateTableProps> = ({ columns, data }) => {
+const TemplateTable: React.FC<TemplateTableProps> = ({
+  columns,
+  data,
+  //activeTab,
+}) => {
+  //const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
   return (
     <div className="mt-6 bg-white shadow rounded-lg">
       <TableManger<FormData> columns={columns} data={data} />

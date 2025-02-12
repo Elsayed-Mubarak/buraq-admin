@@ -47,6 +47,7 @@ export interface TemplateSearchProps {
 export interface TemplateTableProps {
   columns: Column[];
   data: FormData[];
+  activeTab: string;
 }
 export interface TemplateManagerLayoutProps {
   activeTab: string;

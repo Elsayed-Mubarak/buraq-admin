@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, Fragment } from "react";
-import SettingsSidebar from "../../SettingsSidebar";
-import { settingsNavigation } from "../../commonSettings/Common";
+import SettingsSidebar from "@/components/settings/SettingsSidebar";
+import { settingsNavigation } from "@/app/dashboard/settings/commonSettings/Common";
 import Layout from "@/components/layout/Layout";
 import Link from "next/link";
 import {
