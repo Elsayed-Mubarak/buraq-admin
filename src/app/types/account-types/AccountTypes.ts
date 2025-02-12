@@ -1,6 +1,6 @@
 export interface ApiResponse {
   _id: string;
-  owner: string;
+  owner: Owner | null;
   status: string;
   createdAt: string;
   settings?: {
@@ -23,4 +23,11 @@ export interface AdminPortalData {
   owner: string;
   status: string;
   createdUTC: string;
+}
+
+interface Owner {
+  firstName: string;
+  lastName: string;
+  userName: string;
+  _id: string;
 }

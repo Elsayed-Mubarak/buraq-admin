@@ -26,7 +26,7 @@ const AnalyticsPage = () => {
   const [totalAccountsNumber, setTotalAccountsNumber] = useState<number>(0);
   const [totalConversationsNumber, setTotalConversationsNumber] =
     useState<number>(0);
-  const [totalClientsNumber, setTotalClientsNumber] = useState<number>(0);
+  //const [totalClientsNumber, setTotalClientsNumber] = useState<number>(0);
   const [liveAccounts, setLiveAccounts] = useState<number>(0); // not come from backend
   const [newAccounts, setNewAccounts] = useState<number>(0); // not come from backend
 
@@ -93,7 +93,7 @@ const AnalyticsPage = () => {
       // Set totals
       setTotalAccountsNumber(data.totalAccountsNumber ?? 0);
       setTotalConversationsNumber(data.totalConversationsNumber ?? 0);
-      setTotalClientsNumber(data.totalClientsNumber ?? 0);
+      //setTotalClientsNumber(data.totalClientsNumber ?? 0);
       setLiveAccounts(data.liveAccounts ?? 0);
       setNewAccounts(data.newAccounts ?? 0);
     } catch (error) {
@@ -162,7 +162,7 @@ const AnalyticsPage = () => {
               data={totalAccountsData}
               dataKey1="Plans"
               dataKey2="Accounts"
-              description={`${totalAccountsNumber} Accounts`}
+              description={`${totalAccountsData.length} Accounts`}
               header1="Plans"
               header2="Accounts"
             />
@@ -171,7 +171,7 @@ const AnalyticsPage = () => {
               data={activatedAccountsData}
               dataKey1="Month"
               dataKey2="Accounts"
-              description="156 Accounts"
+              description={`${activatedAccountsData.length} Accounts`}
               header1="Month"
               header2="Accounts"
             />
@@ -180,7 +180,7 @@ const AnalyticsPage = () => {
               data={conversationsData}
               dataKey1="Month"
               dataKey2="Chats"
-              description={`${totalConversationsNumber} Conversations`}
+              description={`${totalConversationsNumber.toString().length} Conversations`}
               header1="Month"
               header2="Chats"
             />
@@ -192,7 +192,7 @@ const AnalyticsPage = () => {
               data={contactsData}
               dataKey1="Month"
               dataKey2="Contacts"
-              description={`${totalClientsNumber} Contacts`}
+              description={`${contactsData.length} Contacts`}
               header1="Month"
               header2="Contacts"
             />
