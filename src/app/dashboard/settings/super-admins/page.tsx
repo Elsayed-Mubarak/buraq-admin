@@ -27,7 +27,10 @@ export default function SuperAdminsSettings() {
     );
   };
 
-  const handleAddAdmin = (newAdminEmail: string, newAdminName: string) => {
+  const handleAddAdmin = (newAdminEmail: string) => {
+    // Generate name from email (remove @domain.com and capitalize first letter)
+    const newAdminName = newAdminEmail.split('@')[0].charAt(0).toUpperCase() + 
+                        newAdminEmail.split('@')[0].slice(1);
     const newAdmin = { name: newAdminName, email: newAdminEmail };
     setSuperAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
   };

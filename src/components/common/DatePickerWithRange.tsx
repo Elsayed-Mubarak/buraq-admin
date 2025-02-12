@@ -1,26 +1,49 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { addDays, format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-import { DateRange } from "react-day-picker"
+import * as React from "react";
+import { addDays, format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { DateRange } from "react-day-picker";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
+
+interface DatePickerWithRangeProps {
+  className?: string;
+  onDateChange?: (dateRange: { from: string; to: string }) => void;
+}
 
 export function DatePickerWithRange({
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+  onDateChange,
+}: DatePickerWithRangeProps) {
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
-  })
+    from: addDays(new Date(), -30),
+    to: new Date(), // Current date
+  });
+  // Modified formatDate function to return ISO date string for backend compatibility
+  const formatDate = (date: Date): string => {
+    return format(date, "yyyy-MM-dd"); // ISO format for backend
+  };
+
+  // Display function for user-friendly format
+  const displayDate = (date: Date): string => {
+    return format(date, "d-M-yyyy"); // User-friendly display
+  };
+
+  React.useEffect(() => {
+    if (date?.from && date.to && onDateChange) {
+      const formattedFrom = formatDate(date.from);
+      const formattedTo = formatDate(date.to);
+      onDateChange({ from: formattedFrom, to: formattedTo });
+    }
+  }, [date, onDateChange]);
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -34,15 +57,15 @@ export function DatePickerWithRange({
               !date && "text-muted-foreground"
             )}
           >
-            <CalendarIcon />
+            <CalendarIcon className="mr-2 h-4 w-4" />
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "LLL dd, y")} -{" "}
-                  {format(date.to, "LLL dd, y")}
+                  {/* Display formatted dates in d-M-yyyy format */}
+                  {displayDate(date.from)} - {displayDate(date.to)}
                 </>
               ) : (
-                format(date.from, "LLL dd, y")
+                displayDate(date.from)
               )
             ) : (
               <span>Pick a date</span>
@@ -61,5 +84,5 @@ export function DatePickerWithRange({
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }

@@ -1,62 +1,121 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Layout from "@/components/layout/Layout";
-import {
-  aimodalsDate,
-  totalAccountsData,
-} from "../../data/DummyAnlyticsDate/AnlyticsDate";
-import { activatedAccountsData } from "../../data/DummyAnlyticsDate/AnlyticsDate";
-import { conversationsData } from "../../data/DummyAnlyticsDate/AnlyticsDate";
-import { contactsData } from "../../data/DummyAnlyticsDate/AnlyticsDate";
-import { outboundSendsData } from "../../data/DummyAnlyticsDate/AnlyticsDate";
 import axios from "axios";
-import { DatePickerWithRange } from "@/components/common/DatePickerWithRange";
 import { TableWrapper } from "@/components/analytics/TableWrapper/TableWrapper";
+import {
+  TableData,
+  AccountCountPerPlan,
+} from "@/app/types/analytics-types/AnlyticsTypes";
+import { DatePickerWithRange } from "@/components/common/DatePickerWithRange";
 
 const AnalyticsPage = () => {
-  const [startDate, setStartDate] = useState(new Date("02/02/2024"));
-  const [endDate, setEndDate] = useState(new Date("01/31/2025"));
-  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState<string>();
+  const [endDate, setEndDate] = useState<string>();
   const dateInputRef = useRef<HTMLDivElement>(null);
 
-  const loginUser = async (email: string, password: string) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        { email, password },
-        { withCredentials: true } // Ensure cookies (auth_token) are stored
-      );
+  const [totalAccountsData, setTotalAccountsData] = useState<TableData[]>([]);
+  const [activatedAccountsData, setActivatedAccountsData] = useState<
+    TableData[]
+  >([]);
+  const [conversationsData, setConversationsData] = useState<TableData[]>([]);
+  const [contactsData, setContactsData] = useState<TableData[]>([]);
+  //const [outboundSendsData, setOutboundSendsData] = useState<TableData[]>([]); // not come from backend
+  //const [aimodalsData, setAimodalsData] = useState<TableData[]>([]); // not come from backend
+  const [totalAccountsNumber, setTotalAccountsNumber] = useState<number>(0);
+  const [totalConversationsNumber, setTotalConversationsNumber] =
+    useState<number>(0);
+  //const [totalClientsNumber, setTotalClientsNumber] = useState<number>(0);
+  const [liveAccounts, setLiveAccounts] = useState<number>(0); // not come from backend
+  const [newAccounts, setNewAccounts] = useState<number>(0); // not come from backend
 
-      console.log("Login successful:", response.data);
-      return response.data;
-    } catch (error: unknown) {
-      console.error("Login failed:", (error as Error).message);
-      return null;
-    }
+  const handleDateChange = (dateRange: { from: string; to: string }) => {
+    setStartDate(dateRange.from);
+    setEndDate(dateRange.to);
   };
 
+  // Helper function to convert object to array for rendering
+  const convertObjectToArray = (obj: { [key: string]: number }) => {
+    return Object.entries(obj).map(([month, count]) => ({ month, count }));
+  };
+
+
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL 
+
   useEffect(() => {
-    loginUser("admin@gmail.com", "Aa_123456");
+   
+    console.log( " base url " , BASE_URL)
   });
+  const getAnalytics = useCallback(async () => {
+    if (!startDate || !endDate) {
+      console.log("Start date or end date is missing.");
+      return;
+    }
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/api/dashboard/analytics?startDate=${startDate}&endDate=${endDate}` ,
+        { withCredentials: true }
+      );
+      const data = res.data.data;
+      // Set total accounts data
+      setTotalAccountsData(
+        (data.numberOfAccountsPerPlan ?? []).map(
+          (item: AccountCountPerPlan) => ({
+            Plans: item.plan?.planName ?? "N/A",
+            Accounts: item.accountCount,
+          })
+        )
+      );
+
+      // Set activated accounts data (convert object to array)
+      setActivatedAccountsData(
+        convertObjectToArray(data.numberOfAccountsPerMonth ?? {}).map(
+          (item) => ({
+            Month: item.month,
+            Accounts: item.count,
+          })
+        )
+      );
+
+      // Set conversations data (convert object to array)
+      setConversationsData(
+        convertObjectToArray(data.conversationsInformation ?? {}).map(
+          (item) => ({
+            Month: item.month,
+            Chats: item.count,
+          })
+        )
+      );
+
+      // Set contacts data (convert object to array)
+      setContactsData(
+        convertObjectToArray(data.numberOfClientsPerMonth ?? {}).map(
+          (item) => ({
+            Month: item.month,
+            Contacts: item.count,
+          })
+        )
+      );
+
+      // Set totals
+      setTotalAccountsNumber(data.totalAccountsNumber ?? 0);
+      setTotalConversationsNumber(data.totalConversationsNumber ?? 0);
+      //setTotalClientsNumber(data.totalClientsNumber ?? 0);
+      setLiveAccounts(data.liveAccounts ?? 0);
+      setNewAccounts(data.newAccounts ?? 0);
+    } catch (error) {
+      console.log("Failed to fetch analytics:", error);
+    }
+  }, [startDate, endDate]);
+
+
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dateInputRef.current &&
-        !dateInputRef.current.contains(event.target as Node)
-      ) {
-        setIsCalendarOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+    (async () => {
+      await getAnalytics();
+    })();
+  }, [getAnalytics]);
 
   return (
     <Layout>
@@ -67,57 +126,38 @@ const AnalyticsPage = () => {
             <div className="flex flex-wrap gap-4 mb-4">
               <div className="bg-gray-100 border border-gray-300 p-4 text-center w-full sm:w-40 rounded-md">
                 Total accounts
-                <span className="block text-3xl font-bold mt-1">305</span>
+                <span className="block text-3xl font-bold mt-1">
+                  {totalAccountsNumber}
+                </span>
               </div>
               <div className="bg-gray-100 border border-gray-300 p-4 text-center w-full sm:w-40 rounded-md">
                 Live accounts
-                <span className="block text-3xl font-bold mt-1">24</span>
+                <span className="block text-3xl font-bold mt-1">
+                  {liveAccounts}
+                </span>
               </div>
               <div className="bg-gray-100 border border-gray-300 p-4 text-center w-full sm:w-40 rounded-md">
                 New accounts
-                <span className="block text-3xl font-bold mt-1">305</span>
+                <span className="block text-3xl font-bold mt-1">
+                  {newAccounts}
+                </span>
               </div>
             </div>
           </div>
 
           <div className="relative inline-block" ref={dateInputRef}>
-            <div
-              className="inline-flex items-center border border-gray-300 rounded-md px-3 py-2 cursor-pointer"
-              // onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-            >
-              {/* {startDate.toLocaleDateString()} - {endDate.toLocaleDateString()} */}
-
-              <DatePickerWithRange />
-            </div>
-
-            {isCalendarOpen && (
-              <div className="absolute right-0 z-10 mt-2 bg-white rounded-md shadow-lg border border-gray-200">
-                <DatePicker
-                  selectsRange
-                  startDate={startDate}
-                  endDate={endDate}
-                  onChange={(dates) => {
-                    const [start, end] = dates;
-                    if (start) setStartDate(start);
-                    if (end) setEndDate(end);
-                  }}
-                  inline
-                />
-              </div>
-            )}
+            <DatePickerWithRange onDateChange={handleDateChange} />
           </div>
         </div>
 
-        {/* Table Grouping */}
         <div className="flex flex-wrap gap-4">
-          {/* Row 1 */}
           <div className="flex flex-wrap gap-4 w-full">
             <TableWrapper
               title="Total Accounts"
               data={totalAccountsData}
               dataKey1="Plans"
               dataKey2="Accounts"
-              description="305 Accounts"
+              description={`${totalAccountsData.length} Accounts`}
               header1="Plans"
               header2="Accounts"
             />
@@ -126,7 +166,7 @@ const AnalyticsPage = () => {
               data={activatedAccountsData}
               dataKey1="Month"
               dataKey2="Accounts"
-              description="156 Accounts"
+              description={`${activatedAccountsData.length} Accounts`}
               header1="Month"
               header2="Accounts"
             />
@@ -135,24 +175,23 @@ const AnalyticsPage = () => {
               data={conversationsData}
               dataKey1="Month"
               dataKey2="Chats"
-              description="68,432 Conversations"
+              description={`${totalConversationsNumber.toString().length} Conversations`}
               header1="Month"
               header2="Chats"
             />
           </div>
 
-          {/* Row 2 */}
           <div className="flex flex-wrap gap-4 w-full">
             <TableWrapper
               title="Contacts"
               data={contactsData}
               dataKey1="Month"
               dataKey2="Contacts"
-              description="588,867 Contacts"
+              description={`${contactsData.length} Contacts`}
               header1="Month"
               header2="Contacts"
             />
-            <TableWrapper
+            {/*<TableWrapper
               title="Outbound Sends"
               data={outboundSendsData}
               dataKey1="Month"
@@ -160,16 +199,16 @@ const AnalyticsPage = () => {
               description="370 Campaigns"
               header1="Month"
               header2="Campaigns"
-            />
-            <TableWrapper
+            />*/}
+            {/*<TableWrapper
               title="AI modal usage"
-              data={aimodalsDate}
+              data={aimodalsData}
               dataKey1="Month"
               dataKey2="Requests"
               description="339 Request"
               header1="Month"
               header2="Requests"
-            />
+            />*/}
           </div>
         </div>
       </div>

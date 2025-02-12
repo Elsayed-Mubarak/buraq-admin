@@ -9,8 +9,7 @@ import { UtilitySection } from "./UtilitySection";
 import { CustomIntegrationSection } from "./CustomIntegrationSection";
 import { AIStudioSection } from "./AIStudioSection";
 import { ChannelsSection } from "./ChannelsSection";
-//import { Plan } from "@/app/types/Types";
-import { Plan } from "@/app/dashboard/settings/pricing/plans/types/Types";
+import { Plan } from "@/app/types/plans-types/PlansTypes";
 import { UsageSection } from "./UsageSection";
 
 interface PlanDetailsContentProps {

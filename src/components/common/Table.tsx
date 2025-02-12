@@ -1,15 +1,15 @@
 "use client";
 
 import React from "react";
-import { AdminPortalData } from "../DummyData/dummyUsers";
+import { AdminPortalData } from "@/app/types/account-types/AccountTypes";
 
-export interface Column {
+export interface AccountColumn {
   key: keyof AdminPortalData;
   header: string;
 }
 
 export interface TableProps {
-  columns: Column[];
+  columns: AccountColumn[];
   data: AdminPortalData[];
   onRowClick?: (row: AdminPortalData) => void;
 }
@@ -46,7 +46,7 @@ export default function Table({ columns, data, onRowClick }: TableProps) {
     }
   };
 
-  const renderCell = (row: AdminPortalData, column: Column) => {
+  const renderCell = (row: AdminPortalData, column: AccountColumn) => {
     const value = getCellValue(row, column.key);
     if (column.key === "createdUTC") {
       return formatDate(value);
@@ -55,7 +55,7 @@ export default function Table({ columns, data, onRowClick }: TableProps) {
       return (
         <span
           className={`capitalize ${
-            value === "Active" ? "text-green-600" : "text-red-600"
+            value === "active" ? "text-green-600" : "text-red-600"
           }`}
         >
           {value}

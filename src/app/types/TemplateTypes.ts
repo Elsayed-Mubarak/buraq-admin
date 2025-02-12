@@ -1,5 +1,5 @@
-export interface FormData {
-  id: string ;
+export interface FormData extends Record<string, unknown> {
+  id: string;
   title: string;
   botName: string;
   category: string;
