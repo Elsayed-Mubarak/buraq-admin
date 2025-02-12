@@ -43,10 +43,7 @@ const AnalyticsPage = () => {
 
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL 
 
-  useEffect(() => {
-   
-    console.log( " base url " , BASE_URL)
-  });
+
   const getAnalytics = useCallback(async () => {
     if (!startDate || !endDate) {
       console.log("Start date or end date is missing.");
@@ -57,8 +54,10 @@ const AnalyticsPage = () => {
         `${BASE_URL}/api/dashboard/analytics?startDate=${startDate}&endDate=${endDate}` ,
         { withCredentials: true }
       );
-      const data = res.data.data;
+      const data = res?.data?.data;
       // Set total accounts data
+
+      console.log(data)
       setTotalAccountsData(
         (data.numberOfAccountsPerPlan ?? []).map(
           (item: AccountCountPerPlan) => ({
@@ -79,6 +78,7 @@ const AnalyticsPage = () => {
       );
 
       // Set conversations data (convert object to array)
+      // [ jan-2025 :  0 ]
       setConversationsData(
         convertObjectToArray(data.conversationsInformation ?? {}).map(
           (item) => ({
