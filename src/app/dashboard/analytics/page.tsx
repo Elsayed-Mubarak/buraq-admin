@@ -36,16 +36,20 @@ const AnalyticsPage = () => {
   };
 
   // Helper function to convert object to array for rendering
-  const convertObjectToArray = (obj: { [key: string]: number }) => {
-    return Object.entries(obj).map(([month, count]) => ({ month, count }));
+  const convertObjectToArray = (obj: {
+    [key: string]: number;
+  }): { month: string; count: number }[] => {
+    if (!obj || typeof obj !== "object") return [];
+    return Object.entries(obj).map(([month, count]) => ({
+      month,
+      count: Number(count) || 0,
+    }));
   };
 
-
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL 
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
   useEffect(() => {
-   
-    console.log( " base url " , BASE_URL)
+    console.log(" base url ", BASE_URL);
   });
   const getAnalytics = useCallback(async () => {
     if (!startDate || !endDate) {
@@ -54,11 +58,13 @@ const AnalyticsPage = () => {
     }
     try {
       const res = await axios.get(
-        `${BASE_URL}/api/dashboard/analytics?startDate=${startDate}&endDate=${endDate}` ,
+        `${BASE_URL}/api/dashboard/analytics?startDate=${startDate}&endDate=${endDate}`,
         { withCredentials: true }
       );
-      const data = res.data.data;
+      const data = res?.data?.data;
       // Set total accounts data
+
+      console.log(data)
       setTotalAccountsData(
         (data.numberOfAccountsPerPlan ?? []).map(
           (item: AccountCountPerPlan) => ({
@@ -79,6 +85,7 @@ const AnalyticsPage = () => {
       );
 
       // Set conversations data (convert object to array)
+      // [ jan-2025 :  0 ]
       setConversationsData(
         convertObjectToArray(data.conversationsInformation ?? {}).map(
           (item) => ({
@@ -108,8 +115,6 @@ const AnalyticsPage = () => {
       console.log("Failed to fetch analytics:", error);
     }
   }, [startDate, endDate]);
-
-
 
   useEffect(() => {
     (async () => {
@@ -175,7 +180,9 @@ const AnalyticsPage = () => {
               data={conversationsData}
               dataKey1="Month"
               dataKey2="Chats"
-              description={`${totalConversationsNumber.toString().length} Conversations`}
+              description={`${
+                totalConversationsNumber.toString().length
+              } Conversations`}
               header1="Month"
               header2="Chats"
             />
