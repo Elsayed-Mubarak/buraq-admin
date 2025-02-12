@@ -1,5 +1,6 @@
 "use client";
 
+// componet need to refactor
 export interface Column<T> {
   key: keyof T | string; 
   header: string;

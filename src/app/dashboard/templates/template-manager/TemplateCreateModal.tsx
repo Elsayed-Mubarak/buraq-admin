@@ -46,6 +46,7 @@ const TemplateCreateModal: React.FC<TemplateCreateModalProps> = ({
       onClick={handleSubmit}
       isCloseButton={true}
     >
+      {/*Need to remove image come from backend*/}
       <div className="p-6">
         <form onSubmit={handleSubmit} className="mt-4">
           {/* Image Upload */}
