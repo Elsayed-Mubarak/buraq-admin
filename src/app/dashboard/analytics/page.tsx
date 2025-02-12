@@ -40,6 +40,13 @@ const AnalyticsPage = () => {
     return Object.entries(obj).map(([month, count]) => ({ month, count }));
   };
 
+
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL 
+
+  useEffect(() => {
+   
+    console.log( " base url " , BASE_URL)
+  });
   const getAnalytics = useCallback(async () => {
     if (!startDate || !endDate) {
       console.log("Start date or end date is missing.");
@@ -47,7 +54,8 @@ const AnalyticsPage = () => {
     }
     try {
       const res = await axios.get(
-        `http://localhost:3001/api/dashboard/analytics?startDate=${startDate}&endDate=${endDate}`
+        `${BASE_URL}/api/dashboard/analytics?startDate=${startDate}&endDate=${endDate}` ,
+        { withCredentials: true }
       );
       const data = res.data.data;
       // Set total accounts data
@@ -101,23 +109,10 @@ const AnalyticsPage = () => {
     }
   }, [startDate, endDate]);
 
-  const loginUser = async (email: string, password: string) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        { email, password },
-        { withCredentials: true }
-      );
-      console.log("Login successful:", response.data);
-      return response.data;
-    } catch (error: unknown) {
-      console.log("Login failed:", error);
-    }
-  };
+
 
   useEffect(() => {
     (async () => {
-      await loginUser("admin@gmail.com", "Aa_123456");
       await getAnalytics();
     })();
   }, [getAnalytics]);

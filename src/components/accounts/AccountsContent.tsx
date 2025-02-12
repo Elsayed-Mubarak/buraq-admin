@@ -33,11 +33,14 @@ export default function AccountsContent() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
+
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL 
+
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:3001/api/dashboard/admin-portal?limit=10&page=1`,
+        `${BASE_URL}/api/dashboard/admin-portal?limit=10&page=1`,
         { withCredentials: true }
       );
       const apiData: ApiResponse[] = response.data.data.results;
