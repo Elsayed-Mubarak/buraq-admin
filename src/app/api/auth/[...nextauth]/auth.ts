@@ -34,7 +34,7 @@ export const authOptions: AuthOptions = {
 
         try {
           const response = await axios.post<{ user: User }>(
-            `${process.env.BASE_URL}/api/admin/auth/login`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/auth/login`,
             {
               email: credentials.email,
               password: credentials.password,
