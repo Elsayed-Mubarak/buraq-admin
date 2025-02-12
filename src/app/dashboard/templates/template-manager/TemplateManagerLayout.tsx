@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useRef, useCallback } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import Layout from "@/components/layout/Layout";
 import TemplateManagerHeader from "./TemplateManagerHeader";
 import TemplateSearch from "./TemplateSearch";
@@ -9,7 +9,7 @@ import TemplateTable from "./TemplateTable";
 import TemplateCreateModal from "./TemplateCreateModal";
 import TemplateEditModal from "./TemplateEditModal";
 import { v4 as uuidv4 } from "uuid";
-import { Column, TemplateData } from "@/app/types/TemplateTypes";
+import { TemplateData } from "@/app/types/TemplateTypes";
 import { FormData } from "@/app/types/TemplateTypes";
 import { TemplateManagerLayoutProps } from "@/app/types/templateManager-types/TemplateManagerTypes";
 
@@ -28,12 +28,7 @@ const initialCategories = [
   "Technology",
 ];
 
-const columns: Column[] = [
-  { key: "title", header: "Title" },
-  { key: "botName", header: "Bot Name" },
-  { key: "category", header: "Category" },
-  { key: "actions", header: "" },
-];
+
 
 export default function TemplateManagerLayout({
   activeTab,
@@ -188,52 +183,6 @@ export default function TemplateManagerLayout({
 
   const templateCount = filteredData.length;
 
-  const handleEdit = useCallback(
-    (id: string) => {
-      const templateToEdit = templates.find((t) => t.id === id);
-      if (templateToEdit) {
-        const { id, ...formValues } = templateToEdit;
-        setFormData(formValues);
-        setSelectedTemplateId(id);
-        setIsEditModalOpen(true);
-      }
-    },
-    [templates]
-  );
-
-  const handleRemove = useCallback((id: string) => {
-    setTemplates((prevTemplates) => prevTemplates.filter((t) => t.id !== id));
-    handleSimulateBackend({ id, action: "delete" });
-  }, []);
-
-  const renderActions = useCallback(
-    (id: string) => {
-      return (
-        <div className="flex space-x-2">
-          <button
-            className="text-blue-600 hover:text-blue-800"
-            onClick={() => handleEdit(id)}
-          >
-            Edit
-          </button>
-          <button
-            className="text-red-600 hover:text-red-800"
-            onClick={() => handleRemove(id)}
-          >
-            Remove
-          </button>
-        </div>
-      );
-    },
-    [handleEdit, handleRemove]
-  );
-
-  const enhancedFilteredData = useMemo(() => {
-    return filteredData.map((item) => ({
-      ...item,
-      actions: renderActions(item.id),
-    }));
-  }, [filteredData, renderActions]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
@@ -257,7 +206,8 @@ export default function TemplateManagerLayout({
         />
         <TemplateSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <TemplateCount count={templateCount} />
-        <TemplateTable columns={columns} data={enhancedFilteredData} />
+
+        <TemplateTable  activeTab={activeTab} />
         <TemplateCreateModal
           isOpen={isCreateModalOpen}
           onClose={() => setIsCreateModalOpen(false)}

@@ -9,9 +9,9 @@ import TemplateCount from "./template-manager/TemplateCount";
 import TemplateTable from "./template-manager/TemplateTable";
 import TemplateCreateModal from "./template-manager/TemplateCreateModal";
 import TemplateEditModal from "./template-manager/TemplateEditModal";
-import { Column, FormData } from "@/app/types/TemplateTypes";
+import { FormData } from "@/app/types/TemplateTypes";
 import { v4 as uuidv4 } from "uuid";
-import { TemplateManagerLayoutProps } from "@/app/types/templateManager-types/TemplateManagerTypes";
+import TemplateNav from "@/components/common/TemplateNav/TemplateNav";
 
 
 
@@ -30,16 +30,10 @@ const initialCategories = [
   "Technology",
 ];
 
-const columns:Column[] = [
-  { key: "title", header: "Title" },
-  { key: "botName", header: "Bot Name" },
-  { key: "category", header: "Category" },
-  { key: "actions", header: "" },
-];
 
-export default function TemplateManagerLayout({
-  activeTab,
-}: TemplateManagerLayoutProps) {
+
+export default function Page() {
+
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState<Omit<FormData, "id">>({
@@ -64,42 +58,7 @@ export default function TemplateManagerLayout({
       image: null,
       imageUrl: null,
     },
-    {
-      id: uuidv4(),
-      title: "Scheduling Site Visit for Real Estate",
-      botName: "WEB - Scheduling Site Visit for Real Estate",
-      category: "Real Estate",
-      description: "",
-      image: null,
-      imageUrl: null,
-    },
-    {
-      id: uuidv4(),
-      title: "Facebook Post Template 2",
-      botName: "FB - Post Template 2",
-      category: "Engagement",
-      description: "",
-      image: null,
-      imageUrl: null,
-    },
-    {
-      id: uuidv4(),
-      title: "SMS Welcome Message",
-      botName: "SMS - Welcome",
-      category: "Welcome",
-      description: "",
-      image: null,
-      imageUrl: null,
-    },
-    {
-      id: uuidv4(),
-      title: "Web Restaurant Chatbot",
-      botName: "WEB - Restaurant",
-      category: "Hospitality",
-      description: "",
-      image: null,
-      imageUrl: null,
-    },
+  
   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -179,44 +138,6 @@ export default function TemplateManagerLayout({
 
   const templateCount = filteredData.length;
 
-  const handleEdit = (id: string) => {
-    const templateToEdit = templates.find((t) => t.id === id);
-    if (templateToEdit) {
-      const { id, ...formValues } = templateToEdit;
-      setFormData(formValues);
-      setSelectedTemplateId(id);
-      setIsEditModalOpen(true);
-    }
-  };
-
-  const handleRemove = (id: string) => {
-    setTemplates(templates.filter((t) => t.id !== id));
-    handleSimulateBackend({ id, action: "delete" });
-  };
-
-  const renderActions = (id: string) => {
-    return (
-      <div className="flex space-x-2">
-        <button
-          className="text-blue-600 hover:text-blue-800"
-          onClick={() => handleEdit(id)}
-        >
-          Edit
-        </button>
-        <button
-          className="text-red-600 hover:text-red-800"
-          onClick={() => handleRemove(id)}
-        >
-          Remove
-        </button>
-      </div>
-    );
-  };
-
-  const enhancedFilteredData = filteredData.map((item) => ({
-    ...item,
-    actions: renderActions(item.id),
-  }));
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
@@ -231,10 +152,22 @@ export default function TemplateManagerLayout({
     }
   };
 
+
+  
+  const [activeTab, setActiveTab] = useState('Web');
+
+  const handleTabChange = (tab : string) => {
+    setActiveTab(tab);
+  };
+
+
+
   return (
     <Layout>
       <div className="px-4 sm:px-6 lg:px-8 pt-8">
         {/* Use the new Header Component */}
+
+
         <TemplateManagerHeader
           activeTab={activeTab||'web'}
           onCreateTemplate={() => setIsCreateModalOpen(true)}
@@ -244,7 +177,12 @@ export default function TemplateManagerLayout({
 
         <TemplateCount count={templateCount} />
 
-        <TemplateTable columns={columns} data={enhancedFilteredData} />
+
+        <TemplateNav activeTab={activeTab} onTabChange={handleTabChange} />
+
+
+        <TemplateTable activeTab={activeTab} />
+
 
         <TemplateCreateModal
           isOpen={isCreateModalOpen}
