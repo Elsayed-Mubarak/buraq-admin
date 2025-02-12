@@ -64,7 +64,7 @@ const AnalyticsPage = () => {
       const data = res?.data?.data;
       // Set total accounts data
 
-      console.log(data)
+      console.log(data);
       setTotalAccountsData(
         (data.numberOfAccountsPerPlan ?? []).map(
           (item: AccountCountPerPlan) => ({
@@ -114,7 +114,7 @@ const AnalyticsPage = () => {
     } catch (error) {
       console.log("Failed to fetch analytics:", error);
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, BASE_URL]);
 
   useEffect(() => {
     (async () => {

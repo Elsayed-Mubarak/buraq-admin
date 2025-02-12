@@ -48,7 +48,7 @@ export default function AccountsContent() {
       const mappedData: AdminPortalData[] = apiData.map((item, index) => ({
         accountID: index.toString(), // item._id
         accountName: item.settings?.name || "N/A",
-        owner: item?.owner?.userName||"",
+        owner: item?.owner?.userName || "",
         status: item.status,
         createdUTC: item.createdAt,
       }));
@@ -61,7 +61,7 @@ export default function AccountsContent() {
     } finally {
       setLoading(false);
     }
-  }, []); 
+  }, [BASE_URL]); 
 
   useEffect(() => {
     fetchData();

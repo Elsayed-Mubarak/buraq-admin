@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import { TemplateData } from "@/app/types/TemplateTypes";
 import { FormData } from "@/app/types/TemplateTypes";
 import { TemplateManagerLayoutProps } from "@/app/types/templateManager-types/TemplateManagerTypes";
+//import axios from "axios";
 
 const initialCategories = [
   "Healthcare",
@@ -46,47 +47,12 @@ export default function TemplateManagerLayout({
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
     null
   );
+
   const [templates, setTemplates] = useState<FormData[]>([
     {
       id: uuidv4(),
       title: "Pizza Restaurant Chatbot",
       botName: "WEB - Pizza Restaurant Chatbot",
-      category: "Hospitality",
-      description: "",
-      image: null,
-      imageUrl: null,
-    },
-    {
-      id: uuidv4(),
-      title: "Scheduling Site Visit for Real Estate",
-      botName: "WEB - Scheduling Site Visit for Real Estate",
-      category: "Real Estate",
-      description: "",
-      image: null,
-      imageUrl: null,
-    },
-    {
-      id: uuidv4(),
-      title: "Facebook Post Template 2",
-      botName: "FB - Post Template 2",
-      category: "Engagement",
-      description: "",
-      image: null,
-      imageUrl: null,
-    },
-    {
-      id: uuidv4(),
-      title: "SMS Welcome Message",
-      botName: "SMS - Welcome",
-      category: "Welcome",
-      description: "",
-      image: null,
-      imageUrl: null,
-    },
-    {
-      id: uuidv4(),
-      title: "Web Restaurant Chatbot",
-      botName: "WEB - Restaurant",
       category: "Hospitality",
       description: "",
       image: null,
@@ -108,12 +74,15 @@ export default function TemplateManagerLayout({
         if (t.id === selectedTemplateId) {
           return {
             ...t,
-            title: String(restFormData.title || ''),
-            botName: String(restFormData.botName || ''),
-            category: String(restFormData.category || ''),
-            description: String(restFormData.description || ''),
+            title: String(restFormData.title || ""),
+            botName: String(restFormData.botName || ""),
+            category: String(restFormData.category || ""),
+            description: String(restFormData.description || ""),
             image: image as File | null,
-            imageUrl: typeof formData.imageUrl === 'string' ? formData.imageUrl : t.imageUrl
+            imageUrl:
+              typeof formData.imageUrl === "string"
+                ? formData.imageUrl
+                : t.imageUrl,
           };
         }
         return t;
@@ -131,12 +100,13 @@ export default function TemplateManagerLayout({
       const newId = uuidv4();
       const newTemplate: FormData = {
         id: newId,
-        title: String(restFormData.title || ''),
-        botName: String(restFormData.botName || ''),
-        category: String(restFormData.category || ''),
-        description: String(restFormData.description || ''),
+        title: String(restFormData.title || ""),
+        botName: String(restFormData.botName || ""),
+        category: String(restFormData.category || ""),
+        description: String(restFormData.description || ""),
         image: image as File | null,
-        imageUrl: typeof formData.imageUrl === 'string' ? formData.imageUrl : null,
+        imageUrl:
+          typeof formData.imageUrl === "string" ? formData.imageUrl : null,
       };
       setTemplates([...templates, newTemplate]);
       handleSimulateBackend({

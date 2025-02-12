@@ -169,7 +169,7 @@ export default function Page() {
 
 
         <TemplateManagerHeader
-          activeTab={activeTab||'web'}
+          activeTab={activeTab || "web"}
           onCreateTemplate={() => setIsCreateModalOpen(true)}
         />
 
