@@ -1,7 +1,4 @@
-// Table.tsx (Updated)
 "use client";
-
-import React from "react";
 
 export interface Column<T> {
   key: keyof T | string; 
@@ -15,7 +12,7 @@ export interface TableProps<T> {
   onRowClick?: (row: T) => void;
 }
 
-export default function TableManger<T extends Record<string,any>>({
+export default function TableManger<T extends Record<string, unknown>>({
   columns,
   data,
   onRowClick,
@@ -27,16 +24,16 @@ export default function TableManger<T extends Record<string,any>>({
     try {
       if (typeof key === "string" && key.includes(".")) {
         const keys = key.split(".");
-        let value = row; // removed any
+        let value: unknown = row; 
         for (const k of keys) {
-          value = value[k];
+          value = (value as Record<string, unknown>)[k];
           if (value === undefined || value === null) return ""; 
         }
-        return value?.toString() || "";
+        return String(value) || "";
       }
 
       const value = row[key as keyof T]; 
-      return value?.toString() || "";
+      return String(value) || "";
     } catch (error) {
       console.error(`Error getting cell value for key ${String(key)}:`, error);
       return "";
@@ -96,7 +93,7 @@ export default function TableManger<T extends Record<string,any>>({
           ) : (
             data.map((row, rowIdx) => (
               <tr
-                key={row.id || rowIdx} 
+                key={String((row as Record<string, unknown>).id) || rowIdx} 
                 onClick={() => onRowClick?.(row)}
                 className={`${
                   onRowClick ? "cursor-pointer hover:bg-gray-50" : ""

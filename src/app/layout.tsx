@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -9,15 +10,16 @@ export const metadata: Metadata = {
   description: 'Admin dashboard for managing Buraq AI platform',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <html lang="en" className="h-full bg-gray-50">
       <body className={`${inter.className} h-full`}>
-        {children}
+     {children}
       </body>
     </html>
   );

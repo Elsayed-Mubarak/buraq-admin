@@ -8,14 +8,14 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 
 const navigation = [
-  { name: "Accounts", href: "/accounts", icon: GrUserSettings },
-  { name: "Analytics", href: "/analytics", icon: BiBarChartSquare },
-  { name: "Template Manget", href: "/templates", icon: HiOutlineTemplate }, // Update href as needed
+  { name: "Accounts", href: "/dashboard/accounts", icon: GrUserSettings },
+  { name: "Analytics", href: "/dashboard/analytics", icon: BiBarChartSquare },
+  { name: "Template Manget", href: "/dashboard/templates", icon: HiOutlineTemplate }, //dashboard/ Update href as needed
 ];
 
 const bottomNavigation = [
-  { name: "Questions", href: "/questions", icon: FaRegQuestionCircle },
-  { name: "Settings", href: "/settings", icon: IoMdSettings },
+  { name: "Questions", href: "/dashboard/questions", icon: FaRegQuestionCircle },
+  { name: "Settings", href: "/dashboard/settings", icon: IoMdSettings },
 ];
 
 export default function Sidebar() {

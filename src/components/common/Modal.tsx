@@ -27,7 +27,10 @@ const Modal: React.FC<ModalProps> = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         onClose();
       }
     };
@@ -71,6 +74,7 @@ const Modal: React.FC<ModalProps> = ({
         </div>
 
         {/* Modal Footer */}
+
         <div
           className={` ${
             isCloseButton ? "justify-between space-x-3 " : "justify-end"
