@@ -51,6 +51,7 @@ export default function Colors() {
   // Transform the colors state into the required format
   const transformColorsForBackend = () => {
     return {
+      buraqSettingsId: "67a3506f4f9b9f1b523ee827",
       accent: {
         primary: colors.accentPrimary,
         secondary: colors.accentSecondary,
@@ -81,8 +82,7 @@ export default function Colors() {
     setError(null);
 
     const formattedColors = transformColorsForBackend();
-    console.log(formattedColors);
-
+    console.log("Request payload:", JSON.stringify(formattedColors, null, 2));
     try {
       const response = await axios.post(
         `${BASE_URL}/api/dashboard/settings/theme`,

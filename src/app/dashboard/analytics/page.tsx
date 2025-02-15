@@ -60,8 +60,6 @@ const AnalyticsPage = () => {
       );
       const data = res?.data?.data;
       // Set total accounts data
-
-      console.log(data);
       setTotalAccountsData(
         (data.numberOfAccountsPerPlan ?? []).map(
           (item: AccountCountPerPlan) => ({

@@ -8,6 +8,7 @@ const Typography: React.FC = () => {
 
   const [typographySettings, setTypographySettings] =
     useState<TypographySettings>({
+      //buraqSettingsId:  "67a3506f4f9b9f1b523ee827",
       heading1: { fontStyle: "Barlow", size: 24 },
       heading2: { fontStyle: "Nunito", size: 20 },
       heading3: { fontStyle: "Nunito", size: 18 },
@@ -17,9 +18,9 @@ const Typography: React.FC = () => {
       body3: { fontStyle: "Nunito", size: 11 },
       body4: { fontStyle: "Nunito", size: 9 },
     });
-  const [error, setError] = useState<string | null>(null); 
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null); 
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleFontStyleChange = (
     type: keyof TypographySettings,
@@ -45,19 +46,19 @@ const Typography: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     setError(null); // Clear any previous errors
-    setSuccessMessage(null); 
+    setSuccessMessage(null);
 
     try {
       const res = await axios.post(
         `${BASE_URL}/api/dashboard/settings/typography`,
-        typographySettings,
+        { typographySettings, buraqSettingsId: "67a3506f4f9b9f1b523ee827" },
         {
           withCredentials: true,
         }
       );
 
       if (res.status === 200) {
-        setSuccessMessage("Typography settings saved successfully!"); 
+        setSuccessMessage("Typography settings saved successfully!");
       } else {
         setError(`Server responded with status: ${res.status}`);
       }
@@ -67,14 +68,14 @@ const Typography: React.FC = () => {
           error.response?.data.message ||
             error.message ||
             "An Axios error occurred"
-        ); 
+        );
       } else if (error instanceof Error) {
-        setError(error.message); 
+        setError(error.message);
       } else {
-        setError("An unknown error occurred"); 
+        setError("An unknown error occurred");
       }
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 

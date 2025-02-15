@@ -1,21 +1,13 @@
 "use client";
+import axios from "axios";
 import Image from "next/image";
 import { useState, useRef } from "react";
 
-// not understand this => for validate file and can send to backend
-function arrayBufferToBase64(buffer: ArrayBuffer) {
-  let binary = "";
-  const bytes = new Uint8Array(buffer);
-  const len = bytes.byteLength;
-  for (let i = 0; i < len; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binary);
-}
-
 export default function GeneralSettings() {
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
   const [generalData, setGeneralData] = useState({
-    productName: "Buraq",
+    productName: "Buraq2",
     fullLogo: null as File | null,
     logoWithoutWordmark: null as File | null,
     favicon: null as File | null,
@@ -76,69 +68,76 @@ export default function GeneralSettings() {
     setErrorMessage("");
 
     try {
-      const formData = new FormData();
-      formData.append("productName", generalData.productName);
+      // Create an object to hold all data
+      const data: {
+        productName: string;
+        buraqSettingsId: string;
+        fullLogo?: string;
+        fullLogoName?: string;
+        logoWithoutWordmark?: string;
+        logoWithoutWordmarkName?: string;
+        favicon?: string;
+        faviconName?: string;
+      } = {
+        productName: generalData.productName,
+        buraqSettingsId: "67a3506f4f9b9f1b523ee827",
+      };
 
-      // Convert files to base64
+      // Helper function to read a file as base64
+      const readFileAsBase64 = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      };
+
+      // Append files as base64 strings
       if (generalData.fullLogo) {
-        const buffer = await generalData.fullLogo.arrayBuffer();
-        const base64 = arrayBufferToBase64(buffer);
-        formData.append("fullLogo", base64);
-        formData.append("fullLogoName", generalData.fullLogo.name);
+        const base64 = await readFileAsBase64(generalData.fullLogo);
+        data.fullLogo = base64.split(",")[1]; // Remove the data URL prefix
+        data.fullLogoName = generalData.fullLogo.name;
       }
       if (generalData.logoWithoutWordmark) {
-        const buffer = await generalData.logoWithoutWordmark.arrayBuffer();
-        const base64 = arrayBufferToBase64(buffer);
-        formData.append("logoWithoutWordmark", base64);
-        formData.append(
-          "logoWithoutWordmarkName",
-          generalData.logoWithoutWordmark.name
-        );
+        const base64 = await readFileAsBase64(generalData.logoWithoutWordmark);
+        data.logoWithoutWordmark = base64.split(",")[1];
+        data.logoWithoutWordmarkName = generalData.logoWithoutWordmark.name;
       }
       if (generalData.favicon) {
-        const buffer = await generalData.favicon.arrayBuffer();
-        const base64 = arrayBufferToBase64(buffer);
-        formData.append("favicon", base64);
-        formData.append("faviconName", generalData.favicon.name);
+        const base64 = await readFileAsBase64(generalData.favicon);
+        data.favicon = base64.split(",")[1];
+        data.faviconName = generalData.favicon.name;
       }
+      console.log(data);
+      // Send as JSON
+      const res = await axios.post(
+        `${BASE_URL}/api/dashboard/settings/general`,
+        data,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json", // Set correct content type
+          },
+        }
+      );
 
-      const res = await fetch("/api", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (res.ok) {
+      if (res.status === 200) {
         console.log("General settings saved successfully!");
-      } else {
-        const errorData = await res.json(); //  specific error info from the backend
-        console.error(
-          "Failed to save general settings:",
-          res.status,
-          errorData
-        );
-        setErrorMessage(
-          `Failed to save. Status: ${res.status}.  ${
-            errorData?.message || "Unknown error."
-          }`
-        );
       }
     } catch (error: unknown) {
-      //console.error("Error saving general settings:", error);
       setErrorMessage(
         `An unexpected error occurred: ${(error as Error).message}`
       );
-      //setErrorMessage(
-      //  `An unexpected error occurred while save data: `
-      //);
     } finally {
       setLoading(false);
     }
   };
 
+
   return (
     <div className="m-4">
       <div className="flex h-full">
-
         <div className="ml-4 flex-1">
           <div className="border-gray-200 rounded-lg shadow-sm max-w-xl px-4 py-5 sm:px-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">General</h2>
@@ -222,7 +221,7 @@ export default function GeneralSettings() {
                   ) : (
                     <input
                       type="file"
-                      accept="image/svg+xml" 
+                      accept="image/svg+xml"
                       onChange={(e) =>
                         handleFileChange(
                           "fullLogo",
@@ -285,7 +284,7 @@ export default function GeneralSettings() {
                   ) : (
                     <input
                       type="file"
-                      accept="image/svg+xml" 
+                      accept="image/svg+xml"
                       onChange={(e) =>
                         handleFileChange(
                           "logoWithoutWordmark",
@@ -293,7 +292,7 @@ export default function GeneralSettings() {
                         )
                       }
                       className="mt-1 max-w-lg"
-                      ref={logoWithoutWordmarkInputRef} 
+                      ref={logoWithoutWordmarkInputRef}
                     />
                   )}
                 </div>

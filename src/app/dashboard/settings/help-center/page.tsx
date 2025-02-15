@@ -1,10 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import axios from "axios";
 
+// need to add title and url when make true to checkbox
 function HelpCenterConfig() {
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
   const [config, setConfig] = useState({
-    readHelpArticles: true,
+    readHelpArticles: false,
     title: "Help Articles",
     url: "https://help.buraq.ai/",
     createDesk: false,
@@ -22,14 +26,25 @@ function HelpCenterConfig() {
     }));
   };
 
-  const handleSave = () => {
-    // Here you would handle the save logic, sending data to backend etc.
+  const handleSave = async () => {
+    console.log(config);
+    try {
+      const res = axios.post(
+        `${BASE_URL}/api/dashboard/settings/help-center`,
+        config,
+        { withCredentials: true }
+      );
+    console.log(res);
+
+      if ((await res).status === 200) console.log(`Send Data Successfully`);
+    } catch (error) {
+      console.log("Error Please try later", error);
+    }
   };
 
   return (
     <div className="m-4">
       <div className="flex h-full">
-
         <div className="ml-4 flex-1">
           <div className=" rounded-lg p-6 shadow-sm max-w-2xl border-gray-200">
             <div className="mb-4">

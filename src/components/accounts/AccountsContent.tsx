@@ -48,7 +48,7 @@ export default function AccountsContent() {
       const mappedData: AdminPortalData[] = apiData.map((item, index) => ({
         accountID: index.toString(), // item._id
         accountName: item.settings?.name || "N/A",
-        owner: item?.owner?.userName || "",
+        owner: item?.owner?.userName || "N/A",
         status: item.status,
         createdUTC: item.createdAt,
       }));

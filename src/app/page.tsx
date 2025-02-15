@@ -15,6 +15,7 @@ interface LoginResponse {
   error: string | null;
 }
 
+
 const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
