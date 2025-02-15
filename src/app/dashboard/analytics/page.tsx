@@ -48,9 +48,7 @@ const AnalyticsPage = () => {
 
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-  useEffect(() => {
-    console.log(" base url ", BASE_URL);
-  });
+
   const getAnalytics = useCallback(async () => {
     if (!startDate || !endDate) {
       console.log("Start date or end date is missing.");
@@ -111,7 +109,7 @@ const AnalyticsPage = () => {
     } catch (error) {
       console.log("Failed to fetch analytics:", error);
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate ]);
 
   useEffect(() => {
     (async () => {

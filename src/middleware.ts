@@ -1,38 +1,32 @@
-import { getToken } from "next-auth/jwt";
-import { withAuth } from "next-auth/middleware";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from 'next/server';
 
+export default function middleware(request: NextRequest) {
+  const pathname: string = request.nextUrl.pathname;
+  const protectedRoutes: string[] = ['/dashboard'];
+  const isProtectedRoute: boolean = protectedRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+  const authRoute: string = '/';
 
-
-
-export default withAuth(
-  async function middleware(request) {
+  // Get the token from cookies using NextRequest
+  const token: string | undefined = request.cookies.get('auth_token')?.value; 
+  const isAuthenticated: boolean = !!token;
 
   
-    const  pathname  = request.nextUrl.pathname;
-    const isAuth = await getToken({req : request})
-    const protectedRoute = ["/dashboard"]
-    const isProtectedRote = protectedRoute.some((route)=> pathname.startsWith(route))
-    const isAuthRoute = '/'
 
-    if (!isAuth && isProtectedRote) {
 
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-    if(isAuth && pathname === isAuthRoute ) {
-
-      return NextResponse.redirect(new URL("/dashboard", request.url));
-    }
-    return NextResponse.next();
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token, // Allow only authenticated users
-    },
+  // Redirect logic
+  if (!isAuthenticated && isProtectedRoute) {
+    return NextResponse.redirect(new URL(authRoute, request.url));
   }
-);
 
+  if (isAuthenticated && pathname === authRoute) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+
+  return NextResponse.next();
+}
 
 export const config = {
-  matcher: [ "/dashboard/:path*"], // Apply to settings routes
+  matcher: ['/dashboard/:path*'],
 };
