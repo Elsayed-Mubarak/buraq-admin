@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useRef, useCallback } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import Layout from "@/components/layout/Layout";
 import TemplateManagerHeader from "./TemplateManagerHeader";
 import TemplateSearch from "./TemplateSearch";
@@ -9,9 +9,10 @@ import TemplateTable from "./TemplateTable";
 import TemplateCreateModal from "./TemplateCreateModal";
 import TemplateEditModal from "./TemplateEditModal";
 import { v4 as uuidv4 } from "uuid";
-import { Column, TemplateData } from "@/app/types/TemplateTypes";
+import { TemplateData } from "@/app/types/TemplateTypes";
 import { FormData } from "@/app/types/TemplateTypes";
 import { TemplateManagerLayoutProps } from "@/app/types/templateManager-types/TemplateManagerTypes";
+//import axios from "axios";
 
 const initialCategories = [
   "Healthcare",
@@ -28,12 +29,7 @@ const initialCategories = [
   "Technology",
 ];
 
-const columns: Column[] = [
-  { key: "title", header: "Title" },
-  { key: "botName", header: "Bot Name" },
-  { key: "category", header: "Category" },
-  { key: "actions", header: "" },
-];
+
 
 export default function TemplateManagerLayout({
   activeTab,
@@ -51,47 +47,12 @@ export default function TemplateManagerLayout({
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
     null
   );
+
   const [templates, setTemplates] = useState<FormData[]>([
     {
       id: uuidv4(),
       title: "Pizza Restaurant Chatbot",
       botName: "WEB - Pizza Restaurant Chatbot",
-      category: "Hospitality",
-      description: "",
-      image: null,
-      imageUrl: null,
-    },
-    {
-      id: uuidv4(),
-      title: "Scheduling Site Visit for Real Estate",
-      botName: "WEB - Scheduling Site Visit for Real Estate",
-      category: "Real Estate",
-      description: "",
-      image: null,
-      imageUrl: null,
-    },
-    {
-      id: uuidv4(),
-      title: "Facebook Post Template 2",
-      botName: "FB - Post Template 2",
-      category: "Engagement",
-      description: "",
-      image: null,
-      imageUrl: null,
-    },
-    {
-      id: uuidv4(),
-      title: "SMS Welcome Message",
-      botName: "SMS - Welcome",
-      category: "Welcome",
-      description: "",
-      image: null,
-      imageUrl: null,
-    },
-    {
-      id: uuidv4(),
-      title: "Web Restaurant Chatbot",
-      botName: "WEB - Restaurant",
       category: "Hospitality",
       description: "",
       image: null,
@@ -113,12 +74,15 @@ export default function TemplateManagerLayout({
         if (t.id === selectedTemplateId) {
           return {
             ...t,
-            title: String(restFormData.title || ''),
-            botName: String(restFormData.botName || ''),
-            category: String(restFormData.category || ''),
-            description: String(restFormData.description || ''),
+            title: String(restFormData.title || ""),
+            botName: String(restFormData.botName || ""),
+            category: String(restFormData.category || ""),
+            description: String(restFormData.description || ""),
             image: image as File | null,
-            imageUrl: typeof formData.imageUrl === 'string' ? formData.imageUrl : t.imageUrl
+            imageUrl:
+              typeof formData.imageUrl === "string"
+                ? formData.imageUrl
+                : t.imageUrl,
           };
         }
         return t;
@@ -136,12 +100,13 @@ export default function TemplateManagerLayout({
       const newId = uuidv4();
       const newTemplate: FormData = {
         id: newId,
-        title: String(restFormData.title || ''),
-        botName: String(restFormData.botName || ''),
-        category: String(restFormData.category || ''),
-        description: String(restFormData.description || ''),
+        title: String(restFormData.title || ""),
+        botName: String(restFormData.botName || ""),
+        category: String(restFormData.category || ""),
+        description: String(restFormData.description || ""),
         image: image as File | null,
-        imageUrl: typeof formData.imageUrl === 'string' ? formData.imageUrl : null,
+        imageUrl:
+          typeof formData.imageUrl === "string" ? formData.imageUrl : null,
       };
       setTemplates([...templates, newTemplate]);
       handleSimulateBackend({
@@ -188,52 +153,6 @@ export default function TemplateManagerLayout({
 
   const templateCount = filteredData.length;
 
-  const handleEdit = useCallback(
-    (id: string) => {
-      const templateToEdit = templates.find((t) => t.id === id);
-      if (templateToEdit) {
-        const { id, ...formValues } = templateToEdit;
-        setFormData(formValues);
-        setSelectedTemplateId(id);
-        setIsEditModalOpen(true);
-      }
-    },
-    [templates]
-  );
-
-  const handleRemove = useCallback((id: string) => {
-    setTemplates((prevTemplates) => prevTemplates.filter((t) => t.id !== id));
-    handleSimulateBackend({ id, action: "delete" });
-  }, []);
-
-  const renderActions = useCallback(
-    (id: string) => {
-      return (
-        <div className="flex space-x-2">
-          <button
-            className="text-blue-600 hover:text-blue-800"
-            onClick={() => handleEdit(id)}
-          >
-            Edit
-          </button>
-          <button
-            className="text-red-600 hover:text-red-800"
-            onClick={() => handleRemove(id)}
-          >
-            Remove
-          </button>
-        </div>
-      );
-    },
-    [handleEdit, handleRemove]
-  );
-
-  const enhancedFilteredData = useMemo(() => {
-    return filteredData.map((item) => ({
-      ...item,
-      actions: renderActions(item.id),
-    }));
-  }, [filteredData, renderActions]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
@@ -257,7 +176,8 @@ export default function TemplateManagerLayout({
         />
         <TemplateSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <TemplateCount count={templateCount} />
-        <TemplateTable columns={columns} data={enhancedFilteredData} />
+
+        <TemplateTable  activeTab={activeTab} />
         <TemplateCreateModal
           isOpen={isCreateModalOpen}
           onClose={() => setIsCreateModalOpen(false)}

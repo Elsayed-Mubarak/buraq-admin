@@ -59,8 +59,10 @@ const AnalyticsPage = () => {
         `${BASE_URL}/api/dashboard/analytics?startDate=${startDate}&endDate=${endDate}`,
         { withCredentials: true }
       );
-      const data = res.data.data;
+      const data = res?.data?.data;
       // Set total accounts data
+
+      console.log(data);
       setTotalAccountsData(
         (data.numberOfAccountsPerPlan ?? []).map(
           (item: AccountCountPerPlan) => ({
@@ -81,6 +83,7 @@ const AnalyticsPage = () => {
       );
 
       // Set conversations data (convert object to array)
+      // [ jan-2025 :  0 ]
       setConversationsData(
         convertObjectToArray(data.conversationsInformation ?? {}).map(
           (item) => ({
@@ -109,7 +112,7 @@ const AnalyticsPage = () => {
     } catch (error) {
       console.log("Failed to fetch analytics:", error);
     }
-  }, [startDate, endDate ]);
+  }, [startDate, endDate, BASE_URL]);
 
   useEffect(() => {
     (async () => {
