@@ -61,7 +61,7 @@ export async function POST(req: Request): Promise<NextResponse<LoginResponse>> {
           headers.append("Set-Cookie", cookie);
         });
       }
-   
+
       return NextResponse.json(
         { user: response.data.user, error: null },
         { status: 200, headers }

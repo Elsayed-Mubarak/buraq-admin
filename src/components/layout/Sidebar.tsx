@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // Import useRouter
+//import { useRouter } from "next/navigation"; // Import useRouter
 
 import { GrUserSettings } from "react-icons/gr";
 import { BiBarChartSquare } from "react-icons/bi";
@@ -31,7 +31,7 @@ const bottomNavigation = [
 
 export default function Sidebar() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-  const router = useRouter(); // Use useRouter hook
+  //const router = useRouter(); // Use useRouter hook
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
