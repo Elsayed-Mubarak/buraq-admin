@@ -49,7 +49,6 @@ const AnalyticsPage = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
   useEffect(() => {
-    console.log(" base url ", BASE_URL);
   });
   const getAnalytics = useCallback(async () => {
     if (!startDate || !endDate) {

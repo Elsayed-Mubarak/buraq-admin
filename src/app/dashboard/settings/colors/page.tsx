@@ -2,8 +2,12 @@
 
 import React, { useState, ChangeEvent } from "react";
 import { ColorsState } from "@/app/types/colors-types/ColorsTypes";
+import axios from "axios";
 
 export default function Colors() {
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const [colors, setColors] = useState<ColorsState>({
     accentPrimary: "#343DE6",
     accentSecondary: "#E9E9FD",
@@ -29,21 +33,21 @@ export default function Colors() {
     colorName: keyof ColorsState
   ) => {
     let hexCode = e.target.value;
-
     if (hexCode.startsWith("#")) {
-      const hexValue = hexCode.substring(1); 
+      const hexValue = hexCode.substring(1);
       if (hexValue.length > 6) {
-        hexCode = "#" + hexValue.substring(0, 6); 
+        hexCode = "#" + hexValue.substring(0, 6);
       }
     } else {
       if (hexCode.length > 6) {
         hexCode = "#" + hexCode.substring(0, 6); // Truncate to 6 digits and add '#'
       } else if (hexCode.length > 0) {
-        hexCode = "#" + hexCode; 
+        hexCode = "#" + hexCode;
       }
     }
     setColors({ ...colors, [colorName]: hexCode });
   };
+
   // Transform the colors state into the required format
   const transformColorsForBackend = () => {
     return {
@@ -73,33 +77,40 @@ export default function Colors() {
   // Handle saving colors to the backend
   const handleSaveColors = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
 
     const formattedColors = transformColorsForBackend();
     console.log(formattedColors);
-    //try {
-    //  const response = await fetch("/api/save-colors", {
-    //    method: "POST",
-    //    headers: {
-    //      "Content-Type": "application/json",
-    //    },
-    //    body: JSON.stringify(formattedColors),
-    //  });
 
-    //  if (response.ok) {
-    //    console.log("Colors saved successfully!");
-    //  } else {
-    //    console.error("Failed to save colors.");
-    //  }
-    //} catch (error) {
-    //  console.error("Error saving colors:", error);
-    //}
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/api/dashboard/settings/theme`,
+        formattedColors,
+        { withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        console.log("Colors saved successfully!");
+      } else {
+        console.log("Failed to save colors.");
+        setError("Failed to save colors. Please try again.");
+      }
+    } catch (error: unknown) {
+      console.log("Error saving colors:", error);
+      setError("An error occurred while saving colors. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (loading) return <div>Loading .....</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="m-4">
       <div className="flex h-4">
         <div className="flex justify-start">
-        
           <div className=" border-gray-200 px-4 py-5 sm:px-6 rounded-md max-w-lg">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Colors</h2>
 

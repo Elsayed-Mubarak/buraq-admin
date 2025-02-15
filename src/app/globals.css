@@ -139,7 +139,14 @@
 .Dialog-overlay {
   animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+/* Ensure the sidebar and dropdown can overflow properly */
+.sidebar-overflow {
+  overflow: visible !important;
+}
 
+.dropdown-overflow {
+  overflow: visible !important;
+}
 .Dialog-content {
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }

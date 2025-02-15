@@ -1,8 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import { TypographySettings } from "@/app/types/Typography-types/TypographyTypes";
+import axios from "axios";
 
 const Typography: React.FC = () => {
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
   const [typographySettings, setTypographySettings] =
     useState<TypographySettings>({
       heading1: { fontStyle: "Barlow", size: 24 },
@@ -14,6 +17,9 @@ const Typography: React.FC = () => {
       body3: { fontStyle: "Nunito", size: 11 },
       body4: { fontStyle: "Nunito", size: 9 },
     });
+  const [error, setError] = useState<string | null>(null); 
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null); 
 
   const handleFontStyleChange = (
     type: keyof TypographySettings,
@@ -37,13 +43,51 @@ const Typography: React.FC = () => {
 
   const handleSaveSettings = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log(typographySettings);
+    setLoading(true);
+    setError(null); // Clear any previous errors
+    setSuccessMessage(null); 
+
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/api/dashboard/settings/typography`,
+        typographySettings,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (res.status === 200) {
+        setSuccessMessage("Typography settings saved successfully!"); 
+      } else {
+        setError(`Server responded with status: ${res.status}`);
+      }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setError(
+          error.response?.data.message ||
+            error.message ||
+            "An Axios error occurred"
+        ); 
+      } else if (error instanceof Error) {
+        setError(error.message); 
+      } else {
+        setError("An unknown error occurred"); 
+      }
+    } finally {
+      setLoading(false); 
+    }
   };
 
+  if (loading) return <div>Loading......</div>;
   return (
     <div className="m-4">
+      {error && <div className="text-red-500">{error}</div>}{" "}
+      {/* Display error message */}
+      {successMessage && (
+        <div className="text-green-500">{successMessage}</div>
+      )}{" "}
+      {/* Display success message */}
       <div className="flex h-full">
-  
         <div className="ml-4 flex-1">
           <div className="border-gray-200 px-4 py-5 sm:px-6 rounded-md shadow-sm max-w-3xl">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -70,10 +114,11 @@ const Typography: React.FC = () => {
                           value={typographySettings.heading1.fontStyle}
                           onChange={(e) => handleFontStyleChange("heading1", e)}
                         >
-                          <option>Barlow</option>
-                          <option>Robot</option>
-                          <option>Arial</option>
-                          <option>Helvetica</option>
+                          <option value="Barlow">Barlow</option>{" "}
+                          {/* Added value attributes */}
+                          <option value="Robot">Robot</option>
+                          <option value="Arial">Arial</option>
+                          <option value="Helvetica">Helvetica</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -100,10 +145,11 @@ const Typography: React.FC = () => {
                           value={typographySettings.heading1.size}
                           onChange={(e) => handleFontSizeChange("heading1", e)}
                         >
-                          <option>24</option>
-                          <option>28</option>
-                          <option>32</option>
-                          <option>36</option>
+                          <option value="24">24</option>{" "}
+                          {/* Added value attributes, consistent typing */}
+                          <option value="28">28</option>
+                          <option value="32">32</option>
+                          <option value="36">36</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -138,10 +184,10 @@ const Typography: React.FC = () => {
                           value={typographySettings.heading2.fontStyle}
                           onChange={(e) => handleFontStyleChange("heading2", e)}
                         >
-                          <option>Nunito</option>
-                          <option>Open Sans</option>
-                          <option>Lato</option>
-                          <option>Slabo</option>
+                          <option value="Nunito">Nunito</option>
+                          <option value="Open Sans">Open Sans</option>
+                          <option value="Lato">Lato</option>
+                          <option value="Slabo">Slabo</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -168,10 +214,10 @@ const Typography: React.FC = () => {
                           value={typographySettings.heading2.size}
                           onChange={(e) => handleFontSizeChange("heading2", e)}
                         >
-                          <option>20</option>
-                          <option>22</option>
-                          <option>24</option>
-                          <option>26</option>
+                          <option value="20">20</option>
+                          <option value="22">22</option>
+                          <option value="24">24</option>
+                          <option value="26">26</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -206,10 +252,12 @@ const Typography: React.FC = () => {
                           value={typographySettings.heading3.fontStyle}
                           onChange={(e) => handleFontStyleChange("heading3", e)}
                         >
-                          <option>Nunito</option>
-                          <option>Roboto Slab</option>
-                          <option>Merriweather</option>
-                          <option>Playfair Display</option>
+                          <option value="Nunito">Nunito</option>
+                          <option value="Roboto Slab">Roboto Slab</option>
+                          <option value="Merriweather">Merriweather</option>
+                          <option value="Playfair Display">
+                            Playfair Display
+                          </option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -236,10 +284,10 @@ const Typography: React.FC = () => {
                           value={typographySettings.heading3.size}
                           onChange={(e) => handleFontSizeChange("heading3", e)}
                         >
-                          <option>18</option>
-                          <option>20</option>
-                          <option>22</option>
-                          <option>24</option>
+                          <option value="18">18</option>
+                          <option value="20">20</option>
+                          <option value="22">22</option>
+                          <option value="24">24</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -274,10 +322,10 @@ const Typography: React.FC = () => {
                           value={typographySettings.heading4.fontStyle}
                           onChange={(e) => handleFontStyleChange("heading4", e)}
                         >
-                          <option>Nunito</option>
-                          <option>Montserrat</option>
-                          <option>Raleway</option>
-                          <option>Poppins</option>
+                          <option value="Nunito">Nunito</option>
+                          <option value="Montserrat">Montserrat</option>
+                          <option value="Raleway">Raleway</option>
+                          <option value="Poppins">Poppins</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -304,10 +352,10 @@ const Typography: React.FC = () => {
                           value={typographySettings.heading4.size}
                           onChange={(e) => handleFontSizeChange("heading4", e)}
                         >
-                          <option>16</option>
-                          <option>18</option>
-                          <option>20</option>
-                          <option>22</option>
+                          <option value="16">16</option>
+                          <option value="18">18</option>
+                          <option value="20">20</option>
+                          <option value="22">22</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -343,10 +391,10 @@ const Typography: React.FC = () => {
                           value={typographySettings.body1.fontStyle}
                           onChange={(e) => handleFontStyleChange("body1", e)}
                         >
-                          <option>Nunito</option>
-                          <option>Roboto</option>
-                          <option>Lato</option>
-                          <option>Open Sans</option>
+                          <option value="Nunito">Nunito</option>
+                          <option value="Roboto">Roboto</option>
+                          <option value="Lato">Lato</option>
+                          <option value="Open Sans">Open Sans</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -373,10 +421,10 @@ const Typography: React.FC = () => {
                           value={typographySettings.body1.size}
                           onChange={(e) => handleFontSizeChange("body1", e)}
                         >
-                          <option>14</option>
-                          <option>15</option>
-                          <option>16</option>
-                          <option>17</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
+                          <option value="17">17</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -411,10 +459,12 @@ const Typography: React.FC = () => {
                           value={typographySettings.body2.fontStyle}
                           onChange={(e) => handleFontStyleChange("body2", e)}
                         >
-                          <option>Nunito</option>
-                          <option>Merriweather Sans</option>
-                          <option>Cabin</option>
-                          <option>Assistant</option>
+                          <option value="Nunito">Nunito</option>
+                          <option value="Merriweather Sans">
+                            Merriweather Sans
+                          </option>
+                          <option value="Cabin">Cabin</option>
+                          <option value="Assistant">Assistant</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -441,10 +491,10 @@ const Typography: React.FC = () => {
                           value={typographySettings.body2.size}
                           onChange={(e) => handleFontSizeChange("body2", e)}
                         >
-                          <option>13</option>
-                          <option>14</option>
-                          <option>15</option>
-                          <option>16</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -479,10 +529,10 @@ const Typography: React.FC = () => {
                           value={typographySettings.body3.fontStyle}
                           onChange={(e) => handleFontStyleChange("body3", e)}
                         >
-                          <option>Nunito</option>
-                          <option>Exo 2</option>
-                          <option>Fira Sans</option>
-                          <option>Ubuntu</option>
+                          <option value="Nunito">Nunito</option>
+                          <option value="Exo 2">Exo 2</option>
+                          <option value="Fira Sans">Fira Sans</option>
+                          <option value="Ubuntu">Ubuntu</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -509,10 +559,10 @@ const Typography: React.FC = () => {
                           value={typographySettings.body3.size}
                           onChange={(e) => handleFontSizeChange("body3", e)}
                         >
-                          <option>11</option>
-                          <option>12</option>
-                          <option>13</option>
-                          <option>14</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -547,10 +597,10 @@ const Typography: React.FC = () => {
                           value={typographySettings.body4.fontStyle}
                           onChange={(e) => handleFontStyleChange("body4", e)}
                         >
-                          <option>Nunito</option>
-                          <option>Overpass</option>
-                          <option>PT Sans</option>
-                          <option>Karla</option>
+                          <option value="Nunito">Nunito</option>
+                          <option value="Overpass">Overpass</option>
+                          <option value="PT Sans">PT Sans</option>
+                          <option value="Karla">Karla</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg
@@ -577,10 +627,10 @@ const Typography: React.FC = () => {
                           value={typographySettings.body4.size}
                           onChange={(e) => handleFontSizeChange("body4", e)}
                         >
-                          <option>9</option>
-                          <option>10</option>
-                          <option>11</option>
-                          <option>12</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg

@@ -57,9 +57,6 @@ export default function Links() {
           socialLinks: links,
         },
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
           withCredentials: true,
         }
       );
