@@ -9,6 +9,8 @@ import { HiOutlineTemplate } from "react-icons/hi";
 import { FaRegQuestionCircle } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const navigation = [
   { name: "Accounts", href: "/dashboard/accounts", icon: GrUserSettings },
@@ -30,54 +32,54 @@ const bottomNavigation = [
 ];
 
 export default function Sidebar() {
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-  //const router = useRouter(); // Use useRouter hook
+
+  const router = useRouter(); // Uncomment this line
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null); // Add error state
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  
   const handleLogout = async () => {
+    const toastId = toast.loading("Logging out ...");
     setLoading(true);
-    setError(null); 
-    setSuccess(null); 
 
+  
     try {
       const res = await axios.post(
-        `${BASE_URL}/api/admin/auth/logout`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`,
+        {},
         {
           withCredentials: true,
         }
       );
-
+  
       if (res.status === 200) {
-        setSuccess("Logout Successful");
-        //router.push("/login");// please arab check this
-      } else {
-        setError(`Logout failed: Server responded with status ${res.status}`); 
-      }
+  
+        // Clear cookies on the client side
+        document.cookie.split(";").forEach((c) => {
+          document.cookie = c
+            .replace(/^ +/, "")
+            .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
+        });
+  
+        toast.success("Logged out successfully!", { id: toastId });
+
+        router.push("/"); // Redirect to login page
+
+
+      } 
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(
-          err.response?.data.message ||
-            err.message ||
-            "An Axios error occurred during logout"
-        );
-      } else if (err instanceof Error) {
-        setError(err.message); 
-      } else {
-        setError("An unknown error occurred during logout");
-      }
+     console.log("Error: ", err)
+     toast.error("Something went wrong", { id: toastId });
+
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="flex flex-col w-12 border-r border-gray-200 h-screen fixed left-0 top-0 bg-[#EEEEEE] sidebar-overflow">
       <div className="flex-1 flex flex-col pt-4 pb-4 overflow-y-auto dropdown-overflow">
@@ -137,18 +139,7 @@ export default function Sidebar() {
                   <p className="text-sm font-extrabold text-gray-800">
                     Username
                   </p>
-                  {loading && (
-                    <p className="text-sm text-gray-500">Logging out...</p>
-                  )}{" "}
-                  {/* Show loading message */}
-                  {success && (
-                    <p className="text-sm text-green-500">{success}</p>
-                  )}{" "}
-                  {/* Show success message */}
-                  {error && (
-                    <p className="text-sm text-red-500">{error}</p>
-                  )}{" "}
-                  {/* Show error message */}
+    
                   <button
                     onClick={handleLogout}
                     disabled={loading} 
